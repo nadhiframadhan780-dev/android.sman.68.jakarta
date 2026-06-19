@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>404 - Halaman Tidak Ditemukan | SMAN 68 Jakarta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #006633;
+            --primary-blue: #0088cc;
+            --gradient-primary: linear-gradient(135deg, #006633 0%, #0088cc 100%);
+            --white: #ffffff;
+            --off-white: #f8fafc;
+            --dark-gray: #475569;
+            --dark: #1e293b;
+            --shadow-lg: 0 20px 50px rgba(0,0,0,0.2);
+            --shadow-xl: 0 30px 70px rgba(0,0,0,0.3);
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--gradient-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background Decor */
+        .bg-circle {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.03);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-circle-1 { width: 600px; height: 600px; top: -250px; right: -200px; }
+        .bg-circle-2 { width: 400px; height: 400px; bottom: -150px; left: -100px; }
+        .bg-circle-3 { width: 200px; height: 200px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            animation: fadeInUp 0.8s ease;
+            max-width: 550px;
+            width: 100%;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Logo */
+        .logo-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        .logo-ring {
+            position: absolute;
+            inset: -12px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.25);
+            animation: ringRotate 10s linear infinite;
+        }
+        .logo-ring:nth-child(2) {
+            inset: -22px;
+            border-style: dashed;
+            animation-duration: 15s;
+            animation-direction: reverse;
+        }
+        @keyframes ringRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .logo-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: white;
+            padding: 6px;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 404 Number */
+        .error-number {
+            font-size: clamp(5rem, 15vw, 8rem);
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+            margin-bottom: 10px;
+            text-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: numberPulse 2s ease-in-out infinite;
+        }
+        @keyframes numberPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Text */
+        .error-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+        }
+        .error-message {
+            color: rgba(255,255,255,0.85);
+            font-size: 1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Countdown */
+        .countdown-box {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius-lg);
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+        .countdown-text {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+        .countdown-timer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+        }
+        .countdown-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            margin-left: 5px;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 14px 28px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: white;
+            color: var(--primary-green);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.4);
+            color: white;
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: white;
+        }
+
+        /* Slogan */
+        .slogan {
+            margin-top: 35px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+        .slogan i {
+            margin: 0 5px;
+            font-size: 3px;
+            vertical-align: middle;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .error-number { font-size: 4rem; }
+            .error-title { font-size: 1.2rem; }
+            .countdown-number { font-size: 2rem; }
+            .btn { padding: 12px 24px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Circles -->
+    <div class="bg-circle bg-circle-1"></div>
+    <div class="bg-circle bg-circle-2"></div>
+    <div class="bg-circle bg-circle-3"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo-wrapper">
+            <div class="logo-ring"></div>
+            <div class="logo-ring"></div>
+            <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68 Jakarta" class="logo-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'90\' height=\'90\' viewBox=\'0 0 90 90\'%3E%3Crect width=\'90\' height=\'90\' fill=\'%23006633\' rx=\'45\'/%3E%3Ctext x=\'50%25\' y=\'55%25\' text-anchor=\'middle\' fill=\'white\' font-size=\'40\' font-weight=\'bold\'%3E68%3C/text%3E%3C/svg%3E'">
+        </div>
+
+        <!-- 404 -->
+        <div class="error-number">404</div>
+        <h1 class="error-title">Halaman Tidak Ditemukan</h1>
+        <p class="error-message">
+            Maaf, halaman yang Anda cari tidak tersedia atau telah dipindahkan.<br>
+            Anda akan dialihkan ke website utama secara otomatis.
+        </p>
+
+        <!-- Countdown -->
+        <div class="countdown-box">
+            <p class="countdown-text"><i class="fas fa-clock"></i> Mengalihkan dalam</p>
+            <div class="countdown-timer">
+                <span class="countdown-number" id="countdownNumber">10</span>
+                <span class="countdown-label">detik</span>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-group">
+            <a href="index.html" class="btn btn-primary">
+                <i class="fas fa-home"></i> Kembali Sekarang
+            </a>
+            <a href="sman68.html" class="btn btn-outline">
+                <i class="fas fa-external-link-alt"></i> Website Utama
+            </a>
+        </div>
+
+        <!-- Slogan -->
+        <div class="slogan">
+            <i class="fas fa-circle"></i> Disiplin
+            <i class="fas fa-circle"></i> Kreasi
+            <i class="fas fa-circle"></i> Prestasi
+            <i class="fas fa-circle"></i>
+        </div>
+    </div>
+
+    <script>
+        // Countdown redirect
+        let countdown = 10;
+        const countdownEl = document.getElementById('countdownNumber');
+        const redirectUrl = 'index.html';
+
+        const timer = setInterval(() => {
+            countdown--;
+            countdownEl.textContent = countdown;
+
+            if (countdown <= 0) {
+                clearInterval(timer);
+                window.location.href = redirectUrl;
+            }
+        }, 1000);
+
+        // Bisa juga klik countdown untuk langsung redirect
+        document.querySelector('.countdown-box').addEventListener('click', () => {
+            clearInterval(timer);
+            window.location.href = redirectUrl;
+        });
+
+        console.log('✅ 404 Page SMAN 68 Jakarta - Loaded');
+    </script>
+</body>
+</html>

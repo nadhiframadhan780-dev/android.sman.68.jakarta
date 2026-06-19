@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Sedang Diperbarui - SMAN 68 Jakarta</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #006633;
+            --primary-blue: #0088cc;
+            --gradient: linear-gradient(135deg, #006633 0%, #0088cc 100%);
+            --white: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --radius-sm: 12px;
+            --radius: 20px;
+            --radius-full: 50px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background Sekolah */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://media.indozone.id/crop/0x0:0x0/images/2026/01/14/1768352620_6966eb6c54bf6_maxresdefault.jpg') center/cover no-repeat;
+            z-index: -2;
+            transform: scale(1.02);
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: -1;
+        }
+
+        /* Partikel dekoratif */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Container Utama */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Logo */
+        .logo-container {
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-ring {
+            position: absolute;
+            inset: -15px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            animation: ringRotate 8s linear infinite;
+        }
+
+        .logo-ring:nth-child(2) {
+            inset: -30px;
+            border-style: dashed;
+            animation-duration: 12s;
+            animation-direction: reverse;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .logo-ring:nth-child(3) {
+            inset: -45px;
+            border-style: dotted;
+            animation-duration: 16s;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        @keyframes ringRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .logo-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: white;
+            padding: 10px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 25px 70px rgba(0, 102, 51, 0.5);
+            }
+        }
+
+        /* Card Konten */
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius);
+            padding: 45px 40px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            max-width: 520px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+
+        /* Ikon Maintenance */
+        .maintenance-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: bounce 2s ease-in-out infinite;
+            box-shadow: 0 15px 40px rgba(0, 102, 51, 0.3);
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .maintenance-icon i {
+            font-size: 2rem;
+            color: white;
+            animation: wrenchShake 3s ease-in-out infinite;
+        }
+
+        @keyframes wrenchShake {
+            0%, 100% { transform: rotate(0deg); }
+            15% { transform: rotate(-15deg); }
+            30% { transform: rotate(10deg); }
+            45% { transform: rotate(-8deg); }
+            60% { transform: rotate(5deg); }
+            75% { transform: rotate(-3deg); }
+            90% { transform: rotate(0deg); }
+        }
+
+        /* Judul */
+        .title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .badge-sekolah {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 6px 18px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 1.5px;
+        }
+
+        /* Progress Bar Countdown */
+        .countdown-section {
+            margin: 25px 0;
+        }
+
+        .countdown-text {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .countdown-timer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .countdown-timer .seconds {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            background: var(--gradient);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-size: 1.8rem;
+            animation: countPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes countPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 10px;
+            transition: width 0.1s linear;
+            width: 100%;
+        }
+
+        /* Tombol */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            box-shadow: 0 8px 25px rgba(0, 102, 51, 0.3);
+            margin-top: 10px;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 102, 51, 0.4);
+        }
+
+        .btn-back i {
+            transition: var(--transition);
+        }
+
+        .btn-back:hover i {
+            transform: translateX(-3px);
+        }
+
+        /* Info tambahan */
+        .info-text {
+            font-size: 0.78rem;
+            color: #94a3b8;
+            margin-top: 18px;
+            line-height: 1.6;
+        }
+
+        .info-text i {
+            color: #f59e0b;
+            margin-right: 4px;
+        }
+
+        /* Footer */
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            body {
+                padding: 15px;
+            }
+
+            .content-card {
+                padding: 35px 22px;
+                border-radius: var(--radius-sm);
+            }
+
+            .title {
+                font-size: 1.4rem;
+            }
+
+            .subtitle {
+                font-size: 0.88rem;
+            }
+
+            .logo-img {
+                width: 75px;
+                height: 75px;
+                padding: 8px;
+            }
+
+            .logo-ring {
+                inset: -12px;
+            }
+            .logo-ring:nth-child(2) {
+                inset: -24px;
+            }
+            .logo-ring:nth-child(3) {
+                inset: -36px;
+            }
+
+            .maintenance-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            .maintenance-icon i {
+                font-size: 1.5rem;
+            }
+
+            .btn-back {
+                padding: 12px 22px;
+                font-size: 0.85rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .countdown-timer {
+                font-size: 1.2rem;
+            }
+
+            .countdown-timer .seconds {
+                width: 40px;
+                height: 40px;
+                line-height: 40px;
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .content-card {
+                padding: 28px 16px;
+            }
+
+            .title {
+                font-size: 1.2rem;
+            }
+
+            .logo-img {
+                width: 60px;
+                height: 60px;
+                padding: 6px;
+            }
+
+            .logo-ring {
+                inset: -10px;
+            }
+            .logo-ring:nth-child(2) {
+                inset: -20px;
+            }
+            .logo-ring:nth-child(3) {
+                inset: -30px;
+            }
+
+            .maintenance-icon {
+                width: 50px;
+                height: 50px;
+            }
+
+            .maintenance-icon i {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg-image"></div>
+    <div class="bg-overlay"></div>
+
+    <!-- Partikel -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Konten Utama -->
+    <div class="main-container">
+        <!-- Logo -->
+        <div class="logo-container">
+            <div class="logo-wrapper">
+                <div class="logo-ring"></div>
+                <div class="logo-ring"></div>
+                <div class="logo-ring"></div>
+                <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68 Jakarta" class="logo-img">
+            </div>
+        </div>
+
+        <!-- Card -->
+        <div class="content-card">
+            <!-- Ikon -->
+            <div class="maintenance-icon">
+                <i class="fas fa-wrench"></i>
+            </div>
+
+            <!-- Badge -->
+            <span class="badge-sekolah">SMAN 68 JAKARTA</span>
+
+            <!-- Judul -->
+            <h1 class="title">Maaf, Halaman Sedang Diperbarui</h1>
+            <p class="subtitle">Kami sedang melakukan pemeliharaan dan pembaruan sistem untuk memberikan layanan yang lebih baik.</p>
+
+            <!-- Countdown -->
+            <div class="countdown-section">
+                <p class="countdown-text">Anda akan dialihkan ke Website Utama dalam</p>
+                <div class="countdown-timer">
+                    <span class="seconds" id="countdownSeconds">5</span>
+                    <span>detik</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- Tombol -->
+            <a href="sman68.html" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Kembali ke Website Utama
+            </a>
+
+            <!-- Info -->
+            <p class="info-text">
+                <i class="fas fa-info-circle"></i> Jika Anda membutuhkan bantuan segera, silakan hubungi operator atau kunjungi website utama kami.
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <p class="footer-text">&copy; 2024 SMAN 68 Jakarta. All rights reserved.</p>
+    </div>
+
+    <script>
+        // Generate partikel
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = [
+                'rgba(255,255,255,0.06)',
+                'rgba(255,255,255,0.04)',
+                'rgba(0,136,204,0.08)',
+                'rgba(0,102,51,0.08)'
+            ];
+            
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 8 + 3;
+                const leftPos = Math.random() * 100;
+                const animDuration = Math.random() * 12 + 8;
+                const animDelay = Math.random() * 10;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = leftPos + '%';
+                particle.style.animationDuration = animDuration + 's';
+                particle.style.animationDelay = animDelay + 's';
+                particle.style.background = color;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Countdown & Redirect
+        function startCountdown() {
+            let seconds = 5;
+            const secondsEl = document.getElementById('countdownSeconds');
+            const progressBar = document.getElementById('progressBar');
+            
+            const interval = setInterval(() => {
+                seconds--;
+                secondsEl.textContent = seconds;
+                
+                // Update progress bar
+                const progressPercent = (seconds / 5) * 100;
+                progressBar.style.width = progressPercent + '%';
+                
+                // Animasi angka
+                secondsEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    secondsEl.style.transform = 'scale(1)';
+                }, 150);
+                
+                if (seconds <= 0) {
+                    clearInterval(interval);
+                    window.location.href = 'sman68.html';
+                }
+            }, 1000);
+        }
+
+        // Klik tombol batalkan countdown
+        document.querySelector('.btn-back').addEventListener('click', function(e) {
+            // Biarkan link bekerja normal
+        });
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            startCountdown();
+        });
+
+        // Handle jika user kembali ke halaman ini (back button)
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted || performance.getEntriesByType("navigation")[0]?.type === 'back_forward') {
+                window.location.href = 'sman68.html';
+            }
+        });
+    </script>
+</body>
+</html>

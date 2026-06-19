@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unduh Kartu Peserta – Mutasi SMAN 68 Jakarta</title>
+  <link rel="stylesheet" href="unduh-kartu-peserta.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+  <link rel="shortcut icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+  <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+</head>
+<body>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="loader-card">
+      <div class="spinner"></div>
+      <p id="loadingText">Memuat data...</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ LOGIN PAGE ═══════════════════════ -->
+  <div id="loginPage" class="page active">
+
+    <!-- Gate fullscreen (closed / belum buka) -->
+    <div id="masaUnduhGate" class="masa-gate hidden">
+      <div class="gate-bg">
+        <div class="bg-blob blob1"></div><div class="bg-blob blob2"></div><div class="bg-blob blob3"></div>
+      </div>
+      <div class="gate-content" id="gateContent"></div>
+    </div>
+
+    <!-- Form login normal -->
+    <div id="loginPageInner">
+      <div id="bannerLogin" class="masa-unduh-banner-top"></div>
+      <!-- Tombol Beranda — tampil di semua device -->
+      <a href="./sman68.html" id="btnHomeLogin" class="btn-home-float">
+        <i class="fa-solid fa-house"></i> Beranda
+      </a>
+      <div class="login-bg">
+        <div class="bg-blob blob1"></div><div class="bg-blob blob2"></div><div class="bg-blob blob3"></div>
+      </div>
+      <div class="login-container">
+        <div class="login-card glass-card">
+          <div class="login-header">
+            <div class="school-logo-wrap">
+              <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="Logo SMAN 68" class="school-logo" />
+            </div>
+            <div class="school-info">
+              <h1 class="school-name">SMAN 68 Jakarta</h1>
+              <p class="school-sub">Sistem Penerimaan Murid Mutasi</p>
+            </div>
+          </div>
+          <div class="login-divider"></div>
+          <h2 class="login-title">Unduh Kartu Peserta</h2>
+          <p class="login-desc">Masukkan nomor pendaftaran dan tanggal lahir Anda untuk mengakses kartu peserta.</p>
+          <div id="statusCard" class="status-card hidden"></div>
+          <div id="loginForm" class="login-form">
+            <div class="form-group">
+              <label class="form-label"><i class="fa-solid fa-id-card"></i> Nomor Pendaftaran</label>
+              <input type="text" id="inputNoDaftar" class="form-input" placeholder="Contoh: 198168XXXXXXXX" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label class="form-label"><i class="fa-solid fa-calendar"></i> Tanggal Lahir</label>
+              <input type="date" id="inputTglLahir" class="form-input" />
+            </div>
+            <button id="btnLogin" class="btn-login" onclick="handleLogin()">
+              <span id="btnLoginText"><i class="fa-solid fa-right-to-bracket"></i> Masuk</span>
+              <span id="btnLoginLoader" class="btn-loader hidden"><i class="fa-solid fa-spinner fa-spin"></i> Memverifikasi...</span>
+            </button>
+          </div>
+          <div class="login-footer">
+            <p>Hubungi operator jika mengalami kendala akses</p>
+            <p class="school-tagline"><i class="fa-solid fa-shield-check"></i> Portal Resmi – SMAN 68 Jakarta</p>
+            <a href="./sman68.html" class="btn-home-footer"><i class="fa-solid fa-house"></i> Kembali ke Beranda</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ DASHBOARD PAGE ═══════════════════════ -->
+  <div id="dashboardPage" class="page hidden">
+
+    <!-- Navbar -->
+    <nav class="top-nav glass-nav">
+      <div class="nav-left">
+        <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="Logo" class="nav-logo" />
+        <div class="nav-title-wrap">
+          <span class="nav-school">SMAN 68 Jakarta</span>
+          <span class="nav-sub">Portal Mutasi</span>
+        </div>
+      </div>
+      <div class="nav-right">
+        <a href="./sman68.html" class="btn-home-nav"><i class="fa-solid fa-house"></i><span class="nav-btn-label"> Beranda</span></a>
+        <span id="navNama" class="nav-nama"></span>
+        <button class="btn-logout" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i><span class="nav-btn-label"> Keluar</span></button>
+      </div>
+    </nav>
+
+    <!-- Banner masa unduh -->
+    <div id="bannerDashboard" class="masa-unduh-banner"></div>
+
+    <!-- Welcome Banner -->
+    <div class="welcome-banner glass-card" id="welcomeBanner">
+      <div class="welcome-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="welcome-text">
+        <h2 id="welcomeName">Selamat datang!</h2>
+        <p>Status: <span class="badge-diterima"><i class="fa-solid fa-circle-check"></i> DITERIMA</span></p>
+      </div>
+    </div>
+
+    <!-- ═══ TAB NAV ═══ -->
+    <div class="dash-tab-nav" id="dashTabNav">
+      <button class="dash-tab active" data-tab="tabDataSiswa" onclick="switchTab(this,'tabDataSiswa')">
+        <i class="fa-solid fa-user-graduate"></i><span>Data Siswa</span>
+      </button>
+      <button class="dash-tab" data-tab="tabStatusBerkas" onclick="switchTab(this,'tabStatusBerkas')">
+        <i class="fa-solid fa-folder-open"></i><span>Status Berkas</span>
+      </button>
+      <button class="dash-tab" data-tab="tabJadwal" onclick="switchTab(this,'tabJadwal')">
+        <i class="fa-solid fa-calendar-days"></i><span>Jadwal Seleksi</span>
+      </button>
+      <button class="dash-tab" data-tab="tabFoto" onclick="switchTab(this,'tabFoto')">
+        <i class="fa-solid fa-camera"></i><span>Pas Foto</span>
+      </button>
+      <button class="dash-tab" data-tab="tabKartu" onclick="switchTab(this,'tabKartu')">
+        <i class="fa-solid fa-id-badge"></i><span>Unduh Kartu</span>
+      </button>
+    </div>
+
+    <!-- ═══ TAB CONTENT WRAPPER ═══ -->
+    <div class="dash-tab-wrapper">
+
+      <!-- ── TAB: DATA SISWA ── -->
+      <div id="tabDataSiswa" class="dash-tab-pane active glass-card">
+        <div class="section-header">
+          <div class="section-icon green"><i class="fa-solid fa-user-graduate"></i></div>
+          <h3>Data Siswa</h3>
+          <button id="btnEditBiodata" class="btn-edit-biodata" onclick="bukaModalEdit()">
+            <i class="fa-solid fa-pen-to-square"></i><span class="btn-edit-text"> Edit Biodata</span>
+          </button>
+        </div>
+        <div id="dataSiswaGrid" class="data-grid">
+          <div class="skeleton-item"></div><div class="skeleton-item"></div>
+          <div class="skeleton-item"></div><div class="skeleton-item"></div>
+          <div class="skeleton-item"></div><div class="skeleton-item"></div>
+        </div>
+      </div>
+
+      <!-- ── TAB: STATUS BERKAS ── -->
+      <div id="tabStatusBerkas" class="dash-tab-pane hidden glass-card">
+        <div class="section-header">
+          <div class="section-icon blue"><i class="fa-solid fa-folder-open"></i></div>
+          <h3>Status Berkas</h3>
+        </div>
+        <div id="statusBerkasGrid" class="berkas-grid">
+          <div class="skeleton-item tall"></div><div class="skeleton-item tall"></div>
+        </div>
+      </div>
+
+      <!-- ── TAB: JADWAL SELEKSI ── -->
+      <div id="tabJadwal" class="dash-tab-pane hidden glass-card">
+        <div class="section-header">
+          <div class="section-icon purple"><i class="fa-solid fa-calendar-days"></i></div>
+          <h3>Jadwal Seleksi</h3>
+        </div>
+        <div id="jadwalContainer">
+          <div class="skeleton-item"></div><div class="skeleton-item"></div>
+        </div>
+      </div>
+
+      <!-- ── TAB: PAS FOTO ── -->
+      <div id="tabFoto" class="dash-tab-pane hidden glass-card" id="fotoSection">
+        <div class="section-header">
+          <div class="section-icon red"><i class="fa-solid fa-camera"></i></div>
+          <h3>Pas Foto Peserta</h3>
+        </div>
+        <div class="foto-upload-wrapper">
+          <div class="foto-preview-area" id="fotoPreviewArea" onclick="document.getElementById('inputFoto').click()">
+            <img id="fotoPreviewImg" src="" alt="Preview Foto" class="foto-preview-img hidden" />
+            <div id="fotoPreviewPlaceholder" class="foto-placeholder">
+              <i class="fa-solid fa-camera-retro"></i>
+              <p>Klik untuk unggah foto</p>
+              <span>Format: JPG/PNG, maks. 2MB</span>
+            </div>
+          </div>
+          <div class="foto-info-panel">
+            <div class="foto-ketentuan">
+              <h4><i class="fa-solid fa-circle-info"></i> Ketentuan Pas Foto</h4>
+              <ul>
+                <li><i class="fa-solid fa-check"></i> Background wajib <strong>berwarna MERAH</strong></li>
+                <li><i class="fa-solid fa-check"></i> Memakai seragam <strong>putih abu-abu lengkap</strong></li>
+                <li><i class="fa-solid fa-check"></i> Atribut sekolah asal <strong>terpasang lengkap</strong></li>
+                <li><i class="fa-solid fa-check"></i> Foto formal, tidak memakai aksesoris berlebihan</li>
+                <li><i class="fa-solid fa-check"></i> Ukuran file maksimal <strong>2MB</strong></li>
+              </ul>
+            </div>
+            <div class="foto-status-wrap" id="fotoStatusWrap">
+              <div id="fotoStatusBelum" class="foto-status missing"><i class="fa-solid fa-triangle-exclamation"></i> Belum ada pas foto tersimpan</div>
+              <div id="fotoStatusAda" class="foto-status valid hidden"><i class="fa-solid fa-circle-check"></i> Pas foto tersimpan</div>
+            </div>
+            <input type="file" id="inputFoto" accept="image/jpeg,image/png" style="display:none" onchange="handleFotoSelected(event)" />
+            <div class="foto-buttons">
+              <button class="btn-pilih-foto" onclick="document.getElementById('inputFoto').click()"><i class="fa-solid fa-image"></i> Pilih Foto</button>
+              <button class="btn-simpan-foto" id="btnSimpanFoto" onclick="simpanFoto()" disabled><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TAB: UNDUH KARTU ── -->
+      <div id="tabKartu" class="dash-tab-pane hidden glass-card">
+        <div class="section-header">
+          <div class="section-icon gold"><i class="fa-solid fa-id-badge"></i></div>
+          <h3>Unduh Kartu Peserta</h3>
+        </div>
+        <p class="kartu-tab-desc">Unduh kartu peserta Anda. Wajib dibawa saat pelaksanaan seleksi murid mutasi.</p>
+        <div class="kartu-tab-size-picker">
+          <span class="size-label"><i class="fa-solid fa-ruler-combined"></i> Ukuran:</span>
+          <label class="size-radio"><input type="radio" name="kartuSize" value="a4" checked /> A4</label>
+          <label class="size-radio"><input type="radio" name="kartuSize" value="a5" /> A5</label>
+        </div>
+        <div class="kartu-tab-buttons">
+          <button class="btn-preview-kartu" onclick="bukaPreviewKartu()"><i class="fa-solid fa-eye"></i> Preview Kartu</button>
+          <button class="btn-download" onclick="generateKartu('pdf')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF</button>
+          <button class="btn-download-img btn-dl-png" onclick="generateKartu('png')"><i class="fa-solid fa-file-image"></i> Unduh PNG</button>
+          <button class="btn-download-img btn-dl-jpg" onclick="generateKartu('jpeg')"><i class="fa-regular fa-image"></i> Unduh JPEG</button>
+        </div>
+      </div>
+
+    </div><!-- /dash-tab-wrapper -->
+  </div>
+
+  <!-- ═══════════════════════ KARTU MODAL (PREVIEW) ═══════════════════════ -->
+  <div id="kartuModal" class="modal-overlay hidden" onclick="handleModalBackdropClick(event)">
+    <div class="modal-content modal-preview-content">
+
+      <!-- Header actions bar -->
+      <div class="modal-preview-header">
+        <div class="modal-preview-title">
+          <i class="fa-solid fa-id-badge"></i>
+          <span>Preview Kartu Peserta</span>
+        </div>
+        <div class="modal-preview-controls">
+          <!-- Size picker -->
+          <div class="modal-size-picker">
+            <span class="size-label"><i class="fa-solid fa-ruler-combined"></i></span>
+            <label class="size-radio">
+              <input type="radio" name="kartuSizeModal" value="a4" checked onchange="updatePreviewSize()" /> A4
+            </label>
+            <label class="size-radio">
+              <input type="radio" name="kartuSizeModal" value="a5" onchange="updatePreviewSize()" /> A5
+            </label>
+          </div>
+          <button class="btn-modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+
+      <!-- Preview area -->
+      <div class="modal-preview-area" id="modalPreviewArea">
+        <div class="preview-paper" id="previewPaper">
+          <div id="kartuPrint" class="kartu-printable">
+            <div class="kartu-inner">
+              <div class="kartu-watermark">SMAN 68 JAKARTA</div>
+              <div class="kartu-header">
+                <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="Logo" class="kartu-logo" />
+                <div class="kartu-header-text">
+                  <p class="kartu-negara">PEMERINTAH PROVINSI DKI JAKARTA</p>
+                  <p class="kartu-dinas">DINAS PENDIDIKAN</p>
+                  <h2 class="kartu-sekolah-nama">SMA NEGERI 68 JAKARTA</h2>
+                  <p class="kartu-alamat">Jl. Salemba Raya No.18, Paseban, Jakarta Pusat 10440</p>
+                </div>
+                <div class="kartu-stempel-area">
+                  <img id="kartuStempelImg" src="" alt="Stempel Sekolah" class="kartu-stempel-img" />
+                </div>
+              </div>
+              <div class="kartu-title-bar">
+                <h3>KARTU PESERTA SELEKSI MURID MUTASI</h3>
+                <p id="kartuTahunAjaran" class="kartu-tahun">TAHUN AJARAN 2025/2026</p>
+              </div>
+              <div class="kartu-body">
+                <div class="kartu-foto-section">
+                  <div class="kartu-foto-wrap">
+                    <img id="kartuFoto" src="" alt="Foto" class="kartu-foto" onerror="this.classList.add('hidden'); document.getElementById('kartuFotoPlaceholder').style.display='flex'" />
+                    <div id="kartuFotoPlaceholder" class="kartu-foto-placeholder"><i class="fa-solid fa-user"></i></div>
+                  </div>
+                  <div id="kartuQR" class="kartu-qr"></div>
+                  <p class="kartu-qr-label">Scan QR untuk verifikasi</p>
+                </div>
+                <div class="kartu-data-section">
+                  <table class="kartu-table">
+                    <tr><td class="kt-label">No. Pendaftaran</td><td class="kt-sep">:</td><td id="kNoDaftar" class="kt-val bold"></td></tr>
+                    <tr><td class="kt-label">Nama Lengkap</td><td class="kt-sep">:</td><td id="kNama" class="kt-val bold"></td></tr>
+                    <tr><td class="kt-label">Tanggal Lahir</td><td class="kt-sep">:</td><td id="kTglLahir" class="kt-val"></td></tr>
+                    <tr><td class="kt-label">Jenis Kelamin</td><td class="kt-sep">:</td><td id="kJK" class="kt-val"></td></tr>
+                    <tr><td class="kt-label">Asal Sekolah</td><td class="kt-sep">:</td><td id="kSekolahAsal" class="kt-val"></td></tr>
+                    <tr><td class="kt-label">NISN</td><td class="kt-sep">:</td><td id="kNISN" class="kt-val">-</td></tr>
+                    <tr><td class="kt-label">NPSN</td><td class="kt-sep">:</td><td id="kNPSN" class="kt-val">-</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="kartu-footer">
+                <div class="kartu-note"><i class="fa-solid fa-triangle-exclamation"></i> Kartu peserta ini wajib dibawa saat pelaksanaan tes seleksi murid mutasi SMAN 68 Jakarta.</div>
+                <div class="kartu-ttd-row">
+                  <div class="kartu-ttd-block">
+                    <p class="ttd-label">Tanda Tangan Peserta</p>
+                    <div class="ttd-space"></div>
+                    <div class="ttd-line"></div>
+                    <p id="kNamaTTD" class="ttd-nama"></p>
+                  </div>
+                  <div class="kartu-ttd-block kartu-ttd-kepsek">
+                    <p class="ttd-label">Kepala Sekolah</p>
+                    <div class="ttd-stempel-wrap"><img id="ttdStempelImg" src="" alt="TTD Kepala Sekolah" class="ttd-stempel-img" /></div>
+                    <div class="ttd-line"></div>
+                    <p class="ttd-nama">Kepala SMAN 68 Jakarta</p>
+                  </div>
+                </div>
+                <div class="kartu-tatatertib">
+                  <div class="tt-header"><i class="fa-solid fa-clipboard-list"></i><span>TATA TERTIB &amp; KETENTUAN SELEKSI</span></div>
+                  <ol class="tt-list">
+                    <li>Peserta <strong>wajib hadir</strong> paling lambat <strong>30 menit</strong> sebelum tes dimulai dan melakukan registrasi ulang di meja panitia.</li>
+                    <li>Peserta wajib mengenakan <strong>seragam putih abu-abu lengkap</strong> beserta atribut sekolah asal yang terpasang secara rapih dan sopan.</li>
+                    <li>Siapkan <strong>alat tulis</strong> (pulpen, pensil 2B, penghapus, dan penggaris) sebelum memasuki ruang seleksi.</li>
+                    <li>Peserta <strong>wajib membawa</strong> kartu peserta ini dalam keadaan asli dan tidak rusak selama pelaksanaan seleksi berlangsung.</li>
+                    <li>Dilarang membawa dan menggunakan <strong>alat komunikasi (HP)</strong> atau perangkat elektronik apapun selama tes berlangsung.</li>
+                    <li>Peserta yang terlambat lebih dari <strong>15 menit</strong> setelah tes dimulai tidak diperkenankan mengikuti seleksi.</li>
+                    <li>Berlaku <strong>jujur</strong> — dilarang keras bekerja sama, mencontek, atau melakukan kecurangan dalam bentuk apapun.</li>
+                    <li>Keputusan panitia seleksi bersifat <strong>mutlak dan tidak dapat diganggu gugat</strong>.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer download bar -->
+      <div class="modal-download-bar">
+        <span class="modal-dl-label"><i class="fa-solid fa-download"></i> Unduh sebagai:</span>
+        <button class="btn-modal-download" onclick="downloadKartuPDF()"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+        <button class="btn-modal-png" onclick="downloadKartuImage('png')"><i class="fa-solid fa-file-image"></i> PNG</button>
+        <button class="btn-modal-jpg" onclick="downloadKartuImage('jpeg')"><i class="fa-regular fa-image"></i> JPEG</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ MODAL EDIT BIODATA ═══════════════════════ -->
+  <div id="editBiodataModal" class="modal-overlay hidden">
+    <div class="modal-content edit-modal-content">
+      <div class="edit-modal-header">
+        <div class="edit-modal-title">
+          <div class="section-icon green"><i class="fa-solid fa-pen-to-square"></i></div>
+          <div>
+            <h3>Edit Biodata</h3>
+            <p id="editModalSubtitle" class="edit-modal-sub">Anda memiliki <strong>1 kesempatan</strong> untuk memperbaiki biodata.</p>
+          </div>
+        </div>
+        <button class="btn-modal-close" onclick="tutupModalEdit()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="editWarningBox" class="edit-warning-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <div><strong>Perhatian!</strong> Kesempatan edit hanya <strong>1 kali</strong>. Setelah klik "Simpan Perubahan Permanen", data tidak dapat diubah lagi.</div>
+      </div>
+      <div class="edit-form-grid" id="editFormGrid">
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-user"></i> Nama Lengkap</label>
+          <input type="text" id="editNama" class="form-input" placeholder="Nama lengkap sesuai akta" />
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-calendar"></i> Tanggal Lahir</label>
+          <input type="date" id="editTglLahir" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-venus-mars"></i> Jenis Kelamin</label>
+          <select id="editJK" class="form-input">
+            <option value="L">Laki-laki</option>
+            <option value="P">Perempuan</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-mosque"></i> Agama</label>
+          <select id="editAgama" class="form-input">
+            <option value="Islam">Islam</option><option value="Kristen">Kristen</option>
+            <option value="Katolik">Katolik</option><option value="Hindu">Hindu</option>
+            <option value="Buddha">Buddha</option><option value="Konghucu">Konghucu</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-school"></i> Sekolah Asal</label>
+          <input type="text" id="editSekolahAsal" class="form-input" placeholder="Nama sekolah asal" />
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-hashtag"></i> NISN</label>
+          <input type="text" id="editNisn" class="form-input" placeholder="Nomor Induk Siswa Nasional" />
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-chalkboard-user"></i> Kelas Saat Ini <span class="label-readonly-badge"><i class="fa-solid fa-lock"></i> Diatur Operator</span></label>
+          <input type="text" id="editKelasSaatIni" class="form-input form-input-readonly" readonly placeholder="-" />
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-right-long"></i> Mutasi ke Kelas <span class="label-readonly-badge"><i class="fa-solid fa-lock"></i> Diatur Operator</span></label>
+          <input type="text" id="editMutasiKe" class="form-input form-input-readonly" readonly placeholder="-" />
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-envelope"></i> Email</label>
+          <input type="email" id="editEmail" class="form-input" placeholder="Email aktif" />
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-phone"></i> No. HP Siswa</label>
+          <input type="tel" id="editTelpMurid" class="form-input" placeholder="Nomor HP siswa" />
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-phone-volume"></i> No. HP Orang Tua</label>
+          <input type="tel" id="editTelpOrtu" class="form-input" placeholder="Nomor HP orang tua/wali" />
+        </div>
+        <div class="form-group edit-full">
+          <label class="form-label"><i class="fa-solid fa-right-left"></i> Alasan Pindah</label>
+          <textarea id="editAlasanPindah" class="form-input form-textarea" placeholder="Alasan pindah sekolah"></textarea>
+        </div>
+      </div>
+      <div class="edit-modal-actions">
+        <button class="btn-batal-edit" onclick="tutupModalEdit()"><i class="fa-solid fa-xmark"></i> Batal</button>
+        <button id="btnSimpanPermanen" class="btn-simpan-permanen" onclick="simpanPerubahanPermanen()"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Permanen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="unduh-kartu-peserta.js"></script>
+</body>
+</html>

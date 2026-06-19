@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMAN 68 Jakarta | Disiplin, Kreasi, Prestasi</title>
+    <meta name="description" content="Portal Resmi SMA Negeri 68 Jakarta - Institusi Pendidikan Unggulan Jakarta">
+    <meta name="theme-color" content="#065f46">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Bricolage+Grotesque:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+    <!-- Swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+
+    <link rel="stylesheet" href="sman68.css">
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- CURSOR CUSTOM -->
+<!-- ============================================ -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ============================================ -->
+<!-- PRELOADER CINEMATIC -->
+<!-- ============================================ -->
+<div class="preloader" id="preloader">
+    <div class="preloader-inner">
+        <div class="preloader-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68">
+        </div>
+        <div class="preloader-text">
+            <span class="preloader-title">SMAN 68 JAKARTA</span>
+            <span class="preloader-sub">Disiplin · Kreasi · Prestasi</span>
+        </div>
+        <div class="preloader-bar">
+            <div class="preloader-progress" id="preloaderProgress"></div>
+        </div>
+        <div class="preloader-percent" id="preloaderPercent">0%</div>
+    </div>
+    <div class="preloader-particles" id="preloaderParticles"></div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCROLL PROGRESS -->
+<!-- ============================================ -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- ============================================ -->
+<!-- PANEL NOTIFIKASI PENGUMUMAN -->
+<!-- ============================================ -->
+<div class="notif-panel-overlay" id="notifPanelOverlay"></div>
+<div class="notif-panel" id="notifPanel">
+    <div class="notif-panel-header">
+        <div class="notif-panel-title">
+            <i class="fas fa-envelope-open-text"></i>
+            <span>Pengumuman</span>
+        </div>
+        <button class="notif-panel-close" id="notifPanelClose">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="notif-panel-list" id="notifPanelList">
+        <!-- diisi JS -->
+    </div>
+</div>
+
+<!-- Modal baca pengumuman (tampilan surat) -->
+<div class="modal-overlay notif-letter-modal" id="notifLetterModal">
+    <div class="modal-card notif-letter-card">
+        <button class="modal-close-x notif-letter-close" id="notifLetterClose">
+            <i class="fas fa-times"></i>
+        </button>
+        <!-- Logo 68 background watermark -->
+        <div class="letter-watermark">
+            <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="">
+        </div>
+        <div class="letter-header">
+            <div class="letter-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68">
+            </div>
+            <div class="letter-meta">
+                <h3 class="letter-school">SMA Negeri 68 Jakarta</h3>
+                <span class="letter-label">Pengumuman Resmi</span>
+            </div>
+        </div>
+        <div class="letter-divider"></div>
+        <h2 class="letter-title" id="letterTitle"></h2>
+        <div class="letter-date" id="letterDate"></div>
+        <div class="letter-body" id="letterBody"></div>
+        <div class="letter-footer">
+            <span>Jakarta, <span id="letterFooterDate"></span></span>
+            <span>Hormat Kami,</span>
+            <strong>SMAN 68 Jakarta</strong>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- TOP BAR -->
+<!-- ============================================ -->
+<div class="top-bar" id="topBar">
+    <div class="top-bar-container">
+        <div class="top-bar-left">
+            <div class="top-clock" id="topClock">
+                <i class="fas fa-clock"></i> <span id="clockDisplay">--:--:--</span>
+            </div>
+            <a href="tel:0213142929"><i class="fas fa-phone-alt"></i> (021) 3142929</a>
+            <a href="mailto:emailsman68@gmail.com"><i class="fas fa-envelope"></i> emailsman68@gmail.com</a>
+        </div>
+        <div class="top-bar-right">
+            <a href="#" class="top-link" id="topLoginSiswa"><i class="fas fa-graduation-cap"></i> Portal Siswa</a>
+            <a href="#" class="top-link" id="topLoginGuru"><i class="fas fa-chalkboard-user"></i> Portal Guru</a>
+            <a href="#" class="top-link highlight pulse-btn" id="topPPDB"><i class="fas fa-star"></i> SPMB 2026/2027</a>
+            <a href="#" class="top-link" id="topVirsch"><i class="fas fa-trophy"></i> VIRSCH 68</a>
+            <a href="#" class="top-link highlight" id="topPenmurmut"><i class="fas fa-star"></i> Hasil Seleksi PENMURMUT T.A 2026/2027</a>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- NAVIGATION -->
+<!-- ============================================ -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <div class="brand-logo-wrap">
+                <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68" class="nav-logo">
+                <div class="logo-glow-ring"></div>
+            </div>
+            <div class="brand-text">
+                <h1>SMAN 68 JAKARTA</h1>
+                <span>Disiplin · Kreasi · Prestasi</span>
+            </div>
+        </div>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#home" class="nav-link active">Beranda</a></li>
+            <li><a href="#profil" class="nav-link">Profil</a></li>
+            <li><a href="#program" class="nav-link">Program</a></li>
+            <li><a href="#berita" class="nav-link">Berita</a></li>
+            <li><a href="#agenda" class="nav-link">Agenda</a></li>
+            <li><a href="#galeri" class="nav-link">Galeri</a></li>
+            <li><a href="#kontak" class="nav-link">Kontak</a></li>
+            <li><a href="#" class="nav-link nav-special" id="navKelulusan">Jadwal & Unduh</a></li>
+        </ul>
+        <div class="nav-actions">
+            <!-- Tombol Notifikasi Pengumuman -->
+            <button class="notif-btn" id="notifBtn" title="Pengumuman">
+                <i class="fas fa-envelope" id="notifIcon"></i>
+                <span class="notif-badge" id="notifBadge" style="display:none">0</span>
+            </button>
+            <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
+                <i class="fas fa-moon" id="themeIcon"></i>
+            </button>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- ============================================ -->
+<!-- HERO SECTION - CINEMATIC VIDEO -->
+<!-- ============================================ -->
+<section id="home" class="hero">
+    <div class="hero-video-container">
+        <div id="youtubePlayer" class="youtube-bg"></div>
+        <div class="hero-gradient-overlay"></div>
+        <div class="hero-noise"></div>
+    </div>
+
+    <!-- Floating particles -->
+    <div class="hero-particles" id="heroParticles"></div>
+
+    <!-- Sound toggle -->
+    <button class="sound-toggle" id="soundToggle" title="Toggle Sound">
+        <div class="sound-icon-wrap">
+            <i class="fas fa-volume-mute" id="soundIcon"></i>
+        </div>
+        <span>Suara</span>
+    </button>
+
+    <div class="hero-content">
+        <div class="hero-badge" data-aos="fade-down">
+            <span class="badge-dot"></span>
+            <span>Akreditasi A — Indeks 96.51 — Peringkat 10 Nasional</span>
+        </div>
+        <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
+            <span class="title-line">SMA NEGERI</span>
+            <span class="title-line hero-num">68</span>
+            <span class="title-line">JAKARTA</span>
+        </h1>
+        <div class="hero-slogan" data-aos="fade-up" data-aos-delay="300">
+            <span class="slogan-item">DISIPLIN</span>
+            <span class="slogan-sep">◆</span>
+            <span class="slogan-item">KREASI</span>
+            <span class="slogan-sep">◆</span>
+            <span class="slogan-item">PRESTASI</span>
+        </div>
+        <div class="hero-cta" data-aos="fade-up" data-aos-delay="500">
+            <a href="#profil" class="btn-hero-primary magnetic-btn">
+                <span>Jelajahi Sekolah</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+            <a href="#" class="btn-hero-secondary magnetic-btn" id="heroPPDB">
+                <span>SPMB 2026/2027</span>
+            </a>
+        </div>
+        <div class="hero-stats" data-aos="fade-up" data-aos-delay="700">
+            <div class="hero-stat">
+                <span class="stat-num counter" data-target="45">0</span><span class="stat-unit">Tahun</span>
+                <span class="stat-label">Berdiri</span>
+            </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat">
+                <span class="stat-num counter" data-target="850">0</span><span class="stat-unit">+</span>
+                <span class="stat-label">Alumni UI</span>
+            </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat">
+                <span class="stat-num counter" data-target="20">0</span><span class="stat-unit">+</span>
+                <span class="stat-label">Ekskul Aktif</span>
+            </div>
+        </div>
+    </div>
+
+    <a href="#profil" class="hero-scroll-cta">
+        <div class="scroll-wheel"></div>
+        <span>Scroll Down</span>
+    </a>
+</section>
+
+<!-- ============================================ -->
+<!-- MARQUEE TICKER -->
+<!-- ============================================ -->
+<div class="marquee-section">
+    <div class="marquee-track">
+        <div class="marquee-content" id="marqueeContent">
+            <span>🏆 Akreditasi A — Unggul</span>
+            <span class="sep">◆</span>
+            <span>📚 Kurikulum Merdeka 2024/2025</span>
+            <span class="sep">◆</span>
+            <span>🌟 Peringkat 10 Nasional</span>
+            <span class="sep">◆</span>
+            <span>🎓 850+ Alumni di Universitas Indonesia</span>
+            <span class="sep">◆</span>
+            <span>🚀 SPMB 2026/2027 Telah Dibuka</span>
+            <span class="sep">◆</span>
+            <span>🏅 Olimpiade Sains Nasional — Juara</span>
+            <span class="sep">◆</span>
+            <span>💻 Sekolah Digital Terbaik Jakarta</span>
+            <span class="sep">◆</span>
+            <span>🎨 Festival Seni & Kreasi SMAN 68</span>
+            <span class="sep">◆</span>
+            <span>⚽ Prestasi Olahraga Nasional</span>
+            <span class="sep">◆</span>
+        </div>
+        <div class="marquee-content" aria-hidden="true">
+            <span>🏆 Akreditasi A — Unggul</span>
+            <span class="sep">◆</span>
+            <span>📚 Kurikulum Merdeka 2024/2025</span>
+            <span class="sep">◆</span>
+            <span>🌟 Peringkat 10 Nasional</span>
+            <span class="sep">◆</span>
+            <span>🎓 850+ Alumni di Universitas Indonesia</span>
+            <span class="sep">◆</span>
+            <span>🚀 SPMB 2026/2027 Telah Dibuka</span>
+            <span class="sep">◆</span>
+            <span>🏅 Olimpiade Sains Nasional — Juara</span>
+            <span class="sep">◆</span>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- QUICK ACCESS FLOATING MOBILE -->
+<!-- ============================================ -->
+<div class="floating-fab" id="floatingFab">
+    <button class="fab-toggle" id="fabToggle">
+        <i class="fas fa-grip" id="fabIcon"></i>
+    </button>
+    <div class="fab-items" id="fabItems">
+        <a href="#" class="fab-item" id="floatLoginSiswa" data-tip="Portal Siswa">
+            <i class="fas fa-graduation-cap"></i>
+        </a>
+        <a href="#" class="fab-item" id="floatLoginGuru" data-tip="Portal Guru">
+            <i class="fas fa-chalkboard-user"></i>
+        </a>
+        <a href="#" class="fab-item fab-highlight" id="floatPPDB" data-tip="SPMB 2026/2027">
+            <i class="fas fa-school"></i>
+        </a>
+        <a href="#" class="fab-item" id="floatVirsch" data-tip="VIRSCH 68">
+            <i class="fas fa-trophy"></i>
+        </a>
+        <a href="#" class="fab-item fab-highlight" id="floatPenmurmut" data-tip="Hasil Seleksi PENMURMUT T.A 2026/2027">
+            <i class="fas fa-clipboard-check"></i>
+        </a>
+        <a href="#" class="fab-item" id="floatPemeringkatan" data-tip="Pemeringkatan PTN">
+            <i class="fas fa-chart-bar"></i>
+        </a>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- LIVE CHAT WIDGET -->
+<!-- ============================================ -->
+<div class="chat-widget" id="chatWidget">
+    <button class="chat-toggle" id="chatToggle">
+        <div class="chat-toggle-icon">
+            <i class="fas fa-headset"></i>
+        </div>
+        <div class="chat-status-indicator" id="chatStatusDot"></div>
+    </button>
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <div class="chat-agent-info">
+                <div class="agent-avatar-wrap">
+                    <div class="agent-avatar-ring"></div>
+                    <div class="agent-avatar"><i class="fas fa-user-tie"></i></div>
+                </div>
+                <div class="agent-details">
+                    <h4>Helpdesk SMAN 68</h4>
+                    <span id="chatStatusText"><span class="status-dot online"></span> Mengecek...</span>
+                </div>
+            </div>
+            <button class="chat-close" id="chatClose"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="chat-body">
+            <!-- Offline -->
+            <div class="chat-offline" id="chatOffline" style="display:none">
+                <div class="offline-visual">
+                    <div class="offline-icon-ring"></div>
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h4>Helpdesk Sedang Offline</h4>
+                <p>Silakan coba saat jam operasional atau hubungi via email.</p>
+                <a href="mailto:emailsman68@gmail.com" class="btn-email-chat">
+                    <i class="fas fa-envelope"></i> Kirim Email
+                </a>
+            </div>
+
+            <!-- Registration -->
+            <div class="chat-registration" id="chatRegistration">
+                <div class="reg-intro">
+                    <div class="reg-intro-icon"><i class="fas fa-comment-dots"></i></div>
+                    <h5>Mulai Obrolan</h5>
+                    <p>Isi data berikut sebelum memulai</p>
+                </div>
+                <form id="chatRegForm" autocomplete="off">
+                    <div class="chat-input-field">
+                        <label><i class="fas fa-user"></i> Nama Lengkap</label>
+                        <input type="text" id="chatName" placeholder="Nama Anda" required>
+                    </div>
+                    <div class="chat-input-field">
+                        <label><i class="fas fa-phone"></i> Nomor Telepon</label>
+                        <input type="tel" id="chatPhone" placeholder="+62..." required>
+                    </div>
+                    <div class="chat-input-field">
+                        <label><i class="fas fa-users"></i> Status</label>
+                        <select id="chatStatusSelect" required>
+                            <option value="">Pilih Status</option>
+                            <option value="Siswa SMAN 68 Jakarta">Siswa SMAN 68 Jakarta</option>
+                            <option value="Orang Tua Murid SMAN 68 Jakarta">Orang Tua Murid</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-start-chat">
+                        <span>Mulai Obrolan</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Messages -->
+            <div class="chat-messages" id="chatMessages" style="display:none">
+                <div class="message-bot">Terima kasih telah menghubungi Helpdesk SMAN 68 Jakarta! Operator akan segera membalas pesan Anda. 😊</div>
+                <div id="chatMessageList"></div>
+            </div>
+
+            <!-- Chat Ended -->
+            <div class="chat-ended" id="chatEndedNotification" style="display:none">
+                <div class="ended-icon"><i class="fas fa-check-circle"></i></div>
+                <h5>Sesi Chat Berakhir</h5>
+                <p>Terima kasih telah menghubungi kami!</p>
+                <button class="btn-new-chat" id="btnNewChat"><i class="fas fa-plus"></i> Obrolan Baru</button>
+            </div>
+        </div>
+
+        <div class="chat-footer" id="chatFooter" style="display:none">
+            <input type="text" id="chatInput" placeholder="Ketik pesan...">
+            <button id="sendMessageBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+            <button id="endChatBtn" class="end-btn" title="Akhiri Chat"><i class="fas fa-phone-slash"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- TUTORIAL TRIGGER — posisi tengah kanan -->
+<!-- ============================================ -->
+<div class="tutorial-fab" id="tutorialTrigger">
+    <i class="fas fa-question"></i>
+    <span>Info</span>
+</div>
+
+<!-- ============================================ -->
+<!-- TUTORIAL MODAL -->
+<!-- ============================================ -->
+<div class="modal-overlay tutorial-modal" id="tutorialModal">
+    <div class="modal-card tutorial-card">
+        <div class="modal-header">
+            <div class="modal-header-icon"><i class="fas fa-info-circle"></i></div>
+            <div>
+                <h3>Tutorial Kritik & Saran</h3>
+                <p>Panduan penggunaan form</p>
+            </div>
+            <button class="modal-close-x" id="tutorialClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="tutorial-steps">
+            <div class="tutorial-step"><div class="step-badge">1</div><p>Scroll ke bagian <strong>"Hubungi Kami"</strong> di bawah halaman</p></div>
+            <div class="tutorial-step"><div class="step-badge">2</div><p>Isi formulir dengan nama, email, kategori, dan pesan Anda</p></div>
+            <div class="tutorial-step"><div class="step-badge">3</div><p>Klik tombol <strong>"Kirim Pesan"</strong> dan tunggu konfirmasi</p></div>
+            <div class="tutorial-step"><div class="step-badge">4</div><p>Simpan email Anda untuk melihat balasan dari operator</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SAMBUTAN KEPALA SEKOLAH -->
+<!-- ============================================ -->
+<section class="principal-section" id="profil">
+    <div class="section-bg-mesh"></div>
+    <div class="container">
+        <div class="principal-grid">
+            <div class="principal-visual" data-aos="fade-right" data-aos-duration="1000">
+                <div class="principal-photo-wrap">
+                    <div class="photo-glow-ring"></div>
+                    <div class="photo-frame">
+                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgUteNa0xE5xd_0sNFvfTzrIA3kbcmSN3pL0o-HdedObYC9JQGbMhHrN7Q9I8Dc8AzVvaqhwO4Lpsruhc0skhX1tuDS6hDQyGaj0ICXpqI5k7eK0YdLJ54CYoBtRHbVPgGV5nWlHallEsuF2O1HpWYP65gt6RMJpvqWd7XSo3BYOxSAzs6OeeD1iPOH9BN9" alt="Kepala Sekolah" loading="lazy">
+                    </div>
+                    <div class="photo-credential">
+                        <i class="fas fa-star"></i>
+                        <span>Kepala Sekolah</span>
+                    </div>
+                </div>
+                <!-- Bento stats -->
+                <div class="principal-bento">
+                    <div class="bento-stat">
+                        <span class="bento-val">A</span>
+                        <span class="bento-label">Akreditasi</span>
+                    </div>
+                    <div class="bento-stat bento-wide">
+                        <span class="bento-val">96.51</span>
+                        <span class="bento-label">Indeks BAN-PT</span>
+                    </div>
+                    <div class="bento-stat bento-wide">
+                        <span class="bento-val">#10</span>
+                        <span class="bento-label">Ranking Nasional</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="principal-content" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                <div class="section-eyebrow">
+                    <span class="eyebrow-line"></span>
+                    <span>Sambutan Kepala Sekolah</span>
+                </div>
+                <h2 class="section-heading">SMA Negeri <em>68</em> Jakarta</h2>
+                <div class="quote-block">
+                    <div class="quote-mark"><i class="fas fa-quote-left"></i></div>
+                    <p>Assalamu'alaikum Warahmatullahi Wabarakatuh, salam sejahtera bagi kita semua. Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa atas limpahan rahmat-Nya. Dengan bangga saya mengucapkan selamat datang di website resmi SMA Negeri 68 Jakarta. Kami berkomitmen untuk menciptakan lingkungan belajar yang inspiratif, di mana setiap siswa dapat tumbuh dan berkembang secara optimal, baik dalam aspek akademik maupun non-akademik. Didukung oleh tenaga pendidik profesional dan fasilitas yang memadai, kami terus berupaya menerapkan Kurikulum Merdeka yang mendorong siswa mengembangkan minat, bakat, serta kreativitasnya agar mampu bersaing di tingkat nasional maupun global.</p>
+                </div>
+                <div class="principal-signature">
+                    <div class="signature-name">Tjahyani, M.Pd.</div>
+                    <img src="https://github.com/nadhiframadhan780-dev/smanegeri68jakarta/blob/main/TTD%20Kepala%20SMAN%2068%20Jakarta.png?raw=true"
+                         alt="Tanda Tangan Kepala Sekolah"
+                         class="signature-img"
+                         loading="lazy">
+                    <div class="signature-title">Kepala SMA Negeri 68 Jakarta</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- TENTANG KAMI — BENTO GRID -->
+<!-- ============================================ -->
+<section class="about-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-eyebrow"><span class="eyebrow-line"></span><span>Mengenal Lebih Dekat</span></div>
+            <h2 class="section-heading">Tentang <em>SMAN 68</em> Jakarta</h2>
+        </div>
+
+        <!-- ROW 1: Foto besar kiri + Tentang Kami + 2 stat kanan -->
+        <div class="about-bento" data-aos="fade-up" data-aos-delay="200">
+
+            <!-- Kolom kiri: Foto -->
+            <div class="bento-card bento-main">
+                <div class="bento-card-inner">
+                    <img src="https://media.indozone.id/crop/0x0:0x0/images/2026/01/14/1768352620_6966eb6c54bf6_maxresdefault.jpg" alt="SMAN 68" class="bento-bg-img" loading="lazy">
+                    <div class="bento-overlay">
+                        <div class="bento-tag">Est. 1981</div>
+                        <h3>DISIPLIN<br>KREASI<br>PRESTASI</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kolom kanan atas: Tentang Kami -->
+            <div class="bento-card bento-text bento-about-desc">
+                <div class="bento-icon-row"><i class="fas fa-school"></i></div>
+                <h4>Tentang Kami</h4>
+                <p>SMAN 68 Jakarta adalah salah satu sekolah menengah atas negeri unggulan yang berlokasi di Jakarta dan dikenal sebagai institusi pendidikan yang berkomitmen mencetak generasi berprestasi, berkarakter, serta berdaya saing tinggi di tingkat nasional maupun global.</p>
+            </div>
+
+            <!-- Kolom kanan bawah kiri: Akreditasi -->
+            <div class="bento-card bento-accent">
+                <i class="fas fa-star bento-accent-icon"></i>
+                <div class="bento-accent-num">A</div>
+                <div class="bento-accent-label">Akreditasi Unggul</div>
+                <a id="btnUnduhSertifikat" class="btn-akreditasi-dl" title="Unduh Sertifikat Akreditasi">
+                    <i class="fas fa-file-download"></i>
+                    <span>Unduh Sertifikat</span>
+                </a>
+            </div>
+
+            <!-- Kolom kanan bawah kanan: Ranking -->
+            <div class="bento-card bento-accent bento-green">
+                <i class="fas fa-trophy bento-accent-icon"></i>
+                <div class="bento-accent-num">#10</div>
+                <div class="bento-accent-label">Peringkat Nasional</div>
+            </div>
+
+            <!-- ROW 2: Keunggulan Kami — penuh lebar -->
+            <div class="bento-card bento-wide-text bento-keunggulan">
+                <div class="keunggulan-header">
+                    <i class="fas fa-check-circle"></i>
+                    <h4>Keunggulan Kami</h4>
+                </div>
+                <ul class="bento-keunggulan-list">
+                    <li><i class="fas fa-check"></i><span>Tenaga pendidik profesional dan berdedikasi tinggi</span></li>
+                    <li><i class="fas fa-check"></i><span>Kurikulum Merdeka dengan pembelajaran inovatif</span></li>
+                    <li><i class="fas fa-check"></i><span>Aktif di kompetisi akademik &amp; non-akademik nasional</span></li>
+                    <li><i class="fas fa-check"></i><span>Lingkungan belajar kondusif dan inklusif</span></li>
+                    <li><i class="fas fa-check"></i><span>Alumni tersebar di PTN terbaik Indonesia &amp; dunia</span></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Visi Misi -->
+        <div class="vision-mission-grid" data-aos="fade-up" data-aos-delay="100">
+            <div class="vm-card vision-card">
+                <div class="vm-icon"><i class="fas fa-eye"></i></div>
+                <h3>Visi</h3>
+                <p>Menjadi sekolah unggul yang menghasilkan lulusan berkualitas, berkarakter, berakhlak mulia, dan mampu bersaing di tingkat nasional maupun internasional.</p>
+            </div>
+            <div class="vm-card mission-card">
+                <div class="vm-icon"><i class="fas fa-bullseye"></i></div>
+                <h3>Misi</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Menyelenggarakan proses pembelajaran yang efektif, inovatif, dan berorientasi pada pengembangan potensi peserta didik.</li>
+                    <li><i class="fas fa-check-circle"></i> Menanamkan nilai-nilai karakter seperti disiplin, tanggung jawab, jujur, dan peduli terhadap sesama.</li>
+                    <li><i class="fas fa-check-circle"></i> Mengembangkan budaya berprestasi dalam bidang akademik maupun non-akademik.</li>
+                    <li><i class="fas fa-check-circle"></i> Mendorong pemanfaatan teknologi dalam proses pembelajaran.</li>
+                    <li><i class="fas fa-check-circle"></i> Membekali peserta didik dengan keterampilan abad 21 agar mampu bersaing secara global.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- STATISTIK ALUMNI PTN -->
+<!-- ============================================ -->
+<section class="alumni-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-eyebrow"><span class="eyebrow-line"></span><span>Prestasi Lulusan</span></div>
+            <h2 class="section-heading">Profil Sebaran Lulusan ke <em>PTN & PTLN</em></h2>
+            <p class="section-desc">Data akumulasi dari tahun 2011 hingga sekarang</p>
+        </div>
+
+        <div class="alumni-filter-bar" data-aos="fade-up">
+            <div class="filter-label"><i class="fas fa-filter"></i> Filter Tahun:</div>
+            <select id="yearSelect" class="premium-select">
+                <option value="all">Semua Tahun (2011–Sekarang)</option>
+            </select>
+        </div>
+
+        <div class="ptn-grid" id="ptnGrid" data-aos="fade-up" data-aos-delay="200"></div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- PEMERINGKATAN PTN -->
+<!-- ============================================ -->
+<section class="ranking-section">
+    <div class="section-bg-gradient"></div>
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-eyebrow"><span class="eyebrow-line"></span><span>Peringkat Nasional</span></div>
+            <h2 class="section-heading">Pemeringkatan <em>PTN Indonesia</em> 2026</h2>
+            <p class="section-desc">Data resmi dari UniRanks, EduRank, dan QS World Rankings</p>
+        </div>
+
+        <div class="ranking-cards" data-aos="fade-up" data-aos-delay="100">
+            <div class="ranking-card">
+                <div class="ranking-card-glow"></div>
+                <div class="ranking-icon ranking-uniranks">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <h3>UniRanks 2026</h3>
+                <p>Reputasi akademik, employer, dan rasio internasional</p>
+                <span class="ranking-badge">100 PTN</span>
+            </div>
+            <div class="ranking-card ranking-featured">
+                <div class="ranking-card-glow"></div>
+                <div class="ranking-icon ranking-edurank">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>EduRank 2026</h3>
+                <p>Output riset, pengaruh alumni, dan popularitas online</p>
+                <span class="ranking-badge">100 PTN</span>
+            </div>
+            <div class="ranking-card">
+                <div class="ranking-card-glow"></div>
+                <div class="ranking-icon ranking-qs">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3>QS World Rankings 2026</h3>
+                <p>Peringkat dunia berdasarkan 6 indikator penilaian global</p>
+                <span class="ranking-badge">26 PTN & PTS</span>
+            </div>
+        </div>
+
+        <div class="ranking-cta" data-aos="fade-up">
+            <a href="#" class="btn-ranking magnetic-btn" id="btnPemeringkatan">
+                <i class="fas fa-external-link-alt"></i>
+                <span>Lihat Pemeringkatan PTN Indonesia 2026</span>
+            </a>
+            <a href="#" class="btn-ranking btn-ranking-gold magnetic-btn" id="btnTopJurusan">
+                <i class="fas fa-graduation-cap"></i>
+                <span>TOP Jurusan Kuliah 2026</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- PROGRAM BELAJAR -->
+<!-- ============================================ -->
+<section id="program" class="program-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-eyebrow"><span class="eyebrow-line"></span><span>Kurikulum</span></div>
+            <h2 class="section-heading">Program <em>Belajar</em></h2>
+        </div>
+
+        <div class="program-hero-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="program-hero-inner">
+                <div class="program-logo-wrap">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Kurikulum_Merdeka.png" alt="Kurikulum Merdeka" class="kurikulum-logo">
+                </div>
+                <div class="program-description">
+                    <h3>Kurikulum Merdeka</h3>
+                    <p>Kurikulum Merdeka merupakan pendekatan pembelajaran yang dirancang untuk memberikan fleksibilitas dan kebebasan kepada satuan pendidikan dalam mengembangkan proses belajar sesuai dengan kebutuhan peserta didik. Kurikulum ini berfokus pada pengembangan kompetensi, karakter, serta minat dan bakat siswa secara menyeluruh.</p>
+                    <p>Dalam implementasinya, Kurikulum Merdeka menekankan pembelajaran yang lebih mendalam (deep learning), relevan, dan kontekstual. Peserta didik didorong untuk aktif berpikir kritis, kreatif, serta mampu memecahkan masalah melalui berbagai kegiatan berbasis proyek.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="subjects-grid" data-aos="fade-up" data-aos-delay="200">
+            <div class="subject-card">
+                <div class="subject-card-header">
+                    <span class="subject-num">01</span>
+                    <h4>Mata Pelajaran Wajib</h4>
+                </div>
+                <ul class="subject-list">
+                    <li>Pendidikan Agama dan Budi Pekerti</li>
+                    <li>Pendidikan Pancasila</li>
+                    <li>Bahasa Indonesia</li>
+                    <li>Matematika</li>
+                    <li>Ilmu Pengetahuan Alam (IPA)</li>
+                    <li>Ilmu Pengetahuan Sosial (IPS)</li>
+                    <li>Bahasa Inggris</li>
+                    <li>Seni Budaya</li>
+                    <li>Pendidikan Jasmani & Kesehatan</li>
+                    <li>Informatika</li>
+                </ul>
+            </div>
+            <div class="subject-card">
+                <div class="subject-card-header">
+                    <span class="subject-num">02</span>
+                    <h4>Mata Pelajaran Pilihan</h4>
+                </div>
+                <ul class="subject-list">
+                    <li>Matematika Tingkat Lanjut</li>
+                    <li>Fisika</li>
+                    <li>Kimia</li>
+                    <li>Biologi</li>
+                    <li>Ekonomi</li>
+                    <li>Geografi</li>
+                    <li>Sosiologi</li>
+                    <li>Sejarah</li>
+                    <li>Bahasa & Sastra Indonesia</li>
+                    <li>Bahasa Asing Lainnya</li>
+                </ul>
+            </div>
+            <div class="subject-card p5-card">
+                <div class="subject-card-header">
+                    <span class="subject-num">03</span>
+                    <h4>Projek P5 (Profil Pelajar Pancasila)</h4>
+                </div>
+                <p>Kegiatan lintas disiplin yang membentuk karakter sesuai nilai Pancasila.</p>
+                <div class="p5-pillars">
+                    <span><i class="fas fa-heart"></i> Beriman</span>
+                    <span><i class="fas fa-globe"></i> Berkebinekaan</span>
+                    <span><i class="fas fa-hands-helping"></i> Gotong Royong</span>
+                    <span><i class="fas fa-lightbulb"></i> Kreatif</span>
+                    <span><i class="fas fa-brain"></i> Bernalar Kritis</span>
+                    <span><i class="fas fa-user-check"></i> Mandiri</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- BERITA TERKINI -->
+<!-- ============================================ -->
+<section id="berita" class="news-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-eyebrow"><span class="eyebrow-line"></span><span>Informasi Terbaru</span></div>
+            <h2 class="section-heading">Berita <em>Terkini</em></h2>
+        </div>
+        <div class="news-grid" id="newsGrid" data-aos="fade-up" data-aos-delay="100"></div>
+
+        <!-- Load More News -->
+        <div class="news-load-more" id="newsLoadMore">
+            <button class="btn-load-more" id="btnLoadMore">
+                <i class="fas fa-history"></i>
+                <span>Lihat Berita Sebelumnya</span>
+                <i class="fas fa-chevron-down" id="btnLoadMoreChevron"></i>
+            </button>
+            <p class="load-more-hint" id="loadMoreHint"></p>
+        </div>
+    </div>
+</section>
+
+<!-- News Modal -->
+<div class="modal-overlay news-modal" id="newsModal">
+    <div class="modal-card news-modal-card">
+        <button class="modal-close-x news-modal-close">&times;</button>
+        <div class="news-modal-body" id="newsModalBody"></div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- AGENDA KEGIATAN -->
+<!-- ============================================ -->
+<section id="agenda" class="agenda-section">
+    <div class="section-bg-dots"></div>
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-eyebrow"><span class="eyebrow-line"></span><span>Jadwal Kegiatan</span></div>
+            <h2 class="section-heading">Agenda <em>Kegiatan</em></h2>
+        </div>
+        <div class="agenda-grid" id="agendaGrid" data-aos="fade-up" data-aos-delay="100"></div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- GALERI FOTO -->
+<!-- ============================================ -->
+<section id="galeri" class="gallery-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-eyebrow"><span class="eyebrow-line"></span><span>Dokumentasi</span></div>
+            <h2 class="section-heading">Galeri <em>Foto</em></h2>
+        </div>
+        <div class="gallery-masonry" id="galleryGrid" data-aos="fade-up" data-aos-delay="100"></div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- TESTIMONI ALUMNI -->
+<!-- ============================================ -->
+<section class="testimonial-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-eyebrow"><span class="eyebrow-line"></span><span>Testimoni</span></div>
+            <h2 class="section-heading">Kata <em>Mereka</em></h2>
+        </div>
+        <div class="testimonial-grid" id="testimonialGrid" data-aos="fade-up" data-aos-delay="100"></div>
+
+        <div class="news-load-more" id="testimonialLoadMore">
+            <button class="btn-load-more" id="btnLoadMoreTestimonial">
+                <i class="fas fa-comments"></i>
+                <span>Lihat Testimoni Selengkapnya</span>
+                <i class="fas fa-chevron-down" id="btnTestiChevron"></i>
+            </button>
+            <p class="load-more-hint" id="testiLoadHint"></p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- SARANA PRASARANA -->
+<!-- ============================================ -->
+<section class="facility-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-eyebrow"><span class="eyebrow-line"></span><span>Fasilitas</span></div>
+            <h2 class="section-heading">Sarana & <em>Prasarana</em></h2>
+        </div>
+        <div class="facility-grid" id="facilityGrid" data-aos="fade-up" data-aos-delay="100"></div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- HUBUNGI KAMI -->
+<!-- ============================================ -->
+<section id="kontak" class="contact-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-eyebrow"><span class="eyebrow-line"></span><span>Terhubung Dengan Kami</span></div>
+            <h2 class="section-heading">Hubungi <em>Kami</em></h2>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info-panel" data-aos="fade-right">
+                <div class="map-embed-wrap">
+                    <iframe src="https://www.google.com/maps?q=Jl.+Salemba+Raya+No.18,+Jakarta+Pusat&output=embed" loading="lazy" title="Lokasi SMAN 68 Jakarta"></iframe>
+                </div>
+                <div class="contact-details-list">
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon"><i class="fas fa-map-pin"></i></div>
+                        <div>
+                            <h5>Alamat</h5>
+                            <p>Jl. Salemba Raya No. 18, Jakarta Pusat, DKI Jakarta 10430</p>
+                        </div>
+                    </div>
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon"><i class="fas fa-phone-alt"></i></div>
+                        <div>
+                            <h5>Telepon</h5>
+                            <p>(021) 3142929</p>
+                        </div>
+                    </div>
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <h5>Email</h5>
+                            <p>emailsman68@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon"><i class="fas fa-clock"></i></div>
+                        <div>
+                            <h5>Jam Operasional</h5>
+                            <div id="operationalHours" class="op-hours-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form-panel" data-aos="fade-left" data-aos-delay="200">
+                <div class="form-panel-header">
+                    <h3>Kritik & Saran</h3>
+                    <p>Sampaikan kritik, saran, atau pertanyaan Anda untuk kemajuan SMAN 68 Jakarta</p>
+                </div>
+                <form id="feedbackForm" autocomplete="off">
+                    <div class="form-row-2">
+                        <div class="form-field">
+                            <label>Nama Lengkap</label>
+                            <div class="field-input-wrap">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="feedbackName" placeholder="Nama atau Anonymous">
+                            </div>
+                        </div>
+                        <div class="form-field">
+                            <label>Email <span class="required-star">*</span></label>
+                            <div class="field-input-wrap">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="feedbackEmail" placeholder="Email aktif" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label>Kategori <span class="required-star">*</span></label>
+                        <div class="field-input-wrap">
+                            <i class="fas fa-tag"></i>
+                            <select id="feedbackCategory" required>
+                                <option value="">Pilih Kategori</option>
+                                <option value="Akademik">Akademik</option>
+                                <option value="Fasilitas">Fasilitas</option>
+                                <option value="Pelayanan">Pelayanan</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label>Pesan <span class="required-star">*</span></label>
+                        <textarea id="feedbackMessage" rows="5" placeholder="Tulis pesan kritik/saran Anda..." required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit magnetic-btn">
+                            <i class="fas fa-paper-plane"></i> Kirim Pesan
+                        </button>
+                        <button type="button" id="showHistoryBtn" class="btn-history">
+                            <i class="fas fa-history"></i> Riwayat Aduan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- DOWNLOAD APLIKASI -->
+<!-- ============================================ -->
+<section class="download-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-eyebrow"><span class="eyebrow-line"></span><span>Akses Lebih Mudah</span></div>
+            <h2 class="section-heading">Download Aplikasi <em>SMAN 68</em> Jakarta</h2>
+            <p class="section-desc">Dapatkan pengalaman terbaik dengan aplikasi resmi SMAN 68 Jakarta</p>
+        </div>
+
+        <div class="download-cards" data-aos="fade-up" data-aos-delay="100">
+            <div class="download-card">
+                <div class="download-card-glow android-glow"></div>
+                <div class="dl-icon android-icon"><i class="fab fa-android"></i></div>
+                <h3>Android</h3>
+                <p>Untuk HP & Tablet Android</p>
+                <span class="dl-badge available">Tersedia</span>
+                <button class="btn-download magnetic-btn" id="btnDownloadAPK">
+                    <i class="fas fa-download"></i> Download APK
+                </button>
+                <div class="dl-meta">
+                    <span><i class="fas fa-code-branch"></i> v4.0.0</span>
+                    <span><i class="fas fa-calendar"></i> 06 Juni 2026</span>
+                    <span><i class="fas fa-file"></i> ~7 MB</span>
+                </div>
+            </div>
+
+            <div class="download-card">
+                <div class="download-card-glow ios-glow"></div>
+                <div class="dl-icon ios-icon"><i class="fab fa-apple"></i></div>
+                <h3>iOS</h3>
+                <p>Untuk iPhone & iPad</p>
+                <span class="dl-badge coming">Coming Soon · November 2026</span>
+                <button class="btn-download btn-disabled" disabled>
+                    <i class="fas fa-hourglass-half"></i> Coming Soon
+                </button>
+                <div class="dl-meta"><span><i class="fas fa-info-circle"></i> Dalam pengembangan</span></div>
+            </div>
+
+            <div class="download-card">
+                <div class="download-card-glow win-glow"></div>
+                <div class="dl-icon win-icon"><i class="fab fa-windows"></i></div>
+                <h3>Windows</h3>
+                <p>Untuk PC & Laptop Windows</p>
+                <span class="dl-badge coming">Coming Soon · November 2026</span>
+                <button class="btn-download btn-disabled" disabled>
+                    <i class="fas fa-hourglass-half"></i> Coming Soon
+                </button>
+                <div class="dl-meta"><span><i class="fas fa-info-circle"></i> Dalam pengembangan</span></div>
+            </div>
+        </div>
+
+        <div class="app-benefits" data-aos="fade-up">
+            <div class="benefit-item">
+                <i class="fas fa-bolt"></i>
+                <div><h5>Akses Cepat</h5><p>Buka website hanya dengan 1 klik tanpa harus mengetik URL</p></div>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-bell"></i>
+                <div><h5>Notifikasi Instan</h5><p>Dapatkan pemberitahuan berita terbaru dan pengumuman penting</p></div>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-wifi-slash"></i>
+                <div><h5>Akses Offline</h5><p>Beberapa halaman tetap bisa diakses tanpa koneksi internet</p></div>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-mobile-alt"></i>
+                <div><h5>Tampilan Full Screen</h5><p>Pengalaman seperti aplikasi native tanpa gangguan browser</p></div>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-sync-alt"></i>
+                <div><h5>Auto Update</h5><p>Aplikasi selalu terupdate otomatis tanpa perlu download ulang</p></div>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-shield-alt"></i>
+                <div><h5>Aman & Terpercaya</h5><p>Aplikasi resmi SMAN 68 Jakarta, bebas malware dan virus</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- RIWAYAT ADUAN MODAL -->
+<!-- ============================================ -->
+<div class="modal-overlay history-modal" id="historyModal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div class="modal-header-icon"><i class="fas fa-history"></i></div>
+            <div><h3>Riwayat Aduan</h3><p>Cek status pesan Anda</p></div>
+            <button class="modal-close-x history-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="history-search">
+            <div class="field-input-wrap">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="historyEmail" placeholder="Masukkan email Anda">
+            </div>
+            <button id="loadHistoryBtn" class="btn-load-history">Cari</button>
+        </div>
+        <div class="history-results" id="historyList"></div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PRIVACY MODAL -->
+<!-- ============================================ -->
+<div class="modal-overlay privacy-modal" id="privacyModal">
+    <div class="modal-card privacy-card">
+        <div class="modal-header">
+            <div class="modal-header-icon"><i class="fas fa-shield-alt"></i></div>
+            <div><h3>Kebijakan Privasi</h3><p>Terakhir diperbarui: 2026</p></div>
+            <button class="modal-close-x privacy-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="privacy-content">
+            <ol>
+                <li><strong>Pengumpulan Informasi:</strong> Kami mengumpulkan informasi pribadi seperti nama, email, dan nomor telepon hanya untuk keperluan komunikasi dan layanan sekolah.</li>
+                <li><strong>Penggunaan Informasi:</strong> Informasi yang dikumpulkan digunakan untuk merespon pertanyaan, memberikan informasi akademik, dan meningkatkan layanan sekolah.</li>
+                <li><strong>Perlindungan Data:</strong> Kami menerapkan langkah-langkah keamanan teknis dan organisasi untuk melindungi data pribadi dari akses tidak sah.</li>
+                <li><strong>Berbagi Informasi:</strong> Kami tidak menjual, memperdagangkan, atau mentransfer informasi pribadi kepada pihak ketiga tanpa persetujuan.</li>
+                <li><strong>Cookie:</strong> Website ini menggunakan cookie untuk meningkatkan pengalaman pengguna dan menganalisis traffic.</li>
+                <li><strong>Hak Pengguna:</strong> Pengguna berhak mengakses, memperbaiki, atau menghapus data pribadi mereka dengan menghubungi kami.</li>
+                <li><strong>Penyimpanan Data:</strong> Data disimpan selama diperlukan untuk tujuan layanan atau sesuai ketentuan hukum yang berlaku.</li>
+                <li><strong>Keamanan Anak:</strong> Kami melindungi privasi anak di bawah umur dan memerlukan persetujuan orang tua untuk pengumpulan data.</li>
+                <li><strong>Perubahan Kebijakan:</strong> Kebijakan ini dapat diperbarui sewaktu-waktu dan perubahan akan diumumkan di halaman ini.</li>
+                <li><strong>Kontak:</strong> Untuk pertanyaan tentang kebijakan privasi, hubungi kami di emailsman68@gmail.com.</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- COOKIES CONSENT BANNER
+<!-- ============================================ -->
+<div class="cookies-overlay" id="cookiesOverlay">
+    <div class="cookies-banner">
+        <div class="cookies-inner">
+            <div class="cookies-icon-wrap">
+                <i class="fas fa-cookie-bite"></i>
+            </div>
+            <div class="cookies-text">
+                <h4>Kami Menggunakan Cookies 🍪</h4>
+                <p>Website SMAN 68 Jakarta menggunakan cookies untuk meningkatkan pengalaman Anda, menganalisis traffic, dan menyimpan preferensi. Dengan melanjutkan, Anda menyetujui <a id="cookiesPrivacyLink">Kebijakan Privasi</a> kami.</p>
+            </div>
+            <div class="cookies-actions">
+                <button class="btn-cookies-settings" id="cookiesSettingsBtn">
+                    <i class="fas fa-sliders-h"></i> Pengaturan
+                </button>
+                <button class="btn-cookies-decline" id="cookiesDeclineBtn">
+                    <i class="fas fa-times"></i> Tolak
+                </button>
+                <button class="btn-cookies-accept" id="cookiesAcceptBtn">
+                    <i class="fas fa-check"></i> Terima Semua
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cookies Settings Modal -->
+<div class="modal-overlay cookies-settings-modal" id="cookiesSettingsModal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div class="modal-header-icon"><i class="fas fa-sliders-h"></i></div>
+            <div>
+                <h3>Pengaturan Cookies</h3>
+                <p>Kelola preferensi cookies Anda</p>
+            </div>
+            <button class="modal-close-x" id="cookiesSettingsClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cookies-options">
+            <div class="cookies-option">
+                <div class="cookies-option-info">
+                    <h5>Cookies Esensial</h5>
+                    <p>Diperlukan untuk fungsi dasar website seperti sesi login dan keamanan. Tidak dapat dinonaktifkan.</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked disabled>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="cookies-option">
+                <div class="cookies-option-info">
+                    <h5>Cookies Analitik</h5>
+                    <p>Membantu kami memahami cara pengunjung menggunakan website ini untuk meningkatkan layanan.</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="cookieAnalytic" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="cookies-option">
+                <div class="cookies-option-info">
+                    <h5>Cookies Fungsional</h5>
+                    <p>Menyimpan preferensi Anda seperti tema tampilan, bahasa, dan pengaturan lainnya.</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="cookieFunctional" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="cookies-option">
+                <div class="cookies-option-info">
+                    <h5>Cookies Pemasaran</h5>
+                    <p>Digunakan untuk menampilkan konten yang relevan dan mengukur efektivitas informasi.</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="cookieMarketing">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+        <button class="cookies-save-btn" id="cookiesSaveBtn">
+            <i class="fas fa-save"></i> Simpan Preferensi
+        </button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- TOAST CONTAINER -->
+<!-- ============================================ -->
+<div class="toast-stack" id="toastContainer"></div>
+
+<!-- ============================================ -->
+<!-- MOBILE BOTTOM NAV -->
+<!-- ============================================ -->
+<nav class="mobile-bottom-nav">
+    <a href="#home" class="mob-nav-item active" data-section="home">
+        <i class="fas fa-home"></i><span>Beranda</span>
+    </a>
+    <a href="#profil" class="mob-nav-item" data-section="profil">
+        <i class="fas fa-school"></i><span>Profil</span>
+    </a>
+    <a href="#berita" class="mob-nav-item" data-section="berita">
+        <i class="fas fa-newspaper"></i><span>Berita</span>
+    </a>
+    <a href="#galeri" class="mob-nav-item" data-section="galeri">
+        <i class="fas fa-images"></i><span>Galeri</span>
+    </a>
+    <a href="#kontak" class="mob-nav-item" data-section="kontak">
+        <i class="fas fa-phone"></i><span>Kontak</span>
+    </a>
+</nav>
+
+<!-- ============================================ -->
+<!-- FOOTER MEGA -->
+<!-- ============================================ -->
+<footer class="footer-mega">
+    <div class="footer-wave"></div>
+    <div class="footer-body">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68" class="footer-logo">
+                    <h3>SMAN 68 Jakarta</h3>
+                    <p>Disiplin · Kreasi · Prestasi — Mencetak Generasi Unggul untuk Indonesia dan Dunia.</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/smanegeri68jakarta/" target="_blank" class="social-pill">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.facebook.com/SMAN68/" target="_blank" class="social-pill">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@sman68jaya60" target="_blank" class="social-pill">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@smanegeri68jakarta" target="_blank" class="social-pill">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Tautan Cepat</h4>
+                    <ul>
+                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Beranda</a></li>
+                        <li><a href="#profil"><i class="fas fa-chevron-right"></i> Profil</a></li>
+                        <li><a href="#program"><i class="fas fa-chevron-right"></i> Program Belajar</a></li>
+                        <li><a href="#berita"><i class="fas fa-chevron-right"></i> Berita</a></li>
+                        <li><a href="#galeri"><i class="fas fa-chevron-right"></i> Galeri</a></li>
+                        <li><a href="#kontak"><i class="fas fa-chevron-right"></i> Kontak</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Layanan</h4>
+                    <ul>
+                        <li><a href="#" id="footerLoginSiswa"><i class="fas fa-chevron-right"></i> Login Siswa</a></li>
+                        <li><a href="#" id="footerLoginGuru"><i class="fas fa-chevron-right"></i> Login Guru</a></li>
+                        <li><a href="#" id="footerHukum"><i class="fas fa-chevron-right"></i> Hukum SMAN 68</a></li>
+                        <li><a href="#" id="footerVirsch"><i class="fas fa-chevron-right"></i> VIRSCH 68</a></li>
+                        <li><a href="#" id="privacyLink"><i class="fas fa-chevron-right"></i> Kebijakan Privasi</a></li>
+                        <li><a href="68-404.html" target="_blank"><i class="fas fa-chevron-right"></i> Jadwal & Unduh</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col footer-contact-col">
+                    <h4>Kontak</h4>
+                    <ul class="footer-contact-list">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Jl. Salemba Raya No. 18, Jakarta Pusat</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone-alt"></i>
+                            <span>(021) 3142929</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>emailsman68@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <p>&copy; 2026 SMAN 68 Jakarta (V 4.0.0) — All rights reserved.</p>
+            <p class="footer-made">Portal Resmi SMA Negeri 68 Jakarta</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Gallery Lightbox -->
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose"><i class="fas fa-times"></i></button>
+    <div class="lightbox-body">
+        <img id="lightboxImg" src="" alt="">
+        <p id="lightboxCaption"></p>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="sman68.js"></script>
+
+<!-- Service Worker -->
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+    });
+    window.addEventListener('offline', () => document.body.style.opacity = '0.85');
+    window.addEventListener('online', () => { document.body.style.opacity = '1'; location.reload(); });
+}
+</script>
+</body>
+</html>

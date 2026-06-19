@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Tata Tertib & Hukum - SMAN 68 Jakarta</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+    
+    <link rel="stylesheet" href="hukum.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="loader-spinner"></div>
+        <p>Memuat...</p>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="sman68.html" class="back-btn" title="Kembali">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="header-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68">
+            </div>
+            <div class="header-text">
+                <h1>Tata Tertib & Hukum</h1>
+                <p>SMA Negeri 68 Jakarta</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-balance-scale"></i> DISIPLIN • KREASI • PRESTASI
+            </div>
+            <h2>Sistem Poin & Konsekuensi</h2>
+            <p>Setiap pelanggaran dikenakan poin pelanggaran. Setiap prestasi dan kontribusi positif mendapatkan poin penghargaan. Akumulasi poin menentukan sanksi yang diberikan.</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        
+        <!-- Poin Pelanggaran -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div>
+                    <h2>Poin Pelanggaran</h2>
+                    <p>Setiap pelanggaran tata tertib akan dikenakan poin sesuai tingkat pelanggaran</p>
+                </div>
+            </div>
+            
+            <div class="table-wrapper">
+                <table class="poin-table">
+                    <thead>
+                        <tr>
+                            <th>Kategori</th>
+                            <th>Jenis Pelanggaran</th>
+                            <th>Poin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge ringan">Ringan</span></td>
+                            <td>Tidak memakai atribut lengkap (kacu, topi, ikat pinggang, badge)</td>
+                            <td><strong>5</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge ringan">Ringan</span></td>
+                            <td>Rambut gondrong/tidak rapi (laki-laki) / makeup berlebihan (perempuan)</td>
+                            <td><strong>5</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge ringan">Ringan</span></td>
+                            <td>Tidak membawa buku literasi sesuai jadwal</td>
+                            <td><strong>5</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge ringan">Ringan</span></td>
+                            <td>Terlambat masuk sekolah (per hari)</td>
+                            <td><strong>3</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge sedang">Sedang</span></td>
+                            <td>Membolos / tidak masuk tanpa keterangan (per hari)</td>
+                            <td><strong>10</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge sedang">Sedang</span></td>
+                            <td>Merokok di lingkungan sekolah</td>
+                            <td><strong>15</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge sedang">Sedang</span></td>
+                            <td>Berkelahi / tawuran</td>
+                            <td><strong>20</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge berat">Berat</span></td>
+                            <td>Membawa/mengedarkan narkoba</td>
+                            <td><strong>50</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge berat">Berat</span></td>
+                            <td>Mencuri / melakukan tindak kriminal</td>
+                            <td><strong>50</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge berat">Berat</span></td>
+                            <td>Melakukan bullying / perundungan</td>
+                            <td><strong>30</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Poin Penghargaan -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon success">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div>
+                    <h2>Poin Penghargaan</h2>
+                    <p>Prestasi dan kontribusi positif akan mendapatkan poin penghargaan yang mengurangi poin pelanggaran</p>
+                </div>
+            </div>
+            
+            <div class="table-wrapper">
+                <table class="poin-table">
+                    <thead>
+                        <tr>
+                            <th>Kategori</th>
+                            <th>Jenis Penghargaan</th>
+                            <th>Poin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge prestasi">Kehadiran</span></td>
+                            <td>Hadir penuh tanpa terlambat selama satu bulan</td>
+                            <td><strong>-10</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge prestasi">Kehadiran</span></td>
+                            <td>Tidak pernah terlambat selama satu semester</td>
+                            <td><strong>-15</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge prestasi">Akademik</span></td>
+                            <td>Juara kelas (peringkat 1-3)</td>
+                            <td><strong>-10</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge prestasi">Non-Akademik</span></td>
+                            <td>Menjuarai lomba tingkat kota/kabupaten</td>
+                            <td><strong>-15</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge prestasi">Non-Akademik</span></td>
+                            <td>Menjuarai lomba tingkat provinsi</td>
+                            <td><strong>-20</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge prestasi">Non-Akademik</span></td>
+                            <td>Menjuarai lomba tingkat nasional</td>
+                            <td><strong>-30</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge prestasi">Non-Akademik</span></td>
+                            <td>Menjuarai lomba tingkat internasional</td>
+                            <td><strong>-50</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge prestasi">Kontribusi</span></td>
+                            <td>Aktif dalam kegiatan OSIS/ekskul</td>
+                            <td><strong>-5</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge prestasi">Kontribusi</span></td>
+                            <td>Menjadi panitia acara sekolah</td>
+                            <td><strong>-10</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Konsekuensi -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon danger">
+                    <i class="fas fa-gavel"></i>
+                </div>
+                <div>
+                    <h2>Konsekuensi Akumulasi Poin Pelanggaran</h2>
+                    <p>Semakin tinggi poin pelanggaran, semakin berat sanksi yang diberikan</p>
+                </div>
+            </div>
+            
+            <div class="konsekuensi-grid">
+                <div class="konsekuensi-card level-1">
+                    <div class="level-badge">1</div>
+                    <div class="level-content">
+                        <h3>30 Poin</h3>
+                        <p>Skorsing selama <strong>3 hari</strong></p>
+                        <span class="level-desc">Peringatan keras dan pemanggilan orang tua</span>
+                    </div>
+                </div>
+                
+                <div class="konsekuensi-card level-2">
+                    <div class="level-badge">2</div>
+                    <div class="level-content">
+                        <h3>50 Poin</h3>
+                        <p>Skorsing selama <strong>6 hari</strong></p>
+                        <span class="level-desc">Pemanggilan orang tua dan surat perjanjian</span>
+                    </div>
+                </div>
+                
+                <div class="konsekuensi-card level-3">
+                    <div class="level-badge">3</div>
+                    <div class="level-content">
+                        <h3>75 Poin</h3>
+                        <p>Skorsing selama <strong>12 hari</strong></p>
+                        <span class="level-desc">Skorsing panjang dengan tugas pembinaan</span>
+                    </div>
+                </div>
+                
+                <div class="konsekuensi-card level-4">
+                    <div class="level-badge">4</div>
+                    <div class="level-content">
+                        <h3>100+ Poin</h3>
+                        <p><strong>Dikembalikan kepada Orang Tua</strong></p>
+                        <span class="level-desc">Tidak lagi menjadi siswa SMAN 68 Jakarta</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tips -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon info">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <div>
+                    <h2>Tips Menghindari Poin Pelanggaran</h2>
+                    <p>Ikuti tips berikut agar terhindar dari akumulasi poin pelanggaran</p>
+                </div>
+            </div>
+            
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-number">1</div>
+                    <div class="tip-content">
+                        <h4>Taatilah Peraturan Sekolah</h4>
+                        <p>Patuhi seluruh tata tertib baik di dalam maupun di luar lingkungan sekolah. Kenakan atribut lengkap setiap hari, jaga kerapihan diri, dan ikuti semua arahan guru.</p>
+                    </div>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-number">2</div>
+                    <div class="tip-content">
+                        <h4>Cari Kesibukan yang Positif</h4>
+                        <p>Isi waktu luang dengan kegiatan positif seperti mengikuti organisasi sekolah (OSIS), ekstrakurikuler, klub belajar, atau kegiatan sosial. Hindari pergaulan yang dapat menjerumuskan ke hal negatif.</p>
+                    </div>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-number">3</div>
+                    <div class="tip-content">
+                        <h4>Perbanyak Poin Penghargaan</h4>
+                        <p>Aktiflah dalam kegiatan akademik dan non-akademik. Ikuti lomba, jadilah panitia acara, raih prestasi, dan berkontribusi positif. Poin penghargaan akan mengurangi poin pelanggaran Anda.</p>
+                    </div>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-number">4</div>
+                    <div class="tip-content">
+                        <h4>Jaga Kedisiplinan Diri</h4>
+                        <p>Datang tepat waktu, lengkapi tugas sekolah, jaga kebersihan diri dan lingkungan, serta hormati guru dan sesama siswa. Kedisiplinan adalah kunci utama menghindari poin pelanggaran.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Disclaimer -->
+        <div class="disclaimer">
+            <i class="fas fa-info-circle"></i>
+            <p>Peraturan ini berlaku untuk seluruh siswa SMA Negeri 68 Jakarta tanpa terkecuali. Poin pelanggaran dan penghargaan dicatat dan diakumulasi selama masa pendidikan. Keputusan sekolah bersifat mutlak dan tidak dapat diganggu gugat.</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-bar">
+        <p>© 2026 SMAN 68 Jakarta. Disiplin • Kreasi • Prestasi.</p>
+        <a href="sman68.html" class="btn-home">
+            <i class="fas fa-home"></i> Kembali ke Website Utama
+        </a>
+    </footer>
+
+    <script src="hukum.js"></script>
+</body>
+</html>

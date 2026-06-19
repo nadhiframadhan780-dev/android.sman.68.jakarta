@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aduan-Penmurmut | SMAN 68 Jakarta</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome v6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="aduan-penmurmut.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       TOAST NOTIFICATION
+  ═══════════════════════════════════════════ -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- ═══════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════ -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-logo-wrap">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png"
+          alt="Logo SMAN 68 Jakarta"
+          class="header-logo"
+          onerror="this.style.display='none'"
+        />
+      </div>
+      <h1 class="header-title">Pusat Aduan &amp; Peninjauan Mutasi</h1>
+      <p class="header-subtitle">
+        <span class="badge-subtitle">Aduan-Penmurmut</span>
+      </p>
+      <p class="header-school">SMA Negeri 68 Jakarta</p>
+      <p class="header-desc">
+        Platform resmi pengaduan dan peninjauan kembali bagi calon murid mutasi
+        yang tidak lolos verifikasi berkas atau ingin mengajukan sanggahan.
+      </p>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTAINER
+  ═══════════════════════════════════════════ -->
+  <main class="main-container">
+
+    <!-- INFO BANNER -->
+    <div class="info-banner card">
+      <div class="info-banner-icon"><i class="fas fa-circle-info"></i></div>
+      <div class="info-banner-text">
+        <strong>Perhatian:</strong> Layanan ini hanya diperuntukkan bagi calon
+        siswa mutasi SMAN 68 Jakarta. Pastikan Nomor Pendaftaran Mutasi yang
+        Anda masukkan valid. Aduan akan ditinjau dalam <strong>1×24 jam</strong> kerja.
+      </div>
+    </div>
+
+    <!-- TAB NAVIGATION -->
+    <div class="tab-nav card">
+      <button class="tab-btn active" data-tab="tab-ajukan" id="btnTabAjukan">
+        <i class="fas fa-file-pen"></i>
+        <span>Ajukan Aduan / Sanggahan</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-cek" id="btnTabCek">
+        <i class="fas fa-magnifying-glass"></i>
+        <span>Cek Status Aduan</span>
+      </button>
+    </div>
+
+    <!-- ─────────────────────────────────────
+         TAB 1: AJUKAN ADUAN
+    ───────────────────────────────────── -->
+    <div class="tab-panel active" id="tab-ajukan">
+      <div class="card form-card">
+        <div class="card-header">
+          <div class="card-header-icon">
+            <i class="fas fa-file-pen"></i>
+          </div>
+          <div>
+            <h2 class="card-title">Formulir Pengaduan &amp; Sanggahan</h2>
+            <p class="card-desc">Isi semua field bertanda <span class="required-mark">*</span> dengan lengkap dan benar.</p>
+          </div>
+        </div>
+
+        <form id="formAduan" novalidate autocomplete="off">
+
+          <!-- Nomor Pendaftaran Mutasi -->
+          <div class="form-group">
+            <label class="form-label" for="noPendaftaran">
+              <i class="fas fa-id-badge"></i>
+              Nomor Pendaftaran Mutasi Asal <span class="required-mark">*</span>
+            </label>
+            <input
+              type="text"
+              id="noPendaftaran"
+              name="noPendaftaran"
+              class="form-control"
+              placeholder="198168XXXXXXXX"
+              maxlength="14"
+              required
+            />
+            <span class="form-hint">14 digit — contoh: 19816800000001</span>
+            <span class="form-error" id="errNoPendaftaran"></span>
+          </div>
+
+          <!-- Nama Lengkap -->
+          <div class="form-group">
+            <label class="form-label" for="namaLengkap">
+              <i class="fas fa-user"></i>
+              Nama Lengkap Calon Siswa <span class="required-mark">*</span>
+            </label>
+            <input
+              type="text"
+              id="namaLengkap"
+              name="namaLengkap"
+              class="form-control"
+              placeholder="Masukkan nama sesuai ijazah / raport"
+              required
+            />
+            <span class="form-error" id="errNamaLengkap"></span>
+          </div>
+
+          <!-- Email & WhatsApp (row) -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="email">
+                <i class="fas fa-envelope"></i>
+                Email Aktif <span class="required-mark">*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                placeholder="nama@email.com"
+                required
+              />
+              <span class="form-error" id="errEmail"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="whatsapp">
+                <i class="fab fa-whatsapp"></i>
+                Nomor WhatsApp <span class="required-mark">*</span>
+              </label>
+              <input
+                type="tel"
+                id="whatsapp"
+                name="whatsapp"
+                class="form-control"
+                placeholder="08xxxxxxxxxx"
+                required
+              />
+              <span class="form-error" id="errWhatsapp"></span>
+            </div>
+          </div>
+
+          <!-- Kategori Aduan -->
+          <div class="form-group">
+            <label class="form-label" for="kategori">
+              <i class="fas fa-tags"></i>
+              Kategori Aduan <span class="required-mark">*</span>
+            </label>
+            <div class="select-wrapper">
+              <select id="kategori" name="kategori" class="form-control" required>
+                <option value="" disabled selected>— Pilih kategori aduan —</option>
+                <option value="Sanggah Penolakan Berkas">Sanggah Penolakan Berkas</option>
+                <option value="Kendala Teknis Link Dokumen">Kendala Teknis Link Dokumen</option>
+                <option value="Salah Input Data">Salah Input Data</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+              <i class="fas fa-chevron-down select-arrow"></i>
+            </div>
+            <span class="form-error" id="errKategori"></span>
+          </div>
+
+          <!-- Detail Masalah -->
+          <div class="form-group">
+            <label class="form-label" for="detail">
+              <i class="fas fa-comment-dots"></i>
+              Detail Masalah / Alasan Sanggahan <span class="required-mark">*</span>
+            </label>
+            <textarea
+              id="detail"
+              name="detail"
+              class="form-control textarea"
+              rows="5"
+              placeholder="Jelaskan secara rinci masalah yang Anda alami atau alasan sanggahan Anda…"
+              required
+            ></textarea>
+            <div class="char-counter"><span id="charCount">0</span> / 1000 karakter</div>
+            <span class="form-error" id="errDetail"></span>
+          </div>
+
+          <!-- Upload Bukti (Link Google Drive) -->
+          <div class="form-group">
+            <label class="form-label" for="linkBukti">
+              <i class="fab fa-google-drive"></i>
+              Link Bukti Pendukung (Google Drive)
+              <span class="optional-mark">— Opsional</span>
+            </label>
+            <input
+              type="url"
+              id="linkBukti"
+              name="linkBukti"
+              class="form-control"
+              placeholder="https://drive.google.com/…"
+            />
+            <span class="form-hint">Pastikan link bisa diakses publik (Anyone with the link).</span>
+            <span class="form-error" id="errLinkBukti"></span>
+          </div>
+
+          <!-- Checkbox Persetujuan -->
+          <div class="form-group checkbox-group">
+            <label class="checkbox-label" for="persetujuan">
+              <input type="checkbox" id="persetujuan" name="persetujuan" class="checkbox-input" required />
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-text">
+                Saya menyatakan data aduan ini dibuat dengan <strong>sebenar-benarnya</strong>
+                dan bersedia mempertanggungjawabkan kebenaran informasi yang saya sampaikan.
+              </span>
+            </label>
+            <span class="form-error" id="errPersetujuan"></span>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" id="btnReset">
+              <i class="fas fa-rotate-left"></i> Reset Form
+            </button>
+            <button type="submit" class="btn btn-primary" id="btnSubmit">
+              <span class="btn-text">
+                <i class="fas fa-paper-plane"></i> Kirim Aduan
+              </span>
+              <span class="btn-loading" style="display:none;">
+                <i class="fas fa-spinner fa-spin"></i> Mengirim…
+              </span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+    <!-- /tab-ajukan -->
+
+    <!-- ─────────────────────────────────────
+         TAB 2: CEK STATUS
+    ───────────────────────────────────── -->
+    <div class="tab-panel" id="tab-cek">
+      <div class="card form-card">
+        <div class="card-header">
+          <div class="card-header-icon">
+            <i class="fas fa-magnifying-glass"></i>
+          </div>
+          <div>
+            <h2 class="card-title">Cek Status Aduan</h2>
+            <p class="card-desc">Masukkan Nomor Aduan yang Anda terima setelah mengirim pengaduan.</p>
+          </div>
+        </div>
+
+        <div class="cek-form">
+          <div class="form-group search-group">
+            <label class="form-label" for="inputNoAduan">
+              <i class="fas fa-hashtag"></i>
+              Nomor Aduan
+            </label>
+            <div class="search-row">
+              <input
+                type="text"
+                id="inputNoAduan"
+                class="form-control"
+                placeholder="ADM-XXXXXXXX"
+                maxlength="12"
+              />
+              <button class="btn btn-primary" id="btnCekStatus">
+                <span class="btn-text"><i class="fas fa-search"></i> Cek</span>
+                <span class="btn-loading" style="display:none;"><i class="fas fa-spinner fa-spin"></i></span>
+              </button>
+            </div>
+            <span class="form-error" id="errNoAduan"></span>
+          </div>
+        </div>
+
+        <!-- Status Result Area -->
+        <div id="statusResult" class="status-result" style="display:none;"></div>
+
+      </div>
+    </div>
+    <!-- /tab-cek -->
+
+    <!-- FOOTER NOTE -->
+    <div class="footer-note">
+      <i class="fas fa-shield-halved"></i>
+      Data yang Anda kirimkan bersifat rahasia dan hanya digunakan untuk keperluan
+      proses mutasi SMAN 68 Jakarta. &copy; 2025 SMAN 68 Jakarta — Sistem Mutasi Digital.
+    </div>
+
+  </main>
+  <!-- /main-container -->
+
+  <!-- ═══════════════════════════════════════════
+       SUCCESS MODAL
+  ═══════════════════════════════════════════ -->
+  <div class="modal-overlay" id="modalOverlay" style="display:none;">
+    <div class="modal" id="modalSuccess">
+      <div class="modal-icon success">
+        <i class="fas fa-circle-check"></i>
+      </div>
+      <h3 class="modal-title">Aduan Berhasil Dikirim!</h3>
+      <p class="modal-desc">Simpan nomor aduan berikut untuk melacak status pengaduan Anda.</p>
+      <div class="modal-aduan-number">
+        <span class="modal-label">Nomor Aduan Anda</span>
+        <div class="modal-number-box">
+          <span id="modalNoAduan" class="modal-number-text">ADM-00000000</span>
+          <button class="btn-copy" id="btnCopyNoAduan" title="Salin nomor aduan">
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
+      </div>
+      <p class="modal-note">
+        <i class="fas fa-clock"></i>
+        Aduan akan ditinjau dalam <strong>1×24 jam</strong> kerja. Gunakan nomor di atas untuk cek status di tab <em>"Cek Status Aduan"</em>.
+      </p>
+      <button class="btn btn-primary modal-close-btn" id="btnModalClose">
+        <i class="fas fa-check"></i> Mengerti, Tutup
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       FIREBASE SDK (Compat v9)
+  ═══════════════════════════════════════════ -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <!-- Custom JS -->
+  <script src="aduan-penmurmut.js"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Hasil Kelulusan Kelas XII - SMAN 68 Jakarta</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+    
+    <link rel="stylesheet" href="hasil-kelulusan-kelas-12.css">
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg-image"></div>
+    <div class="bg-overlay"></div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Header -->
+        <div class="header-section">
+            <div class="logo-wrapper">
+                <div class="logo-ring"></div>
+                <div class="logo-ring"></div>
+                <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68 Jakarta" class="logo-img">
+            </div>
+            <div class="badge-kelulusan">
+                <i class="fas fa-graduation-cap"></i> ANGKATAN 2026
+            </div>
+            <h1>Hasil Kelulusan</h1>
+            <p>Kelas XII SMA Negeri 68 Jakarta</p>
+            <p class="subtitle">Tahun Ajaran 2025/2026</p>
+        </div>
+
+        <!-- Form Cek -->
+        <div class="cek-section" id="cekSection">
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span>Masukkan NISN Anda untuk melihat hasil kelulusan. Pastikan NISN yang dimasukkan sesuai dengan data sekolah.</span>
+            </div>
+            <form id="cekForm">
+                <div class="form-group">
+                    <label><i class="fas fa-id-card"></i> Nomor Induk Siswa Nasional (NISN)</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-id-card input-icon"></i>
+                        <input type="text" id="nisnInput" class="form-input" placeholder="Masukkan 10 digit NISN" required maxlength="10" inputmode="numeric">
+                    </div>
+                </div>
+                <button type="submit" class="btn-cek" id="btnCek">
+                    <i class="fas fa-search"></i> Cek Kelulusan
+                </button>
+            </form>
+        </div>
+
+        <!-- Hasil Section -->
+        <div class="hasil-section" id="hasilSection" style="display:none;">
+            <div class="hasil-card" id="hasilCard">
+                <div class="hasil-icon" id="hasilIcon"></div>
+                <h2 id="hasilStatus"></h2>
+                <p id="hasilMessage"></p>
+                <div class="siswa-info" id="siswaInfo"></div>
+            </div>
+            <button class="btn-again" id="btnAgain">
+                <i class="fas fa-redo"></i> Cek Lagi
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-text">
+            <p><i class="fas fa-circle" style="font-size:3px;"></i> Disiplin 
+            <i class="fas fa-circle" style="font-size:3px;"></i> Kreasi 
+            <i class="fas fa-circle" style="font-size:3px;"></i> Prestasi</p>
+            <p class="version">V 1.0.0</p>
+        </div>
+    </div>
+
+    <script src="hasil-kelulusan-kelas-12.js"></script>
+</body>
+</html>

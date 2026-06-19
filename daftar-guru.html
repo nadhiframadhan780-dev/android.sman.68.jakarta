@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Daftar Guru - SMAN 68 Jakarta</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="daftar-guru.css">
+</head>
+<body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Background -->
+    <div class="bg-image"></div>
+    <div class="bg-overlay"></div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Header -->
+        <div class="header-section">
+            <div class="logo-wrapper">
+                <div class="logo-ring"></div>
+                <div class="logo-ring"></div>
+                <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68 Jakarta" class="logo-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\' viewBox=\'0 0 80 80\'%3E%3Crect width=\'80\' height=\'80\' fill=\'%23006633\' rx=\'40\'/%3E%3Ctext x=\'50%25\' y=\'55%25\' text-anchor=\'middle\' fill=\'white\' font-size=\'35\' font-weight=\'bold\'%3E68%3C/text%3E%3C/svg%3E'">
+            </div>
+            <h1>Pendaftaran Guru</h1>
+            <p>SMAN 68 Jakarta - Tahun Ajaran 2025/2026</p>
+        </div>
+
+        <!-- Form -->
+        <form id="registerForm">
+            <!-- Nama Lengkap -->
+            <div class="form-group">
+                <label><i class="fas fa-user"></i> Nama Lengkap (dengan gelar) <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="namaLengkap" class="form-input" placeholder="Contoh: Drs. Ahmad Fauzi, M.Pd." required>
+                </div>
+                <small class="form-hint">Jika honorer, tidak perlu mencantumkan gelar</small>
+            </div>
+
+            <!-- NIP/NIPY -->
+            <div class="form-group">
+                <label><i class="fas fa-id-badge"></i> Nomor Induk (NIP/NIPY) <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-id-badge input-icon"></i>
+                    <input type="text" id="nip" class="form-input" placeholder="Masukkan NIP atau NIPY" required maxlength="18" inputmode="numeric">
+                </div>
+                <small class="form-hint">Jika honorer, isi dengan tanda strip (-)</small>
+            </div>
+
+            <!-- NUPTK -->
+            <div class="form-group">
+                <label><i class="fas fa-id-card"></i> NUPTK <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-id-card input-icon"></i>
+                    <input type="text" id="nuptk" class="form-input" placeholder="Masukkan 16 digit NUPTK" required maxlength="16" inputmode="numeric">
+                </div>
+            </div>
+
+            <!-- Jabatan -->
+            <div class="form-group">
+                <label><i class="fas fa-briefcase"></i> Jabatan <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-briefcase input-icon"></i>
+                    <select id="jabatan" class="form-input" required>
+                        <option value="">-- Pilih Jabatan --</option>
+                        <option value="Kepala Sekolah">Kepala Sekolah</option>
+                        <option value="Wakil Kepala Sekolah">Wakil Kepala Sekolah</option>
+                        <option value="Guru Matematika">Guru Matematika</option>
+                        <option value="Guru Bahasa Indonesia">Guru Bahasa Indonesia</option>
+                        <option value="Guru Bahasa Inggris">Guru Bahasa Inggris</option>
+                        <option value="Guru Fisika">Guru Fisika</option>
+                        <option value="Guru Kimia">Guru Kimia</option>
+                        <option value="Guru Biologi">Guru Biologi</option>
+                        <option value="Guru Sejarah">Guru Sejarah</option>
+                        <option value="Guru Geografi">Guru Geografi</option>
+                        <option value="Guru Ekonomi">Guru Ekonomi</option>
+                        <option value="Guru Sosiologi">Guru Sosiologi</option>
+                        <option value="Guru PJOK">Guru PJOK</option>
+                        <option value="Guru Seni Budaya">Guru Seni Budaya</option>
+                        <option value="Guru Informatika">Guru Informatika</option>
+                        <option value="Guru Pendidikan Agama">Guru Pendidikan Agama</option>
+                        <option value="Guru PKN">Guru PKN</option>
+                        <option value="Guru BK">Guru BK</option>
+                        <option value="Kesiswaan">Kesiswaan</option>
+                        <option value="Tata Usaha">Tata Usaha</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label><i class="fas fa-lock"></i> Password <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" class="form-input" placeholder="Minimal 6 karakter" required minlength="6">
+                    <i class="fas fa-eye toggle-pass" id="togglePass1"></i>
+                </div>
+            </div>
+
+            <!-- Konfirmasi Password -->
+            <div class="form-group">
+                <label><i class="fas fa-check-circle"></i> Konfirmasi Password <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="konfirmasiPassword" class="form-input" placeholder="Ulangi password" required>
+                    <i class="fas fa-eye toggle-pass" id="togglePass2"></i>
+                </div>
+            </div>
+
+            <!-- Info -->
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span>Setelah mendaftar, akun Anda akan dikonfirmasi oleh operator dalam 1x24 jam. Anda akan dapat login ke Portal Guru setelah disetujui.</span>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <i class="fas fa-user-plus"></i> Daftar Sekarang
+            </button>
+        </form>
+
+        <!-- Footer Links -->
+        <div class="footer-links">
+            <p>Sudah punya akun? <a href="portal-guru.html">Login Guru</a></p>
+            <p><a href="sman68.html"><i class="fas fa-home"></i> Kembali ke Website Utama</a></p>
+        </div>
+
+        <!-- Version -->
+        <div class="version-text">V 2.0.0</div>
+    </div>
+
+    <script src="daftar-guru.js"></script>
+</body>
+</html>

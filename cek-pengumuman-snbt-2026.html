@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cek Pengumuman SNBT 2026 — SMAN 68 Jakarta</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* =============================================
+   RESET & ROOT
+============================================= */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --gold:        #c9a94b;
+  --gold-light:  #e8cc7a;
+  --gold-pale:   #f5e9c4;
+  --green-dark:  #0a3d2b;
+  --white:       #ffffff;
+  --font-display:'Playfair Display', Georgia, serif;
+  --font-body:   'Plus Jakarta Sans', sans-serif;
+  --ease:        cubic-bezier(0.4,0,0.2,1);
+}
+
+html, body {
+  font-family: var(--font-body);
+  background: var(--green-dark);
+  color: var(--white);
+  overflow: hidden;          /* desktop: no scroll at all */
+  height: 100%;
+  width: 100%;
+}
+
+/* =============================================
+   BACKGROUND
+============================================= */
+.bg-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+.bg-photo {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://media.indozone.id/crop/0x0:0x0/images/2026/01/14/1768352620_6966eb6c54bf6_maxresdefault.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(10,61,43,0.92) 0%,
+    rgba(10,61,43,0.78) 40%,
+    rgba(10,61,43,0.45) 65%,
+    rgba(10,61,43,0.25) 100%
+  );
+}
+/* Partikel emas */
+.particles { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.particle {
+  position:absolute; border-radius:50%;
+  background:radial-gradient(circle,rgba(201,169,75,0.65) 0%,transparent 70%);
+  animation:floatP var(--dur) ease-in-out infinite;
+  opacity:0;
+}
+@keyframes floatP {
+  0%   { transform:translateY(100vh) scale(0); opacity:0; }
+  10%  { opacity:0.5; }
+  90%  { opacity:0.25; }
+  100% { transform:translateY(-15vh) scale(1); opacity:0; }
+}
+
+/* =============================================
+   DESKTOP LAYOUT — dua kolom, full viewport
+============================================= */
+.page {
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;    /* kiri: info | kanan: foto tembus */
+  overflow: hidden;
+}
+
+/* ─── KOLOM KIRI ─── */
+.col-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(28px,3.5vh,52px) clamp(28px,3vw,56px);
+  overflow: hidden;
+}
+
+/* Header sekolah */
+.school-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: fadeLeft 0.8s var(--ease) both;
+}
+@keyframes fadeLeft { from{opacity:0;transform:translateX(-24px)} to{opacity:1;transform:translateX(0)} }
+
+.logo-wrap {
+  position: relative;
+  width: 56px; height: 56px;
+  flex-shrink: 0;
+}
+.logo-wrap::before {
+  content:''; position:absolute; inset:-5px;
+  border-radius:50%; border:1.5px solid rgba(201,169,75,0.4);
+  animation:spinRing 10s linear infinite;
+}
+@keyframes spinRing { to{transform:rotate(360deg)} }
+.logo-wrap img {
+  width:56px; height:56px;
+  border-radius:50%;
+  object-fit:contain;
+  background:rgba(255,255,255,0.1);
+  padding:7px;
+  border:1.5px solid rgba(201,169,75,0.45);
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
+}
+.school-meta { line-height:1.3; }
+.school-meta-name {
+  font-size:0.92rem;
+  font-weight:800;
+  color:var(--white);
+  letter-spacing:0.01em;
+}
+.school-meta-sub {
+  font-size:0.66rem;
+  color:rgba(255,255,255,0.45);
+  letter-spacing:0.12em;
+  margin-top:2px;
+}
+
+/* Divider emas */
+.gold-line {
+  height:1px;
+  background:linear-gradient(90deg,rgba(201,169,75,0.7),rgba(201,169,75,0.1));
+  margin: clamp(10px,1.5vh,18px) 0;
+  animation: fadeLeft 0.8s var(--ease) 0.1s both;
+}
+
+/* Kata semangat */
+.semangat {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  animation: fadeLeft 0.9s var(--ease) 0.15s both;
+}
+.semangat-eyebrow {
+  font-size:0.67rem;
+  font-weight:700;
+  letter-spacing:0.3em;
+  color:var(--gold-light);
+  text-transform:uppercase;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.semangat-eyebrow::before {
+  content:'';width:24px;height:1.5px;
+  background:var(--gold-light);flex-shrink:0;
+}
+.semangat-heading {
+  font-family:var(--font-display);
+  font-size:clamp(1.6rem,2.8vw,2.6rem);
+  font-weight:900;
+  line-height:1.15;
+  color:var(--white);
+  margin-bottom:clamp(10px,1.5vh,18px);
+  letter-spacing:-0.01em;
+  text-shadow:0 4px 24px rgba(0,0,0,0.4);
+}
+.semangat-heading em {
+  color:var(--gold-light);
+  font-style:italic;
+}
+.semangat-body {
+  font-size:clamp(0.78rem,1.1vw,0.9rem);
+  color:rgba(255,255,255,0.72);
+  line-height:1.75;
+  max-width:420px;
+  margin-bottom:clamp(10px,1.5vh,18px);
+}
+.semangat-quote {
+  padding:12px 18px;
+  border-left:2.5px solid var(--gold);
+  background:rgba(201,169,75,0.07);
+  border-radius:0 10px 10px 0;
+  margin-bottom:clamp(10px,1.5vh,18px);
+}
+.semangat-quote p {
+  font-family:var(--font-display);
+  font-style:italic;
+  font-size:clamp(0.78rem,1vw,0.88rem);
+  color:var(--gold-pale);
+  line-height:1.65;
+}
+.semangat-quote cite {
+  font-size:0.65rem;
+  color:rgba(255,255,255,0.38);
+  font-style:normal;
+  letter-spacing:0.07em;
+  margin-top:5px;
+  display:block;
+}
+
+/* Footer kiri */
+.left-footer {
+  animation: fadeLeft 0.9s var(--ease) 0.2s both;
+}
+.date-chip {
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:6px 16px;
+  background:rgba(201,169,75,0.1);
+  border:1px solid rgba(201,169,75,0.22);
+  border-radius:999px;
+  font-size:0.7rem;
+  color:var(--gold-light);
+  margin-bottom:10px;
+}
+.date-chip i { font-size:0.65rem; }
+.left-footer-text {
+  font-size:0.65rem;
+  color:rgba(255,255,255,0.25);
+  letter-spacing:0.08em;
+  line-height:1.6;
+}
+
+/* ─── KOLOM KANAN ─── */
+.col-right {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:clamp(24px,3.5vh,48px) clamp(28px,3vw,52px) clamp(24px,3.5vh,48px) clamp(16px,2vw,32px);
+  gap:clamp(12px,1.8vh,20px);
+  animation: fadeRight 0.9s var(--ease) 0.1s both;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+/* hide scrollbar tapi tetap bisa scroll kalau konten melebihi */
+.col-right::-webkit-scrollbar { width:0; }
+
+@keyframes fadeRight { from{opacity:0;transform:translateX(24px)} to{opacity:1;transform:translateX(0)} }
+
+/* Panel doa */
+.panel {
+  width:100%;
+  background:rgba(10,61,43,0.55);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(201,169,75,0.22);
+  border-radius:20px;
+  padding:clamp(16px,2vh,24px) clamp(18px,2vw,26px);
+  box-shadow:0 16px 48px rgba(0,0,0,0.35),0 0 0 1px rgba(255,255,255,0.03) inset;
+}
+
+.panel-title {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:clamp(10px,1.4vh,16px);
+}
+.panel-icon {
+  width:34px; height:34px;
+  border-radius:9px;
+  background:rgba(201,169,75,0.14);
+  border:1px solid rgba(201,169,75,0.28);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gold-light);
+  font-size:0.82rem;
+  flex-shrink:0;
+}
+.panel-title h3 {
+  font-family:var(--font-display);
+  font-size:clamp(0.88rem,1.2vw,1rem);
+  font-weight:700;
+  color:var(--gold-light);
+}
+.panel-title p {
+  font-size:0.65rem;
+  color:rgba(255,255,255,0.38);
+  letter-spacing:0.07em;
+}
+
+/* Doa items */
+.doa-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.doa-item {
+  padding:10px 12px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(201,169,75,0.12);
+  border-radius:12px;
+}
+.doa-arab {
+  font-size:clamp(0.82rem,1.1vw,0.98rem);
+  color:var(--gold-pale);
+  line-height:2;
+  text-align:center;
+  margin-bottom:4px;
+  text-shadow:0 0 16px rgba(201,169,75,0.25);
+}
+.doa-latin {
+  font-size:0.65rem;
+  color:rgba(255,255,255,0.48);
+  font-style:italic;
+  text-align:center;
+  line-height:1.5;
+  margin-bottom:4px;
+}
+.doa-arti {
+  font-size:0.65rem;
+  color:rgba(255,255,255,0.6);
+  text-align:center;
+  line-height:1.5;
+}
+.doa-sep {
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,169,75,0.25),transparent);
+  margin:8px 0;
+}
+
+/* Persiapan grid */
+.prep-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.prep-item {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:10px 12px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:10px;
+  transition:border-color 0.2s,background 0.2s;
+}
+.prep-item:hover { border-color:rgba(201,169,75,0.3);background:rgba(201,169,75,0.05); }
+.prep-ico {
+  width:28px;height:28px;
+  border-radius:7px;
+  background:rgba(201,169,75,0.12);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gold-light);font-size:0.72rem;
+  flex-shrink:0;
+}
+.prep-text p { font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.82);margin-bottom:1px; }
+.prep-text small { font-size:0.62rem;color:rgba(255,255,255,0.38);display:block; }
+
+/* ── TOMBOL CEK ── */
+.btn-cek-wrap {
+  width:100%;
+  position:relative;
+  display:flex;
+  justify-content:center;
+}
+.pulse-ring {
+  position:absolute;
+  inset:-8px;
+  border-radius:999px;
+  border:1.5px solid rgba(201,169,75,0.35);
+  animation:pulseR 2s ease-out infinite;
+}
+.pulse-ring:nth-child(2) { animation-delay:0.75s; }
+@keyframes pulseR {
+  0%  { transform:scale(1); opacity:0.7; }
+  100%{ transform:scale(1.07); opacity:0; }
+}
+.btn-cek {
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  width:100%;
+  max-width:380px;
+  padding:0 32px;
+  height:clamp(56px,7vh,68px);
+  background:linear-gradient(135deg,#b8912e 0%,#e8cc7a 45%,#c9a94b 70%,#a07823 100%);
+  color:#0a2010;
+  font-family:var(--font-body);
+  font-weight:800;
+  font-size:clamp(0.88rem,1.2vw,1rem);
+  letter-spacing:0.02em;
+  border-radius:999px;
+  text-decoration:none;
+  border:none;
+  cursor:pointer;
+  box-shadow:0 8px 28px rgba(201,169,75,0.45),0 2px 0 rgba(255,255,255,0.2) inset;
+  transition:transform 0.2s var(--ease),box-shadow 0.2s var(--ease);
+  overflow:hidden;
+  white-space:nowrap;
+  z-index:1;
+}
+/* shimmer */
+.btn-cek::before {
+  content:'';position:absolute;
+  top:0;left:-100%;
+  width:55%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);
+  transform:skewX(-18deg);
+  animation:shimmer 2.5s ease-in-out infinite;
+}
+@keyframes shimmer { 0%{left:-100%} 60%,100%{left:150%} }
+.btn-cek:hover { transform:translateY(-3px) scale(1.02);box-shadow:0 14px 40px rgba(201,169,75,0.55); }
+.btn-cek:active { transform:translateY(0) scale(0.99); }
+.btn-cek-icon {
+  width:36px;height:36px;
+  background:rgba(10,32,16,0.18);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.95rem;
+  flex-shrink:0;
+  transition:transform 0.25s var(--ease);
+}
+.btn-cek:hover .btn-cek-icon { transform:translateX(3px); }
+.btn-cek-label { display:flex;flex-direction:column;align-items:flex-start; }
+.btn-cek-label span:first-child { font-size:clamp(0.9rem,1.25vw,1.05rem);font-weight:800;line-height:1.1; }
+.btn-cek-label span:last-child { font-size:0.6rem;font-weight:500;opacity:0.65;letter-spacing:0.05em; }
+.cta-note {
+  font-size:0.65rem;
+  color:rgba(255,255,255,0.33);
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  margin-top:-4px;
+}
+.cta-note i { color:var(--gold);font-size:0.6rem; }
+
+/* =============================================
+   MOBILE — vertikal scroll, satu kolom
+============================================= */
+@media (max-width: 900px) {
+  html, body { overflow:auto; height:auto; }
+
+  .page {
+    grid-template-columns:1fr;
+    height:auto;
+    min-height:100vh;
+    overflow:visible;
+  }
+
+  .col-left {
+    padding:32px 22px 24px;
+    min-height:auto;
+  }
+
+  .col-right {
+    padding:0 22px 40px;
+    overflow:visible;
+  }
+
+  .semangat-heading { font-size:1.55rem; }
+  .doa-grid { grid-template-columns:1fr; }
+  .prep-grid { grid-template-columns:1fr 1fr; }
+  .btn-cek { max-width:100%; height:62px; }
+}
+
+@media (max-width:480px) {
+  .col-left, .col-right { padding-left:18px; padding-right:18px; }
+  .prep-grid { grid-template-columns:1fr; }
+}
+
+/* =============================================
+   ANIMATIONS
+============================================= */
+.fade-in { animation:fadeIn 0.7s var(--ease) both; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+.stars {
+  display:flex;gap:6px;justify-content:center;
+  margin: 4px 0;
+}
+.stars i { color:var(--gold);font-size:0.8rem;filter:drop-shadow(0 0 5px rgba(201,169,75,0.6)); }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="bg-scene">
+  <div class="bg-photo"></div>
+  <div class="bg-overlay"></div>
+  <div class="particles" id="particles"></div>
+</div>
+
+<!-- PAGE GRID -->
+<div class="page">
+
+  <!-- ════════════════════════════
+       KOLOM KIRI — Semangat & Info
+  ════════════════════════════ -->
+  <div class="col-left">
+
+    <!-- Header Sekolah -->
+    <div class="school-header">
+      <div class="logo-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="Logo SMAN 68">
+      </div>
+      <div class="school-meta">
+        <div class="school-meta-name">SMA Negeri 68 Jakarta</div>
+        <div class="school-meta-sub">Disiplin · Kreasi · Prestasi · Est. 1981</div>
+      </div>
+    </div>
+
+    <div class="gold-line"></div>
+
+    <!-- Kata Semangat -->
+    <div class="semangat">
+      <div class="semangat-eyebrow">Kelas XII · Angkatan 2026 · TA 2025/2026</div>
+
+      <h1 class="semangat-heading">
+        Hari Ini,<br>
+        <em>Hasil Perjuanganmu</em><br>
+        Akan Terlihat.
+      </h1>
+
+      <p class="semangat-body">
+        Selama ini kalian telah berjuang dengan sepenuh hati — melewati malam panjang, ujian demi ujian, dan tekanan yang tidak sedikit. Setiap tetes keringat itu bukan tanpa makna. Apapun hasilnya, keluarga besar SMAN 68 Jakarta bangga atas perjuangan kalian.
+      </p>
+
+      <div class="semangat-quote">
+        <p>"Sesungguhnya bersama kesulitan ada kemudahan."</p>
+        <cite>— Q.S. Al-Insyirah: 6 · Tetap tawakal & bersyukur</cite>
+      </div>
+
+      <div class="stars">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+      </div>
+    </div>
+
+    <!-- Footer Kiri -->
+    <div class="left-footer">
+      <div class="date-chip">
+        <i class="fas fa-calendar-star"></i>
+        <span id="dateDisplay">—</span>
+      </div>
+      <div class="left-footer-text">
+        © 2026 SMAN 68 Jakarta · Jl. Salemba Raya No. 18, Jakarta Pusat<br>
+        <a href="sman68.html" style="color:rgba(201,169,75,0.5);text-decoration:none;">← Kembali ke Website Sekolah</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       KOLOM KANAN — Doa & Tombol
+  ════════════════════════════ -->
+  <div class="col-right">
+
+    <!-- Panel: Doa -->
+    <div class="panel fade-in">
+      <div class="panel-title">
+        <div class="panel-icon"><i class="fas fa-hands-praying"></i></div>
+        <div>
+          <h3>Doa Sebelum Membuka Hasil</h3>
+          <p>Bacalah dengan tenang & penuh keyakinan</p>
+        </div>
+      </div>
+
+      <div class="doa-grid">
+        <!-- Doa 1 -->
+        <div class="doa-item">
+          <div class="doa-arab">بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+          <div class="doa-latin">Bismillāhir-raḥmānir-raḥīm</div>
+          <div class="doa-arti">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang.</div>
+        </div>
+
+        <!-- Doa 2 -->
+        <div class="doa-item">
+          <div class="doa-arab">رَبِّ زِدْنِي عِلْمًا وَارْزُقْنِي فَهْمًا</div>
+          <div class="doa-latin">Rabbī zidnī 'ilmā warzuqnī fahmā</div>
+          <div class="doa-arti">Ya Tuhanku, tambahkanlah ilmuku dan berikanlah aku pemahaman.</div>
+        </div>
+
+        <!-- Doa 3 -->
+        <div class="doa-item">
+          <div class="doa-arab">اللَّهُمَّ لَا سَهْلَ إِلَّا مَا جَعَلْتَهُ سَهْلًا</div>
+          <div class="doa-latin">Allāhumma lā sahla illā mā ja'altahū sahlā</div>
+          <div class="doa-arti">Ya Allah, tidak ada kemudahan kecuali yang Engkau jadikan mudah.</div>
+        </div>
+
+        <!-- Doa 4 -->
+        <div class="doa-item">
+          <div class="doa-arab">اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذَا الْيَوْمِ</div>
+          <div class="doa-latin">Allāhumma innī as'aluka khaira hādzal-yaum</div>
+          <div class="doa-arti">Ya Allah, aku memohon kepada-Mu kebaikan hari ini. Aamiin.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel: Persiapan -->
+    <div class="panel fade-in" style="animation-delay:0.1s;">
+      <div class="panel-title">
+        <div class="panel-icon"><i class="fas fa-list-check"></i></div>
+        <div>
+          <h3>Siapkan Sebelum Cek</h3>
+          <p>Pastikan semua sudah siap</p>
+        </div>
+      </div>
+      <div class="prep-grid">
+        <div class="prep-item">
+          <div class="prep-ico"><i class="fas fa-id-card"></i></div>
+          <div class="prep-text"><p>Nomor Peserta</p><small>Nomor UTBK SNBT 2026</small></div>
+        </div>
+        <div class="prep-item">
+          <div class="prep-ico"><i class="fas fa-cake-candles"></i></div>
+          <div class="prep-text"><p>Tanggal Lahir</p><small>Sesuai data daftar</small></div>
+        </div>
+        <div class="prep-item">
+          <div class="prep-ico"><i class="fas fa-wifi"></i></div>
+          <div class="prep-text"><p>Koneksi Stabil</p><small>Pastikan internet baik</small></div>
+        </div>
+        <div class="prep-item">
+          <div class="prep-ico"><i class="fas fa-heart"></i></div>
+          <div class="prep-text"><p>Tawakal & Tenang</p><small>Apapun hasilnya, syukuri</small></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOMBOL CEK -->
+    <div class="btn-cek-wrap fade-in" style="animation-delay:0.2s;">
+      <div class="pulse-ring"></div>
+      <div class="pulse-ring"></div>
+      <a
+        href="https://pengumuman-snbt.snpmb.id/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-cek"
+        id="btnCek"
+      >
+        <div class="btn-cek-icon"><i class="fas fa-arrow-right"></i></div>
+        <div class="btn-cek-label">
+          <span>Cek Pengumuman SNBT 2026</span>
+          <span>pengumuman-snbt.snpmb.id →</span>
+        </div>
+      </a>
+    </div>
+    <div class="cta-note fade-in" style="animation-delay:0.25s;">
+      <i class="fas fa-shield-halved"></i>
+      Link resmi SNPMB — aman & terpercaya
+    </div>
+
+  </div><!-- /col-right -->
+
+</div><!-- /page -->
+
+<script>
+// Tanggal hari ini
+(function(){
+  var d=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  var m=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  var n=new Date();
+  var el=document.getElementById('dateDisplay');
+  if(el) el.textContent=d[n.getDay()]+', '+n.getDate()+' '+m[n.getMonth()]+' '+n.getFullYear();
+})();
+
+// Partikel emas
+(function(){
+  var c=document.getElementById('particles');
+  if(!c)return;
+  var n=window.innerWidth<900?10:18;
+  for(var i=0;i<n;i++){
+    var p=document.createElement('div');
+    p.className='particle';
+    var s=3+Math.random()*10;
+    p.style.cssText='width:'+s+'px;height:'+s+'px;left:'+Math.random()*100+'%;--dur:'+(9+Math.random()*14)+'s;animation-delay:'+(Math.random()*12)+'s';
+    c.appendChild(p);
+  }
+})();
+
+// Ripple pada tombol
+document.getElementById('btnCek')?.addEventListener('click',function(e){
+  var r=document.createElement('span');
+  r.style.cssText='position:absolute;border-radius:50%;background:rgba(255,255,255,0.22);width:180px;height:180px;margin-top:-90px;margin-left:-90px;top:'+e.offsetY+'px;left:'+e.offsetX+'px;animation:rpl 0.55s linear;pointer-events:none;';
+  this.appendChild(r);
+  setTimeout(function(){r.remove();},560);
+});
+var s=document.createElement('style');
+s.textContent='@keyframes rpl{from{transform:scale(0);opacity:1}to{transform:scale(3.5);opacity:0}}';
+document.head.appendChild(s);
+</script>
+</body>
+</html>

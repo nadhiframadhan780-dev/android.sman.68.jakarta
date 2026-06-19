@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Pendaftaran Akun Siswa | SMAN 68 Jakarta</title>
+    <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+    :root {
+        --green:       #006b38;
+        --green-mid:   #008744;
+        --green-light: #00a855;
+        --green-glow:  rgba(0,135,68,.30);
+        --gold:        #c9a227;
+        --gold-light:  #e0b84a;
+        --blue-deep:   #0a2540;
+        --glass:       rgba(255,255,255,.88);
+        --glass-b:     rgba(255,255,255,.35);
+        --text:        #0f1f12;
+        --muted:       #5a6e60;
+        --border:      #d5e3d9;
+        --error:       #d93025;
+        --warn:        #e67700;
+        --ok:          #1a9c55;
+        --r-sm: 10px; --r-md: 16px; --r-lg: 22px;
+        --ease: cubic-bezier(.16,1,.3,1);
+        --t: .35s;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+        font-family: 'DM Sans', sans-serif;
+        min-height: 100vh;
+        display: flex; align-items: flex-start; justify-content: center;
+        padding: 20px 16px 32px;
+        background: var(--blue-deep);
+        overflow-x: hidden;
+    }
+
+    h1,h2,h3,h4,.step-lbl,.btn { font-family: 'Playfair Display', serif; }
+
+    /* ─── Background ─── */
+    .bg-wrap {
+        position: fixed; inset:0; z-index:-2;
+        background: url('https://media.indozone.id/crop/0x0:0x0/images/2026/01/14/1768352620_6966eb6c54bf6_maxresdefault.jpg') center/cover no-repeat;
+    }
+    .bg-overlay {
+        position: fixed; inset:0; z-index:-1;
+        background: linear-gradient(160deg, rgba(10,37,64,.82) 0%, rgba(0,80,35,.72) 100%);
+    }
+    /* Floating orbs */
+    .orb {
+        position:fixed; border-radius:50%; pointer-events:none; z-index:0;
+        filter: blur(70px); opacity:.18;
+    }
+    .orb1 { width:420px;height:420px; background:var(--green-mid); top:-100px; left:-80px; animation: orb1 14s ease-in-out infinite alternate; }
+    .orb2 { width:300px;height:300px; background:var(--gold); bottom:-60px; right:-40px; animation: orb2 10s ease-in-out infinite alternate; }
+    @keyframes orb1 { to { transform: translate(60px, 80px); } }
+    @keyframes orb2 { to { transform: translate(-50px, -60px); } }
+
+    /* ─── Wrapper ─── */
+    .wrapper {
+        width:100%; max-width:760px; z-index:10;
+        display:flex; flex-direction:column; gap:16px;
+        animation: enterUp .7s var(--ease) both;
+    }
+    @keyframes enterUp { from{ opacity:0; transform:translateY(28px); } to{ opacity:1; transform:none; } }
+
+    /* ─── Back to Beranda Button ─── */
+    .back-btn {
+        display: inline-flex; align-items:center; gap:7px;
+        color:rgba(255,255,255,.85); font-family:'DM Sans',sans-serif;
+        font-size:.82rem; font-weight:500; text-decoration:none;
+        background:rgba(255,255,255,.1); backdrop-filter:blur(8px);
+        border:1px solid rgba(255,255,255,.18); border-radius:50px;
+        padding:6px 14px; width:fit-content;
+        transition: background var(--t) var(--ease), color var(--t);
+    }
+    .back-btn:hover { background:rgba(255,255,255,.2); color:#fff; }
+
+    /* ─── Header ─── */
+    .hdr { text-align:center; }
+    .logo-wrap { position:relative; display:inline-block; margin-bottom:10px; }
+    .ring {
+        position:absolute; inset:-10px; border-radius:50%;
+        border:2px solid transparent;
+        border-top-color:var(--green-mid); border-bottom-color:var(--gold);
+        animation:spin 9s linear infinite;
+    }
+    .ring.r2 {
+        inset:-5px;
+        border-top-color:var(--gold); border-bottom-color:var(--green-light);
+        animation-duration:6s; animation-direction:reverse;
+    }
+    @keyframes spin { 100%{ transform:rotate(360deg); } }
+    .logo-img {
+        width:72px; height:72px; border-radius:50%; background:#fff;
+        padding:5px; box-shadow:0 0 28px rgba(0,0,0,.3); position:relative; z-index:2;
+    }
+    .badge-pill {
+        display:inline-flex; align-items:center; gap:5px;
+        background:rgba(255,255,255,.12); backdrop-filter:blur(10px);
+        border:1px solid rgba(255,255,255,.22); color:#fff;
+        padding:3px 11px; border-radius:50px; font-size:.68rem; font-weight:600;
+        letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px;
+        font-family:'DM Sans',sans-serif;
+    }
+    .badge-pill i { color:var(--gold-light); }
+    .hdr h1 { color:#fff; font-size:1.6rem; font-weight:700; text-shadow:0 3px 12px rgba(0,0,0,.4); margin-bottom:3px; }
+    .hdr p  { color:rgba(255,255,255,.82); font-size:.85rem; font-family:'DM Sans',sans-serif; }
+
+    /* ─── Glass Card ─── */
+    .card {
+        background:var(--glass); backdrop-filter:blur(22px);
+        -webkit-backdrop-filter:blur(22px);
+        border:1px solid var(--glass-b); border-radius:var(--r-lg);
+        padding:28px 32px; box-shadow:0 24px 60px rgba(0,0,0,.22);
+        position:relative; overflow:hidden;
+    }
+    .card::before {
+        content:''; position:absolute; top:0; left:0; right:0; height:3px;
+        background:linear-gradient(90deg, var(--green), var(--green-light), var(--gold));
+    }
+
+    /* ─── Stepper ─── */
+    .stepper {
+        display:flex; justify-content:space-between;
+        position:relative; margin-bottom:26px; padding:0 10px;
+    }
+    .stepper-track {
+        position:absolute; top:19px; left:50px; right:50px;
+        height:2px; background:#dde6df; border-radius:2px;
+    }
+    .stepper-fill {
+        height:100%; background:var(--green-mid); width:0%;
+        border-radius:2px; transition:width .55s var(--ease);
+        box-shadow:0 0 8px var(--green-glow);
+    }
+    .s-item {
+        display:flex; flex-direction:column; align-items:center; gap:5px;
+        position:relative; z-index:2; width:80px;
+    }
+    .s-dot {
+        width:38px; height:38px; border-radius:50%; background:#fff;
+        border:2px solid #c8d9ce; display:flex; align-items:center;
+        justify-content:center; font-size:.88rem; color:#aab8b0;
+        transition:all var(--t) var(--ease); box-shadow:0 3px 8px rgba(0,0,0,.07);
+    }
+    .s-item.active .s-dot { border-color:var(--green-mid); background:var(--green-mid); color:#fff; transform:scale(1.1); box-shadow:0 0 14px var(--green-glow); }
+    .s-item.done .s-dot   { border-color:var(--green-mid); color:var(--green-mid); }
+    .step-lbl { font-size:.7rem; font-weight:600; color:#9fb4a5; text-align:center; transition:color var(--t); font-family:'DM Sans',sans-serif; }
+    .s-item.active .step-lbl { color:var(--green-mid); }
+    .s-item.done   .step-lbl { color:var(--text); }
+
+    /* ─── Sections ─── */
+    .sec { display:none; animation:sIn .38s var(--ease) both; }
+    .sec.active { display:block; }
+    @keyframes sIn { from{ opacity:0; transform:translateX(12px); } to{ opacity:1; transform:none; } }
+
+    /* Section Title */
+    .sec-title {
+        display:flex; align-items:center; gap:8px;
+        font-size:.82rem; font-weight:600; color:var(--green);
+        text-transform:uppercase; letter-spacing:.7px;
+        margin-bottom:14px; font-family:'DM Sans',sans-serif;
+    }
+    .sec-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* ─── Grid ─── */
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .full  { grid-column:1/-1; }
+
+    /* ─── Input Group ─── */
+    .ig {
+        position:relative; background:#f4f8f5;
+        border:1.5px solid var(--border); border-radius:var(--r-sm);
+        display:flex; align-items:center;
+        transition:border-color var(--t), box-shadow var(--t), background var(--t);
+    }
+    .ig:focus-within {
+        background:#fff; border-color:var(--green-mid);
+        box-shadow:0 0 0 3px rgba(0,135,68,.1);
+    }
+    .ig.err { border-color:var(--error); background:#fff5f5; }
+    .ig i.ico {
+        position:absolute; left:12px; color:#9fb4a5; font-size:.88rem;
+        transition:color var(--t); z-index:2;
+    }
+    .ig:focus-within i.ico { color:var(--green-mid); }
+    .ig.err i.ico { color:var(--error); }
+
+    .fc {
+        width:100%; padding:19px 12px 6px 36px;
+        border:none; background:transparent;
+        font-family:'DM Sans',sans-serif; font-size:.875rem;
+        color:var(--text); outline:none;
+    }
+    .fc::placeholder { color:transparent; }
+
+    .fl {
+        position:absolute; left:36px; top:50%; transform:translateY(-50%);
+        color:var(--muted); font-size:.875rem; pointer-events:none;
+        transition:all var(--t) var(--ease); z-index:1;
+        font-family:'DM Sans',sans-serif;
+    }
+    .fc:focus ~ .fl,
+    .fc:not(:placeholder-shown) ~ .fl,
+    select.fc:valid ~ .fl {
+        top:9px; transform:none; font-size:.67rem;
+        color:var(--green-mid); font-weight:600; letter-spacing:.3px;
+    }
+    .ig.err .fl,
+    .fc:focus ~ .fl { }
+    .ig.err .fc:not(:placeholder-shown) ~ .fl,
+    .ig.err .fl { color:var(--error); }
+
+    select.fc { appearance:none; cursor:pointer; }
+    .arr { position:absolute; right:12px; color:#9fb4a5; pointer-events:none; font-size:.8rem; }
+
+    textarea.fc { resize:vertical; min-height:75px; padding-top:20px; }
+
+    /* ─── Textarea floating label fix ─── */
+    .ig-textarea { align-items:flex-start; }
+    .ico-top { position:absolute !important; top:14px !important; transform:none !important; }
+    .fc-textarea { padding-top:28px !important; padding-bottom:10px; }
+    .fl-textarea {
+        position:absolute; left:36px; top:14px; transform:none !important;
+        color:var(--muted); font-size:.875rem; pointer-events:none;
+        transition:all var(--t) var(--ease); z-index:1;
+        font-family:'DM Sans',sans-serif; line-height:1;
+    }
+    .fc-textarea:focus ~ .fl-textarea,
+    .fc-textarea:not(:placeholder-shown) ~ .fl-textarea {
+        top:6px; font-size:.67rem; color:var(--green-mid); font-weight:600; letter-spacing:.3px;
+    }
+    .ig.err .fl-textarea { color:var(--error); }
+
+    .eye { position:absolute; right:12px; cursor:pointer; color:#9fb4a5; font-size:.85rem; padding:4px; transition:color var(--t); }
+    .eye:hover { color:var(--text); }
+
+    .errmsg { font-size:.68rem; color:var(--error); margin-top:3px; margin-left:3px; display:none; font-family:'DM Sans',sans-serif; }
+    .show-err { display:block; }
+
+    /* Password strength */
+    .pw-str { margin-top:6px; }
+    .str-bars { display:flex; gap:4px; height:4px; margin-bottom:3px; }
+    .str-bar  { flex:1; background:#dde6df; border-radius:4px; transition:background .3s; }
+    .str-txt  { font-size:.68rem; color:var(--muted); font-family:'DM Sans',sans-serif; }
+    .s1 .str-bar:nth-child(1) { background:var(--error); }
+    .s2 .str-bar:nth-child(1),.s2 .str-bar:nth-child(2) { background:var(--warn); }
+    .s3 .str-bar { background:var(--ok); }
+
+    /* ─── Security box ─── */
+    .sec-box {
+        background:#fafcfa; border:1.5px dashed #b8d4c0;
+        border-radius:var(--r-md); padding:14px 16px; margin-top:4px;
+    }
+    .sec-box-hdr { font-size:.8rem; font-weight:600; color:var(--text); margin-bottom:2px; font-family:'DM Sans',sans-serif; }
+    .sec-box-hdr i { color:var(--green-mid); margin-right:6px; }
+    .sec-box-sub { font-size:.72rem; color:var(--muted); margin-bottom:12px; font-family:'DM Sans',sans-serif; }
+
+    /* ─── Summary Card ─── */
+    .sum-card {
+        background:#f4f8f5; border:1.5px solid var(--border);
+        border-radius:var(--r-md); padding:16px; margin-bottom:14px;
+    }
+    .sum-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+    .sum-hdr h3 { font-size:.95rem; color:var(--text); display:flex; align-items:center; gap:7px; }
+    .sum-hdr h3 i { color:var(--green-mid); }
+    .btn-edit {
+        background:#e8f4ed; color:var(--green); border:none; padding:5px 11px;
+        border-radius:7px; font-size:.72rem; font-weight:600; cursor:pointer;
+        transition:background var(--t); font-family:'DM Sans',sans-serif;
+        display:inline-flex; align-items:center; gap:5px;
+    }
+    .btn-edit:hover { background:var(--green-mid); color:#fff; }
+    .sum-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .sum-itm  { display:flex; flex-direction:column; gap:2px; }
+    .sum-lbl  { font-size:.65rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.5px; font-family:'DM Sans',sans-serif; }
+    .sum-val  { font-size:.82rem; color:var(--text); font-weight:600; font-family:'DM Sans',sans-serif; word-break:break-word; }
+
+    /* ─── Rules Box ─── */
+    .rules-box {
+        background:#fffdf3; border:1.5px solid #f0d98a;
+        border-radius:var(--r-md); padding:14px 16px; margin-bottom:14px;
+    }
+    .rules-title {
+        display:flex; align-items:center; gap:7px; font-size:.82rem; font-weight:700;
+        color:#7a4f00; margin-bottom:10px; font-family:'DM Sans',sans-serif;
+    }
+    .rules-title i { color:var(--gold); }
+    .rules-list { list-style:none; display:flex; flex-direction:column; gap:5px; }
+    .rules-list li {
+        display:flex; align-items:flex-start; gap:7px;
+        font-size:.75rem; color:#6b4a00; line-height:1.45; font-family:'DM Sans',sans-serif;
+    }
+    .rules-list li::before {
+        content:counter(r);
+        counter-increment:r;
+        background:var(--gold); color:#fff;
+        border-radius:50%; width:17px; height:17px; min-width:17px;
+        display:flex; align-items:center; justify-content:center;
+        font-size:.6rem; font-weight:700; margin-top:1px;
+    }
+    .rules-list { counter-reset:r; }
+
+    /* ─── Agreement ─── */
+    .agree-wrap {
+        display:flex; align-items:flex-start; gap:10px;
+        background:#f0fdf5; border:1.5px solid #a7dfc0;
+        border-radius:var(--r-sm); padding:12px; cursor:pointer; margin-bottom:4px;
+    }
+    .cb-custom {
+        appearance:none; width:18px; height:18px; min-width:18px;
+        border:2px solid #3b9c65; border-radius:4px; background:#fff;
+        position:relative; cursor:pointer; margin-top:2px;
+        transition:all var(--t);
+    }
+    .cb-custom:checked { background:var(--green-mid); border-color:var(--green-mid); }
+    .cb-custom:checked::after {
+        content:'\f00c'; font-family:'Font Awesome 6 Free'; font-weight:900;
+        color:#fff; position:absolute; font-size:9px;
+        top:50%; left:50%; transform:translate(-50%,-50%);
+    }
+    .agree-txt { font-size:.78rem; color:#1a5c35; line-height:1.5; font-family:'DM Sans',sans-serif; }
+    .agree-txt strong { font-weight:700; }
+
+    /* ─── Nav Buttons ─── */
+    .nav-row {
+        display:flex; justify-content:space-between; align-items:center;
+        margin-top:20px; padding-top:16px; border-top:1px solid var(--border);
+        gap:10px;
+    }
+    .btn {
+        padding:11px 22px; border-radius:var(--r-sm); font-weight:600;
+        font-size:.875rem; cursor:pointer; display:inline-flex; align-items:center;
+        gap:7px; transition:all var(--t) var(--ease); border:none;
+    }
+    .btn-back { background:#eef2ef; color:var(--muted); }
+    .btn-back:hover { background:#dde6df; color:var(--text); }
+    .btn-next,.btn-sub {
+        background:linear-gradient(135deg, var(--green), var(--green-light));
+        color:#fff; box-shadow:0 5px 14px rgba(0,135,68,.22); margin-left:auto;
+    }
+    .btn-next:hover,.btn-sub:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,135,68,.3); }
+    .btn-sub:disabled { opacity:.65; cursor:not-allowed; transform:none; }
+
+    /* ─── Success Overlay ─── */
+    #successOverlay {
+        display:none; position:fixed; inset:0; z-index:9999;
+        background:linear-gradient(160deg, rgba(0,60,25,.97) 0%, rgba(0,40,80,.97) 100%);
+        align-items:center; justify-content:center; flex-direction:column;
+        text-align:center; padding:20px;
+    }
+    #successOverlay.show { display:flex; animation:fadeIn .5s var(--ease); }
+    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+    .success-icon {
+        width:90px; height:90px; background:rgba(255,255,255,.1); backdrop-filter:blur(10px);
+        border-radius:50%; display:flex; align-items:center; justify-content:center;
+        font-size:2.4rem; color:#fff; margin-bottom:20px; border:2px solid rgba(255,255,255,.2);
+        animation: popIn .6s .2s var(--ease) both;
+    }
+    @keyframes popIn { from{transform:scale(0) rotate(-30deg);} to{transform:scale(1) rotate(0);} }
+    .success-title { font-size:1.8rem; color:#fff; margin-bottom:8px; font-family:'Playfair Display',serif; }
+    .success-sub { color:rgba(255,255,255,.75); font-size:.9rem; line-height:1.6; max-width:360px; font-family:'DM Sans',sans-serif; }
+    .success-timer {
+        margin-top:22px; font-size:.8rem; color:rgba(255,255,255,.55);
+        font-family:'DM Sans',sans-serif;
+    }
+    .countdown { color:var(--gold-light); font-weight:700; font-size:1rem; }
+    .progress-ring {
+        width:60px; height:60px; margin:12px auto 0;
+    }
+    .progress-ring circle { stroke-dasharray:157; stroke-dashoffset:157; transition:stroke-dashoffset .9s linear; }
+
+    /* ─── Toast ─── */
+    .toast-box { position:fixed; top:16px; right:16px; z-index:9990; display:flex; flex-direction:column; gap:10px; pointer-events:none; }
+    .toast {
+        background:rgba(255,255,255,.96); backdrop-filter:blur(12px);
+        padding:12px 16px; border-radius:12px; box-shadow:0 12px 30px rgba(0,0,0,.15);
+        display:flex; align-items:flex-start; gap:10px; width:320px; max-width:calc(100vw - 32px);
+        transform:translateX(130%); animation:tIn .38s var(--ease) forwards;
+        pointer-events:auto; border-left:3px solid transparent; font-family:'DM Sans',sans-serif;
+    }
+    @keyframes tIn  { to{transform:translateX(0);} }
+    @keyframes tOut { to{transform:translateX(130%); opacity:0;} }
+    .toast.ok   { border-left-color:var(--ok); }
+    .toast.fail { border-left-color:var(--error); }
+    .toast.warn { border-left-color:var(--warn); }
+    .ti { font-size:1.1rem; margin-top:1px; flex-shrink:0; }
+    .toast.ok .ti   { color:var(--ok); }
+    .toast.fail .ti { color:var(--error); }
+    .toast.warn .ti { color:var(--warn); }
+    .tt  { font-weight:700; font-size:.85rem; color:var(--text); margin-bottom:1px; }
+    .tm  { font-size:.75rem; color:var(--muted); line-height:1.4; }
+
+    /* ─── Footer ─── */
+    .ftr { text-align:center; color:rgba(255,255,255,.7); font-size:.8rem; font-family:'DM Sans',sans-serif; }
+    .ftr a { color:var(--gold-light); text-decoration:none; font-weight:600; transition:color var(--t); }
+    .ftr a:hover { color:#fff; }
+
+    /* ─── Responsive ─── */
+    @media(max-width:640px) {
+        .card { padding:20px 16px; }
+        .grid2 { grid-template-columns:1fr; }
+        .sum-grid { grid-template-columns:1fr; }
+        .stepper-track { left:36px; right:36px; }
+        .s-item { width:68px; }
+        .s-dot  { width:34px; height:34px; font-size:.8rem; }
+        .hdr h1 { font-size:1.35rem; }
+        .nav-row { flex-direction:column-reverse; }
+        .btn-back { width:100%; justify-content:center; }
+        .btn-next,.btn-sub { width:100%; justify-content:center; margin-left:0; }
+    }
+    @media(max-width:400px) {
+        body { padding:12px 10px 24px; }
+        .hdr h1 { font-size:1.2rem; }
+        .logo-img { width:60px; height:60px; }
+    }
+    </style>
+</head>
+<body>
+
+<div class="bg-wrap"></div>
+<div class="bg-overlay"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="toast-box" id="toastBox"></div>
+
+<!-- Success Overlay -->
+<div id="successOverlay">
+    <div class="success-icon"><i class="fas fa-check"></i></div>
+    <h2 class="success-title">Pendaftaran Berhasil!</h2>
+    <p class="success-sub">Data kamu telah kami terima. Silakan tunggu verifikasi dari operator SMAN 68 Jakarta dalam <strong>1×24 jam</strong>.</p>
+    <p class="success-timer">Mengalihkan ke Portal Siswa dalam <span class="countdown" id="countdownNum">5</span> detik…</p>
+    <svg class="progress-ring" viewBox="0 0 50 50">
+        <circle cx="25" cy="25" r="22" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="3"/>
+        <circle id="ringCircle" cx="25" cy="25" r="22" fill="none" stroke="#c9a227" stroke-width="3"
+                stroke-linecap="round" transform="rotate(-90 25 25)"/>
+    </svg>
+</div>
+
+<div class="wrapper">
+
+    <!-- Back to Beranda -->
+    <a href="./sman68.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+
+    <!-- Header -->
+    <div class="hdr">
+        <div class="logo-wrap">
+            <div class="ring"></div>
+            <div class="ring r2"></div>
+            <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="Logo SMAN 68" class="logo-img">
+        </div>
+        <div><span class="badge-pill"><i class="fas fa-shield-halved"></i> Sistem Pendaftaran Resmi</span></div>
+        <h1>Pendaftaran Akun Siswa</h1>
+        <p>SMAN 68 Jakarta &mdash; Excellence &amp; Integrity</p>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+        <!-- Stepper -->
+        <div class="stepper">
+            <div class="stepper-track"><div class="stepper-fill" id="sfill"></div></div>
+            <div class="s-item active" id="si1">
+                <div class="s-dot"><i class="fas fa-user"></i></div>
+                <span class="step-lbl">Data Diri</span>
+            </div>
+            <div class="s-item" id="si2">
+                <div class="s-dot"><i class="fas fa-school"></i></div>
+                <span class="step-lbl">Sekolah</span>
+            </div>
+            <div class="s-item" id="si3">
+                <div class="s-dot"><i class="fas fa-lock"></i></div>
+                <span class="step-lbl">Akun</span>
+            </div>
+            <div class="s-item" id="si4">
+                <div class="s-dot"><i class="fas fa-clipboard-check"></i></div>
+                <span class="step-lbl">Konfirmasi</span>
+            </div>
+        </div>
+
+        <form id="regForm" autocomplete="off" novalidate>
+
+            <!-- ═══ STEP 1: Data Diri ═══ -->
+            <div class="sec active" id="s1">
+                <div class="sec-title"><i class="fas fa-user-circle"></i> Data Pribadi Siswa</div>
+                <div class="grid2">
+
+                    <div class="full">
+                        <div class="ig" id="ig-nama">
+                            <i class="fas fa-user-graduate ico"></i>
+                            <input type="text" id="nama" class="fc" placeholder=" " required oninput="this.value=this.value.toUpperCase()">
+                            <label class="fl">Nama Lengkap Sesuai Dokumen *</label>
+                        </div>
+                        <div class="errmsg" id="e-nama">Nama lengkap wajib diisi</div>
+                    </div>
+
+                    <div>
+                        <div class="ig" id="ig-nisn">
+                            <i class="fas fa-id-card ico"></i>
+                            <input type="text" id="nisn" class="fc" placeholder=" " required maxlength="10" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'').slice(0,10)">
+                            <label class="fl">NISN (10 Digit) *</label>
+                        </div>
+                        <div class="errmsg" id="e-nisn">NISN harus 10 digit angka</div>
+                    </div>
+
+                    <div>
+                        <div class="ig" id="ig-jenisKelamin">
+                            <i class="fas fa-venus-mars ico"></i>
+                            <select id="jenisKelamin" class="fc" required>
+                                <option value="" disabled selected hidden></option>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                            <label class="fl">Jenis Kelamin *</label>
+                            <i class="fas fa-chevron-down arr"></i>
+                        </div>
+                        <div class="errmsg" id="e-jenisKelamin">Pilih jenis kelamin</div>
+                    </div>
+
+                    <div>
+                        <div class="ig" id="ig-tempatLahir">
+                            <i class="fas fa-map-pin ico"></i>
+                            <input type="text" id="tempatLahir" class="fc" placeholder=" " required>
+                            <label class="fl">Tempat Lahir *</label>
+                        </div>
+                        <div class="errmsg" id="e-tempatLahir">Tempat lahir wajib diisi</div>
+                    </div>
+
+                    <div>
+                        <div class="ig" id="ig-tanggalLahir">
+                            <i class="fas fa-calendar-days ico"></i>
+                            <input type="date" id="tanggalLahir" class="fc" required style="color:transparent" onfocus="this.style.color='var(--text)'" onblur="if(!this.value)this.style.color='transparent'">
+                            <label class="fl">Tanggal Lahir *</label>
+                        </div>
+                        <div class="errmsg" id="e-tanggalLahir">Tanggal lahir wajib dipilih</div>
+                    </div>
+
+                    <div>
+                        <div class="ig" id="ig-noHp">
+                            <i class="fas fa-phone ico"></i>
+                            <input type="tel" id="noHp" class="fc" placeholder=" " inputmode="numeric">
+                            <label class="fl">Nomor WhatsApp / HP Aktif</label>
+                        </div>
+                    </div>
+
+                    <div class="full">
+                        <div class="ig" id="ig-email">
+                            <i class="fas fa-envelope ico"></i>
+                            <input type="email" id="email" class="fc" placeholder=" ">
+                            <label class="fl">Email Siswa Aktif</label>
+                        </div>
+                        <div class="errmsg" id="e-email">Format email tidak valid</div>
+                    </div>
+
+                    <div class="full">
+                        <div class="ig ig-textarea" id="ig-alamat">
+                            <i class="fas fa-house ico ico-top"></i>
+                            <textarea id="alamat" class="fc fc-textarea" placeholder=" " required></textarea>
+                            <label class="fl fl-textarea">Alamat Lengkap *</label>
+                        </div>
+                        <div class="errmsg" id="e-alamat">Alamat lengkap wajib diisi</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ═══ STEP 2: Data Sekolah ═══ -->
+            <div class="sec" id="s2">
+                <div class="sec-title"><i class="fas fa-school"></i> Informasi Sekolah</div>
+                <div class="grid2">
+
+                    <div>
+                        <div class="ig" id="ig-nis">
+                            <i class="fas fa-hashtag ico"></i>
+                            <input type="text" id="nis" class="fc" placeholder=" " required inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')">
+                            <label class="fl">NIS Sekolah *</label>
+                        </div>
+                        <div class="errmsg" id="e-nis">NIS sekolah wajib diisi</div>
+                    </div>
+
+                    <div>
+                        <div class="ig" id="ig-kelas">
+                            <i class="fas fa-layer-group ico"></i>
+                            <select id="kelas" class="fc" required>
+                                <option value="" disabled selected hidden></option>
+                                <optgroup label="── Kelas X ──">
+                                    <option value="X.1">X.1</option><option value="X.2">X.2</option>
+                                    <option value="X.3">X.3</option><option value="X.4">X.4</option>
+                                    <option value="X.5">X.5</option><option value="X.6">X.6</option>
+                                    <option value="X.7">X.7</option><option value="X.8">X.8</option>
+                                </optgroup>
+                                <optgroup label="── Kelas XI ──">
+                                    <option value="XI.1">XI.1</option><option value="XI.2">XI.2</option>
+                                    <option value="XI.3">XI.3</option><option value="XI.4">XI.4</option>
+                                    <option value="XI.5">XI.5</option><option value="XI.6">XI.6</option>
+                                    <option value="XI.7">XI.7</option><option value="XI.8">XI.8</option>
+                                </optgroup>
+                                <optgroup label="── Kelas XII ──">
+                                    <option value="XII.1">XII.1</option><option value="XII.2">XII.2</option>
+                                    <option value="XII.3">XII.3</option><option value="XII.4">XII.4</option>
+                                    <option value="XII.5">XII.5</option><option value="XII.6">XII.6</option>
+                                    <option value="XII.7">XII.7</option><option value="XII.8">XII.8</option>
+                                </optgroup>
+                            </select>
+                            <label class="fl">Kelas Saat Ini *</label>
+                            <i class="fas fa-chevron-down arr"></i>
+                        </div>
+                        <div class="errmsg" id="e-kelas">Pilih kelas</div>
+                    </div>
+
+                    <div class="full">
+                        <div class="ig" id="ig-jurusan">
+                            <i class="fas fa-book-open ico"></i>
+                            <select id="jurusan" class="fc" required>
+                                <option value="" disabled selected hidden></option>
+                                <option value="Kurikulum Merdeka (Umum)">Kurikulum Merdeka (Umum)</option>
+                                <option value="IPA">IPA</option>
+                                <option value="IPS">IPS</option>
+                            </select>
+                            <label class="fl">Jurusan / Peminatan *</label>
+                            <i class="fas fa-chevron-down arr"></i>
+                        </div>
+                        <div class="errmsg" id="e-jurusan">Pilih jurusan peminatan</div>
+                    </div>
+
+                    <div>
+                        <div class="ig" id="ig-tahunAjaran">
+                            <i class="fas fa-calendar-check ico"></i>
+                            <input type="text" id="tahunAjaran" class="fc" placeholder=" " required maxlength="9"
+                                   pattern="\d{4}/\d{4}" oninput="formatTahunAjaran(this)">
+                            <label class="fl">Tahun Ajaran Masuk (mis: 2023/2024) *</label>
+                        </div>
+                        <div class="errmsg" id="e-tahunAjaran">Format: 2023/2024</div>
+                    </div>
+
+                    <div>
+                        <div class="ig" id="ig-tglMasuk">
+                            <i class="fas fa-calendar-plus ico"></i>
+                            <input type="date" id="tglMasuk" class="fc" required style="color:transparent" onfocus="this.style.color='var(--text)'" onblur="if(!this.value)this.style.color='transparent'">
+                            <label class="fl">Tanggal Masuk SMAN 68 *</label>
+                        </div>
+                        <div class="errmsg" id="e-tglMasuk">Tanggal masuk wajib diisi</div>
+                    </div>
+
+                    <div class="full">
+                        <div class="ig" id="ig-estimasiLulus">
+                            <i class="fas fa-calendar-xmark ico"></i>
+                            <input type="date" id="estimasiLulus" class="fc" required style="color:transparent" onfocus="this.style.color='var(--text)'" onblur="if(!this.value)this.style.color='transparent'">
+                            <label class="fl">Estimasi Tanggal Lulus (Perkiraan) *</label>
+                        </div>
+                        <div class="errmsg" id="e-estimasiLulus">Estimasi kelulusan wajib diisi</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ═══ STEP 3: Akun ═══ -->
+            <div class="sec" id="s3">
+                <div class="sec-title"><i class="fas fa-shield-halved"></i> Setup Keamanan Akun</div>
+                <div class="sec-box">
+                    <p class="sec-box-hdr"><i class="fas fa-circle-info"></i> Username Login Otomatis</p>
+                    <p class="sec-box-sub">Username kamu akan otomatis menggunakan <strong>NIS Sekolah</strong> yang telah diisi sebelumnya.</p>
+                    <div class="grid2">
+                        <div>
+                            <div class="ig" id="ig-password">
+                                <i class="fas fa-key ico"></i>
+                                <input type="password" id="password" class="fc" placeholder=" " required minlength="6">
+                                <label class="fl">Buat Password *</label>
+                                <i class="fas fa-eye eye" onclick="toggleEye('password',this)"></i>
+                            </div>
+                            <div class="pw-str" id="pwStr">
+                                <div class="str-bars">
+                                    <div class="str-bar"></div>
+                                    <div class="str-bar"></div>
+                                    <div class="str-bar"></div>
+                                </div>
+                                <span class="str-txt" id="strTxt">Minimal 6 karakter</span>
+                            </div>
+                            <div class="errmsg" id="e-password">Password minimal 6 karakter</div>
+                        </div>
+                        <div>
+                            <div class="ig" id="ig-konfirmPassword">
+                                <i class="fas fa-shield-check ico"></i>
+                                <input type="password" id="konfirmPassword" class="fc" placeholder=" " required>
+                                <label class="fl">Ulangi Password *</label>
+                                <i class="fas fa-eye eye" onclick="toggleEye('konfirmPassword',this)"></i>
+                            </div>
+                            <div class="errmsg" id="e-konfirmPassword">Password tidak cocok</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ STEP 4: Konfirmasi ═══ -->
+            <div class="sec" id="s4">
+                <div class="sec-title"><i class="fas fa-clipboard-check"></i> Konfirmasi &amp; Persetujuan</div>
+
+                <!-- Summary -->
+                <div class="sum-card">
+                    <div class="sum-hdr">
+                        <h3><i class="fas fa-file-signature"></i> Ringkasan Data Pendaftaran</h3>
+                        <button type="button" class="btn-edit" onclick="goTo(1)"><i class="fas fa-pen"></i> Edit</button>
+                    </div>
+                    <div class="sum-grid" id="sumGrid"><!-- JS --></div>
+                </div>
+
+                <!-- Peraturan -->
+                <div class="rules-box">
+                    <div class="rules-title"><i class="fas fa-gavel"></i> Peraturan Penggunaan Portal Siswa SMAN 68 Jakarta</div>
+                    <ol class="rules-list">
+                        <li>Siswa wajib menggunakan akun ini hanya untuk keperluan administrasi dan akademik resmi SMAN 68 Jakarta.</li>
+                        <li>Dilarang keras meminjamkan, menyebarkan, atau memberikan data akun (username & password) kepada pihak lain.</li>
+                        <li>Seluruh data yang diisikan dalam formulir ini harus sesuai dengan dokumen resmi dan dapat dipertanggungjawabkan.</li>
+                        <li>Akun yang terbukti menggunakan data palsu atau data orang lain akan langsung diblokir dan ditindaklanjuti secara akademik.</li>
+                        <li>Siswa bertanggung jawab penuh atas segala aktivitas yang dilakukan menggunakan akun ini.</li>
+                        <li>Perubahan data pribadi hanya dapat dilakukan melalui Operator atau Tata Usaha SMAN 68 Jakarta dengan bukti dokumen resmi.</li>
+                        <li>Akun yang tidak aktif selama lebih dari 1 tahun ajaran dapat dinonaktifkan secara otomatis oleh sistem.</li>
+                        <li>Siswa wajib segera melaporkan kepada operator apabila menduga akun telah diakses oleh pihak yang tidak berwenang.</li>
+                        <li>Penggunaan portal untuk menyebarkan konten negatif, hoaks, atau hal-hal yang melanggar norma sekolah sangat dilarang.</li>
+                        <li>Dengan mendaftarkan akun ini, siswa menyatakan telah membaca, memahami, dan menyetujui seluruh peraturan yang berlaku di SMAN 68 Jakarta.</li>
+                    </ol>
+                </div>
+
+                <!-- Agreement -->
+                <label class="agree-wrap">
+                    <input type="checkbox" id="agreeChk" class="cb-custom">
+                    <div class="agree-txt">
+                        <strong>Pernyataan Persetujuan</strong><br>
+                        Saya menyatakan bahwa seluruh data yang diisikan adalah benar, saya telah membaca dan menyetujui semua peraturan di atas, serta bersedia bertanggung jawab atas penggunaan akun portal siswa SMAN 68 Jakarta.
+                    </div>
+                </label>
+            </div>
+
+            <!-- Nav -->
+            <div class="nav-row">
+                <button type="button" class="btn btn-back" id="btnBack" style="visibility:hidden" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i> Kembali
+                </button>
+                <button type="button" class="btn btn-next" id="btnNext" onclick="goNext()">
+                    Lanjutkan <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="submit" class="btn btn-sub" id="btnSub" style="display:none">
+                    <i class="fas fa-paper-plane"></i> Proses Pendaftaran Akun
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="ftr">
+        <p>&copy; 2026 SMAN 68 Jakarta &mdash; Sistem Pendaftaran Terintegrasi</p>
+        <p style="margin-top:4px">Sudah punya akun? <a href="./portal-siswa-68.html"><i class="fas fa-right-to-bracket"></i> Login Portal Siswa</a></p>
+    </div>
+
+</div><!-- /wrapper -->
+
+<script>
+/* ─── Firebase ─── */
+const firebaseConfig = {
+    apiKey:"AIzaSyDAcKcg3alPOTH3FFGelYmsW7jcMMe2PLI",
+    authDomain:"upnvjdatsystem.firebaseapp.com",
+    projectId:"upnvjdatsystem",
+    storageBucket:"upnvjdatsystem.firebasestorage.app",
+    messagingSenderId:"57095309946",
+    appId:"1:57095309946:web:b0e9f3f86380d549ffc9c3"
+};
+if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* ─── State ─── */
+let cur = 1, total = 4;
+
+/* ─── Step UI ─── */
+function updateUI(){
+    const pct = ((cur-1)/(total-1))*100;
+    document.getElementById('sfill').style.width = pct+'%';
+
+    for(let i=1;i<=total;i++){
+        const el = document.getElementById('si'+i);
+        el.classList.remove('active','done');
+        if(i<cur)  el.classList.add('done');
+        if(i===cur) el.classList.add('active');
+    }
+
+    document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+    document.getElementById('s'+cur).classList.add('active');
+
+    const bb = document.getElementById('btnBack');
+    const bn = document.getElementById('btnNext');
+    const bs = document.getElementById('btnSub');
+
+    bb.style.visibility = cur===1 ? 'hidden' : 'visible';
+    if(cur===total){
+        bn.style.display='none'; bs.style.display='inline-flex';
+        buildSummary();
+    } else {
+        bn.style.display='inline-flex'; bs.style.display='none';
+    }
+}
+
+function goTo(n){ cur=n; updateUI(); }
+function goBack(){ if(cur>1){ cur--; updateUI(); } }
+function goNext(){
+    if(cur===1 && !v1()) return;
+    if(cur===2 && !v2()) return;
+    if(cur===3 && !v3()) return;
+    if(cur<total){ cur++; updateUI(); }
+}
+
+/* ─── Year Ajaran Format ─── */
+function formatTahunAjaran(el){
+    let v = el.value.replace(/[^\d\/]/g,'');
+    // Auto-insert slash after 4 digits
+    if(v.length===4 && !v.includes('/')) v = v+'/';
+    if(v.length>9) v=v.slice(0,9);
+    el.value=v;
+}
+
+/* ─── Validation Helpers ─── */
+function setErr(id, show){
+    const ig = document.getElementById('ig-'+id);
+    const em = document.getElementById('e-'+id);
+    if(!ig) return;
+    ig.classList.toggle('err', show);
+    if(em) em.classList.toggle('show-err', show);
+}
+function clrAll(step){ document.getElementById('s'+step).querySelectorAll('.ig').forEach(el=>el.classList.remove('err')); document.getElementById('s'+step).querySelectorAll('.errmsg').forEach(el=>el.classList.remove('show-err')); }
+function isEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+function v1(){
+    clrAll(1); let ok=true;
+    const chk=(id,cond)=>{ if(cond){setErr(id,true);ok=false;} };
+    chk('nama',     !V('nama'));
+    chk('nisn',     V('nisn').length!==10);
+    chk('jenisKelamin', !V('jenisKelamin'));
+    chk('tempatLahir',  !V('tempatLahir'));
+    chk('tanggalLahir', !V('tanggalLahir'));
+    chk('alamat',   !V('alamat'));
+    const em=V('email'); if(em&&!isEmail(em)){setErr('email',true);ok=false;}
+    if(!ok) toast('warn','Data Belum Lengkap','Mohon lengkapi kolom yang ditandai merah.');
+    return ok;
+}
+
+function v2(){
+    clrAll(2); let ok=true;
+    const chk=(id,cond)=>{ if(cond){setErr(id,true);ok=false;} };
+    chk('nis',          !V('nis'));
+    chk('kelas',        !V('kelas'));
+    chk('jurusan',      !V('jurusan'));
+    chk('tahunAjaran',  !(/^\d{4}\/\d{4}$/.test(V('tahunAjaran'))));
+    chk('tglMasuk',     !V('tglMasuk'));
+    chk('estimasiLulus',!V('estimasiLulus'));
+    if(!ok) toast('warn','Data Sekolah Belum Lengkap','Periksa kembali isian data sekolah.');
+    return ok;
+}
+
+function v3(){
+    clrAll(3); let ok=true;
+    const pw=V('password'), cp=V('konfirmPassword');
+    if(pw.length<6){setErr('password',true);ok=false;}
+    if(!cp||pw!==cp){setErr('konfirmPassword',true);ok=false;}
+    if(!ok) toast('warn','Setup Password','Pastikan password minimal 6 karakter dan cocok.');
+    return ok;
+}
+
+function V(id){ const el=document.getElementById(id); return el?(el.value||'').trim():''; }
+
+/* ─── Summary ─── */
+function buildSummary(){
+    const jk = V('jenisKelamin')==='L'?'Laki-Laki':'Perempuan';
+    const rows = [
+        ['Nama Lengkap',   V('nama')],
+        ['NISN',           V('nisn')],
+        ['Tempat Lahir',   V('tempatLahir')],
+        ['Tanggal Lahir',  V('tanggalLahir')],
+        ['Jenis Kelamin',  jk],
+        ['Alamat',         V('alamat')],
+        ['No. HP/WA',      V('noHp')||'-'],
+        ['Email',          V('email')||'-'],
+        ['NIS Sekolah',    V('nis')],
+        ['Kelas',          V('kelas')],
+        ['Jurusan',        V('jurusan')],
+        ['Tahun Ajaran',   V('tahunAjaran')],
+        ['Tanggal Masuk',  V('tglMasuk')],
+        ['Estimasi Lulus', V('estimasiLulus')],
+    ];
+    document.getElementById('sumGrid').innerHTML = rows.map(([l,v])=>
+        `<div class="sum-itm"><span class="sum-lbl">${l}</span><span class="sum-val">${v||'-'}</span></div>`
+    ).join('');
+}
+
+/* ─── Toggle Eye ─── */
+function toggleEye(id, ico){
+    const el=document.getElementById(id);
+    if(el.type==='password'){ el.type='text'; ico.classList.replace('fa-eye','fa-eye-slash'); }
+    else { el.type='password'; ico.classList.replace('fa-eye-slash','fa-eye'); }
+}
+
+/* ─── Password Strength ─── */
+document.getElementById('password').addEventListener('input',function(){
+    const v=this.value, box=document.getElementById('pwStr'), txt=document.getElementById('strTxt');
+    box.classList.remove('s1','s2','s3');
+    if(!v.length){ txt.textContent='Minimal 6 karakter'; txt.style.color=''; return; }
+    let s=0;
+    if(v.length>=6) s++;
+    if(/[A-Z]/.test(v)&&/[0-9]/.test(v)) s++;
+    if(/[^A-Za-z0-9]/.test(v)) s++;
+    if(s===1){ box.classList.add('s1'); txt.textContent='Lemah'; txt.style.color='var(--error)'; }
+    else if(s===2){ box.classList.add('s2'); txt.textContent='Sedang'; txt.style.color='var(--warn)'; }
+    else { box.classList.add('s3'); txt.textContent='Kuat'; txt.style.color='var(--ok)'; }
+});
+
+/* ─── Toast ─── */
+function toast(type,title,msg){
+    const box=document.getElementById('toastBox');
+    const t=document.createElement('div');
+    t.className='toast '+(type==='ok'?'ok':type==='warn'?'warn':'fail');
+    const ic = type==='ok'?'circle-check':type==='warn'?'triangle-exclamation':'circle-exclamation';
+    t.innerHTML=`<i class="fas fa-${ic} ti"></i><div><div class="tt">${title}</div><div class="tm">${msg}</div></div>`;
+    box.appendChild(t);
+    setTimeout(()=>{ t.style.animation='tOut .38s var(--ease) forwards'; setTimeout(()=>t.remove(),450); },4200);
+}
+
+/* ─── Success & Redirect ─── */
+function showSuccess(){
+    const ov=document.getElementById('successOverlay');
+    ov.classList.add('show');
+    let n=5;
+    const ci=document.getElementById('countdownNum');
+    const rc=document.getElementById('ringCircle');
+    const full=157;
+    rc.style.strokeDashoffset=0;
+    const tick=setInterval(()=>{
+        n--;
+        ci.textContent=n;
+        rc.style.strokeDashoffset = full*(n/5);
+        if(n<=0){ clearInterval(tick); window.location.href='./portal-siswa-68.html'; }
+    },1000);
+}
+
+/* ─── Submit ─── */
+document.getElementById('regForm').addEventListener('submit', async(e)=>{
+    e.preventDefault();
+    if(!document.getElementById('agreeChk').checked){
+        toast('warn','Persetujuan Diperlukan','Centang kotak persetujuan peraturan terlebih dahulu.');
+        return;
+    }
+    const bs=document.getElementById('btnSub');
+    const orig=bs.innerHTML;
+    bs.disabled=true;
+    bs.innerHTML='<i class="fas fa-spinner fa-spin"></i> Memproses Data…';
+
+    try {
+        const nis=V('nis'), nisn=V('nisn');
+
+        const nisChk=await db.collection('siswa').where('nis','==',nis).get();
+        if(!nisChk.empty){ toast('fail','NIS Sudah Terdaftar','NIS tersebut sudah ada di sistem.'); bs.disabled=false; bs.innerHTML=orig; return; }
+
+        const nisnChk=await db.collection('siswa').where('nisn','==',nisn).get();
+        if(!nisnChk.empty){ toast('fail','NISN Sudah Terdaftar','NISN tersebut sudah ada di sistem.'); bs.disabled=false; bs.innerHTML=orig; return; }
+
+        const data={
+            nama:         V('nama'),
+            nisn,
+            tempatLahir:  V('tempatLahir'),
+            tanggalLahir: V('tanggalLahir'),
+            jenisKelamin: V('jenisKelamin'),
+            noHp:         V('noHp'),
+            email:        V('email'),
+            alamat:       V('alamat'),
+            nis,
+            kelas:        V('kelas'),
+            jurusan:      V('jurusan'),
+            tahunAjaran:  V('tahunAjaran'),
+            tglMasuk:     V('tglMasuk'),
+            estimasiLulus:V('estimasiLulus'),
+            password:     document.getElementById('password').value,
+            status:       'pending',
+            tglDaftar:    firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        await db.collection('siswa').add(data);
+        showSuccess();
+
+    } catch(err){
+        console.error(err);
+        const msg = err.code==='permission-denied'
+            ? 'Akses ditolak Firebase. Periksa Security Rules.'
+            : 'Terjadi kesalahan sistem. Coba beberapa saat lagi.';
+        toast('fail','Gagal Memproses', msg);
+        bs.disabled=false; bs.innerHTML=orig;
+    }
+});
+
+/* ─── Init ─── */
+updateUI();
+</script>
+</body>
+</html>

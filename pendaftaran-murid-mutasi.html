@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pendaftaran Murid Mutasi – SMAN 68 Jakarta</title>
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="pendaftaran-murid-mutasi.css">
+</head>
+<body>
+
+<!-- Toast -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-logo-wrap">
+      <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68" class="header-logo">
+    </div>
+    <div class="header-brand">
+      <h1>Pendaftaran Murid Mutasi Gelombang 2</h1>
+      <p>SMA Negeri 68 Jakarta · T.A. 2026/2027</p>
+    </div>
+    <div class="header-right">
+      <div class="clock-display" id="clockDisplay">00:00:00</div>
+      <button class="theme-toggle" id="themeToggle" title="Ganti tema">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Main -->
+<div class="main-wrap">
+
+  <!-- Banner -->
+  <div class="info-banner">
+    <i class="fas fa-circle-info"></i>
+    <div>
+      <strong>Pendaftaran dibuka:</strong> 24 Agustus 2026, 08.00 WIB &nbsp;·&nbsp;
+      <strong>Kuota:</strong> Maks. 10% dari total siswa per kelas &nbsp;·&nbsp;
+      Setiap email dan nomor telepon hanya dapat digunakan untuk <strong>1 (satu) pendaftaran</strong>.
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs-bar" role="tablist">
+    <button class="tab-btn active" data-tab="daftar" role="tab">
+      <i class="fas fa-user-plus"></i> Daftar
+    </button>
+    <button class="tab-btn" data-tab="status" role="tab">
+      <i class="fas fa-magnifying-glass"></i> Cek Status
+    </button>
+    <button class="tab-btn" data-tab="batal" role="tab">
+      <i class="fas fa-xmark-circle"></i> Batalkan
+    </button>
+  </div>
+
+  <!-- ==============================
+       TAB: DAFTAR
+  ============================== -->
+  <div class="tab-pane active" id="tab-daftar">
+
+    <!-- Step Progress -->
+    <div class="steps-outer">
+      <div class="steps-progress" id="stepsProgress">
+        <div class="step-item active" id="step1">
+          <div class="step-circle">1<span class="step-label">Data Diri</span></div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-item" id="step2">
+          <div class="step-circle">2<span class="step-label">Dokumen</span></div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-item" id="step3">
+          <div class="step-circle">3<span class="step-label">Review</span></div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-item" id="step4">
+          <div class="step-circle">4<span class="step-label">Peraturan</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 1: Data Diri -->
+    <div id="formStep1">
+
+      <!-- Data Diri -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon"><i class="fas fa-user-circle"></i></div>
+          <div>
+            <h2>Data Diri Calon Siswa</h2>
+            <p>Isi sesuai dokumen resmi</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-user"></i> Nama Lengkap <span class="req">*</span></label>
+          <input type="text" id="f_nama" class="form-input" placeholder="Nama lengkap sesuai akta kelahiran">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-calendar-days"></i> Tanggal Lahir <span class="req">*</span></label>
+            <input type="date" id="f_tglLahir" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-venus-mars"></i> Jenis Kelamin <span class="req">*</span></label>
+            <select id="f_jk" class="form-input">
+              <option value="">Pilih</option>
+              <option value="L">Laki-laki</option>
+              <option value="P">Perempuan</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-star-and-crescent"></i> Agama <span class="req">*</span></label>
+            <select id="f_agama" class="form-input">
+              <option value="">Pilih Agama</option>
+              <option>Islam</option>
+              <option>Kristen</option>
+              <option>Katolik</option>
+              <option>Hindu</option>
+              <option>Buddha</option>
+              <option>Konghucu</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-layer-group"></i> Kelas Saat Ini <span class="req">*</span></label>
+            <input type="text" id="f_kelasSaatIni" class="form-input" placeholder="Contoh: XI MIPA 3">
+            <div class="form-hint"><i class="fas fa-info"></i> Kelas di sekolah asal tahun ini</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-arrow-right-arrow-left"></i> Pindah ke Kelas <span class="req">*</span></label>
+            <select id="f_mutasiKe" class="form-input">
+              <option value="">Pilih Kelas Tujuan</option>
+              <option value="X">Kelas X (Sepuluh)</option>
+              <option value="XI">Kelas XI (Sebelas)</option>
+              <option value="XII">Kelas XII (Dua Belas)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-book-open"></i> Kurikulum / Jurusan <span class="req">*</span></label>
+            <select id="f_kurikulum" class="form-input">
+              <option value="">Pilih Kurikulum</option>
+              <option value="Merdeka (Umum)">Merdeka (Umum)</option>
+              <option value="IPA">IPA</option>
+              <option value="IPS">IPS</option>
+              <option value="Keagamaan Islam">Keagamaan Islam</option>
+              <option value="Bahasa">Bahasa</option>
+              <option value="Bahasa dan Budaya">Bahasa dan Budaya</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-school"></i> Sekolah Asal <span class="req">*</span></label>
+            <input type="text" id="f_sekolahAsal" class="form-input" placeholder="Nama lengkap sekolah asal">
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-hashtag"></i> NPSN Sekolah Asal <span class="req">*</span></label>
+            <input type="text" id="f_npsn" class="form-input" placeholder="8 digit NPSN" maxlength="8" inputmode="numeric">
+            <div class="form-hint"><i class="fas fa-info"></i> Cek di <a href="https://referensi.data.kemdikbud.go.id" target="_blank" style="color:var(--blue)">referensi.data.kemdikbud.go.id</a></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-comment-dots"></i> Alasan Pindah <span class="req">*</span></label>
+          <textarea id="f_alasan" class="form-input" placeholder="Jelaskan alasan pindah ke SMAN 68 Jakarta..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-envelope"></i> Email Aktif <span class="req">*</span></label>
+            <input type="email" id="f_email" class="form-input" placeholder="contoh@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-mobile-screen"></i> No. Telepon Murid <span class="req">*</span></label>
+            <input type="tel" id="f_telpMurid" class="form-input" placeholder="08xxxxxxxxxx" inputmode="tel">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-phone"></i> No. Telepon Orang Tua/Wali <span class="req">*</span></label>
+          <input type="tel" id="f_telpOrtu" class="form-input" placeholder="08xxxxxxxxxx" inputmode="tel">
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary btn-lg" id="nextToStep2Btn">
+          Lanjut: Dokumen <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Dokumen -->
+    <div id="formStep2" style="display:none;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon"><i class="fas fa-folder-open"></i></div>
+          <div><h2>Dokumen Persyaratan</h2><p>Upload ke Google Drive lalu tempel link-nya</p></div>
+        </div>
+        <div class="alert alert-info">
+          <i class="fas fa-circle-info"></i>
+          <span>Pastikan sharing Google Drive diatur ke <strong>"Siapa saja yang memiliki link"</strong> dapat melihat.</span>
+        </div>
+        <div id="docListContainer"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon"><i class="fas fa-file-signature"></i></div>
+          <div><h2>Surat Pernyataan Siap Pindah</h2><p>Download, cetak, isi, tandatangani, lalu upload balik</p></div>
+        </div>
+        <div class="alert alert-warn">
+          <i class="fas fa-triangle-exclamation"></i>
+          <span>Download surat di bawah, cetak, isi dan tanda tangani oleh orang tua/wali, scan/foto, upload ke Google Drive, lalu tempel linknya.</span>
+        </div>
+        <a href="Surat_Pernyataan_Calon_Murid_Mutasi_SMAN68Jakarta.pdf" class="btn btn-download" target="_blank" id="downloadSuratBtn">
+          <i class="fas fa-file-arrow-down"></i> Download Surat Pernyataan
+        </a>
+        <div class="form-group" style="margin-top:16px;">
+          <label class="form-label"><i class="fab fa-google-drive"></i> Link Surat Pernyataan (Sudah Ditandatangani) <span class="req">*</span></label>
+          <input type="url" id="f_linkSurat" class="form-input" placeholder="https://drive.google.com/file/d/...">
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" id="backToStep1Btn"><i class="fas fa-arrow-left"></i> Kembali</button>
+        <button class="btn btn-primary btn-lg" id="nextToStep3Btn">Lanjut: Review Data <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Review Data -->
+    <div id="formStep3" style="display:none;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon"><i class="fas fa-eye"></i></div>
+          <div><h2>Review Data Pendaftaran</h2><p>Periksa kembali sebelum melanjutkan</p></div>
+        </div>
+        <div class="alert alert-warn">
+          <i class="fas fa-triangle-exclamation"></i>
+          <span>Pastikan semua data sudah benar. Setelah pendaftaran dikirim, data <strong>tidak dapat diubah</strong>.</span>
+        </div>
+        <div id="reviewContent"></div>
+        <div class="btn-group">
+          <button class="btn btn-secondary" id="backToStep2Btn"><i class="fas fa-edit"></i> Edit Data</button>
+          <button class="btn btn-primary btn-lg" id="nextToStep4Btn">Data Sudah Benar <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Peraturan & Submit -->
+    <div id="formStep4" style="display:none;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon"><i class="fas fa-gavel"></i></div>
+          <div><h2>Peraturan & Ketentuan</h2><p>Baca sampai selesai sebelum mendaftar</p></div>
+        </div>
+        <div class="rules-scroll">
+          <ol>
+            <li>Calon siswa mutasi wajib mematuhi seluruh tata tertib yang berlaku di SMAN 68 Jakarta.</li>
+            <li>Calon siswa mutasi harus memiliki nilai rapor rata-rata minimal 80 untuk semua mata pelajaran.</li>
+            <li>Calon siswa mutasi tidak pernah tinggal kelas selama menempuh pendidikan di sekolah sebelumnya.</li>
+            <li>Calon siswa mutasi tidak pernah terlibat kasus kriminal, narkoba, atau pelanggaran hukum lainnya.</li>
+            <li>Calon siswa mutasi wajib mengikuti tes penempatan dan wawancara sesuai jadwal yang ditentukan.</li>
+            <li>Calon siswa mutasi wajib menyerahkan seluruh dokumen persyaratan yang telah ditentukan.</li>
+            <li>Calon siswa mutasi bersedia mengikuti masa orientasi dan adaptasi selama 1 bulan pertama.</li>
+            <li>Calon siswa mutasi wajib menggunakan seragam resmi SMAN 68 Jakarta setelah dinyatakan diterima.</li>
+            <li>Calon siswa mutasi tidak diperkenankan membawa kendaraan bermotor ke sekolah.</li>
+            <li>Orang tua/wali wajib hadir saat proses wawancara dan daftar ulang.</li>
+            <li>Calon siswa mutasi yang diterima wajib mengikuti seluruh kegiatan akademik dan non-akademik.</li>
+            <li>Calon siswa mutasi bersedia menjaga nama baik sekolah dan almamater.</li>
+            <li>Data yang diberikan dalam formulir ini adalah benar dan dapat dipertanggungjawabkan.</li>
+            <li>Jika terbukti memberikan data palsu, pendaftaran akan dibatalkan tanpa pemberitahuan.</li>
+            <li>Keputusan panitia seleksi bersifat mutlak dan tidak dapat diganggu gugat.</li>
+          </ol>
+        </div>
+        <div class="checkbox-row" style="margin-bottom:14px;">
+          <input type="checkbox" id="agreeRules">
+          <label for="agreeRules">Saya telah membaca, memahami, dan menyetujui seluruh peraturan di atas serta bersedia mematuhinya.</label>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-secondary" id="backToStep3Btn"><i class="fas fa-arrow-left"></i> Kembali</button>
+          <button class="btn btn-primary btn-lg" id="submitBtn" disabled>
+            <i class="fas fa-paper-plane"></i> Proses Pendaftaran
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end tab-daftar -->
+
+  <!-- ==============================
+       TAB: CEK STATUS
+  ============================== -->
+  <div class="tab-pane" id="tab-status">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon"><i class="fas fa-magnifying-glass"></i></div>
+        <div><h2>Cek Status Pendaftaran</h2><p>Masukkan nomor pendaftaran Anda</p></div>
+      </div>
+      <div class="alert alert-info">
+        <i class="fas fa-circle-info"></i>
+        <span>Nomor pendaftaran diberikan setelah proses pendaftaran berhasil. Format: <strong>198168XXXXXXXX</strong></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fas fa-hashtag"></i> Nomor Pendaftaran</label>
+        <input type="text" id="cekNoDaftar" class="form-input" placeholder="198168XXXXXXXX" maxlength="14" style="font-family:var(--font-mono);letter-spacing:1px;">
+      </div>
+      <button class="btn btn-primary btn-full btn-lg" id="cekStatusBtn">
+        <i class="fas fa-magnifying-glass"></i> Cek Status
+      </button>
+      <div id="statusResult"></div>
+    </div>
+  </div>
+
+  <!-- ==============================
+       TAB: BATALKAN
+  ============================== -->
+  <div class="tab-pane" id="tab-batal">
+    <div class="card cancel-flow">
+      <div class="card-header">
+        <div class="card-icon" style="background:linear-gradient(135deg,#f43f5e,#dc2626)"><i class="fas fa-xmark-circle"></i></div>
+        <div><h2>Batalkan Pendaftaran</h2><p>Masukkan nomor pendaftaran untuk melihat data & membatalkan</p></div>
+      </div>
+      <div class="alert alert-danger">
+        <i class="fas fa-triangle-exclamation"></i>
+        <span><strong>Perhatian:</strong> Pembatalan bersifat permanen dan tidak dapat dibatalkan kembali. Anda perlu mendaftar ulang jika ingin mendaftar lagi.</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fas fa-hashtag"></i> Nomor Pendaftaran</label>
+        <input type="text" id="batalNoDaftar" class="form-input" placeholder="198168XXXXXXXX" maxlength="14" style="font-family:var(--font-mono);letter-spacing:1px;">
+      </div>
+      <button class="btn btn-secondary btn-full" id="cariDataBatalBtn">
+        <i class="fas fa-magnifying-glass"></i> Tampilkan Data Pendaftaran
+      </button>
+      <div id="batalDataPreview"></div>
+      <div id="batalFormArea" style="display:none;">
+        <div class="divider"></div>
+        <div class="card-header" style="margin-top:0;margin-bottom:16px;border-bottom:none;padding-bottom:0;">
+          <div><h2 style="font-size:1rem;">Syarat Pembatalan</h2></div>
+        </div>
+        <div class="rules-scroll" style="max-height:180px;">
+          <ol>
+            <li>Pembatalan pendaftaran bersifat permanen dan tidak dapat dibatalkan kembali.</li>
+            <li>Data pendaftaran akan dihapus dari sistem dan nomor pendaftaran tidak dapat digunakan kembali.</li>
+            <li>Jika ingin mendaftar kembali, Anda wajib mengisi formulir baru dari awal.</li>
+            <li>Pastikan keputusan pembatalan sudah disetujui oleh orang tua/wali.</li>
+            <li>Pembatalan tidak mempengaruhi data di sekolah asal Anda.</li>
+          </ol>
+        </div>
+        <div class="checkbox-row" style="margin:14px 0;">
+          <input type="checkbox" id="agreeBatal">
+          <label for="agreeBatal">Saya memahami konsekuensi pembatalan dan setuju untuk membatalkan pendaftaran ini.</label>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-pen-nib"></i> Tanda Tangan Digital <span class="req">*</span></label>
+          <div class="sig-canvas-wrap" id="sigWrap">
+            <canvas id="sigCanvas" height="160" style="width:100%;"></canvas>
+            <div class="sig-placeholder" id="sigPlaceholder">
+              <i class="fas fa-pen-nib"></i>
+              Tanda tangan di sini
+            </div>
+          </div>
+          <div class="sig-controls">
+            <button class="btn btn-secondary" style="padding:7px 14px;font-size:0.8rem;" id="clearSigBtn">
+              <i class="fas fa-eraser"></i> Hapus
+            </button>
+            <small id="sigStatus">Belum ada tanda tangan</small>
+          </div>
+        </div>
+        <button class="btn btn-danger btn-full btn-lg" id="batalSubmitBtn" style="margin-top:16px;" disabled>
+          <i class="fas fa-xmark-circle"></i> Batalkan Pendaftaran
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end main-wrap -->
+
+<!-- Modal: Sukses Daftar -->
+<div class="modal-overlay" id="modalSukses">
+  <div class="modal-box">
+    <div class="modal-icon success"><i class="fas fa-circle-check"></i></div>
+    <h2>Pendaftaran Berhasil!</h2>
+    <p>Nomor pendaftaran Anda:</p>
+    <div class="reg-number-display" id="displayNomor">198168XXXXXXXX</div>
+    <div class="modal-note">
+      <i class="fas fa-circle-info"></i>
+      Simpan nomor ini untuk mengecek status pendaftaran.<br>
+      Berkas akan diverifikasi oleh operator dalam <strong>1×24 jam</strong>.
+    </div>
+    <button class="btn btn-primary btn-full" id="closeModalSukses"><i class="fas fa-check"></i> Saya Mengerti</button>
+  </div>
+</div>
+
+<!-- Modal: Konfirmasi Batal -->
+<div class="modal-overlay" id="modalKonfBatal">
+  <div class="modal-box">
+    <div class="modal-icon warning"><i class="fas fa-triangle-exclamation"></i></div>
+    <h2>Konfirmasi Pembatalan</h2>
+    <p>Anda yakin ingin membatalkan pendaftaran ini? Tindakan ini <strong>tidak dapat dibatalkan</strong>.</p>
+    <div class="btn-group" style="margin-top:20px;justify-content:center;">
+      <button class="btn btn-secondary" id="closeModalKonfBatal">Tidak, Kembali</button>
+      <button class="btn btn-danger" id="konfBatalYesBtn"><i class="fas fa-xmark"></i> Ya, Batalkan</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==============================
+     GATE: STATUS PENDAFTARAN
+============================== -->
+<div id="registrationGate" class="active">
+  <div class="gate-loading" id="gateLoading">
+    <div class="gate-spinner"></div>
+    <p>Memeriksa status pendaftaran...</p>
+  </div>
+  <div class="gate-card gate-closed" id="gateClosed" style="display:none;">
+    <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68" class="gate-school-logo"/>
+    <div class="gate-icon-wrap"><i class="fas fa-door-closed"></i></div>
+    <h2>Pendaftaran Ditutup</h2>
+    <p>Saat ini pendaftaran murid mutasi <strong>SMAN 68 Jakarta</strong> sedang ditutup.<br>Pantau terus informasi pembukaan pendaftaran melalui website resmi sekolah.</p>
+  </div>
+  <div class="gate-card gate-countdown" id="gateCountdown" style="display:none;">
+    <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68" style="width:56px;height:56px;object-fit:contain;display:block;margin:0 auto 20px;"/>
+    <div class="gate-icon-wrap"><i class="fas fa-clock"></i></div>
+    <h2>Pendaftaran Akan Segera Dibuka</h2>
+    <p class="gate-open-date" id="gateOpenDateText">Pembukaan: <strong>–</strong></p>
+    <div class="countdown-tiles">
+      <div class="cd-tile"><span class="cd-num" id="cdDays">00</span><span class="cd-label">Hari</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-tile"><span class="cd-num" id="cdHours">00</span><span class="cd-label">Jam</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-tile"><span class="cd-num" id="cdMinutes">00</span><span class="cd-label">Menit</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-tile"><span class="cd-num" id="cdSeconds">00</span><span class="cd-label">Detik</span></div>
+    </div>
+    <p class="gate-note"><i class="fas fa-circle-info" style="color:var(--blue);margin-right:6px;"></i>Form pendaftaran akan terbuka otomatis ketika countdown mencapai 0. Tidak perlu refresh halaman.</p>
+  </div>
+</div>
+
+<script src="pendaftaran-murid-mutasi.js"></script>
+</body>
+</html>

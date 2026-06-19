@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>VIRSCH 68 - SMAN 68 Jakarta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+    <link rel="shortcut icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+    <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #006633;
+            --primary-blue: #0088cc;
+            --gradient-primary: linear-gradient(135deg, #006633 0%, #0088cc 100%);
+            --gold: #c9a84c;
+            --gold-light: #f0d78c;
+            --white: #ffffff;
+            --dark: #1e293b;
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.3);
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a1628 0%, #0f2035 30%, #1a3a4a 60%, #0d2137 100%);
+            background-size: 400% 400%;
+            animation: bgShift 15s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            overflow-x: hidden;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Stars Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Main Container */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 1100px;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .logo-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+        .logo-ring {
+            position: absolute;
+            inset: -10px;
+            border-radius: 50%;
+            border: 2px solid rgba(201, 168, 76, 0.3);
+            animation: ringRotate 12s linear infinite;
+        }
+        .logo-ring:nth-child(2) {
+            inset: -18px;
+            border-style: dashed;
+            animation-duration: 18s;
+            animation-direction: reverse;
+        }
+        @keyframes ringRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .logo-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: white;
+            padding: 6px;
+            box-shadow: 0 0 50px rgba(201, 168, 76, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+        .header-badge {
+            display: inline-block;
+            padding: 10px 28px;
+            background: rgba(201, 168, 76, 0.15);
+            border: 1px solid rgba(201, 168, 76, 0.4);
+            border-radius: 50px;
+            color: var(--gold-light);
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            margin-bottom: 18px;
+            backdrop-filter: blur(10px);
+        }
+        .main-title {
+            font-size: clamp(2.2rem, 6vw, 3.5rem);
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .main-title span {
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        /* Card */
+        .virsch-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+        }
+        .virsch-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: var(--radius-xl);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+        .virsch-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(201, 168, 76, 0.5);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 80px rgba(201, 168, 76, 0.15);
+        }
+        .virsch-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Card Banner */
+        .card-banner {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            transition: var(--transition);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+        }
+        .virsch-card:hover .card-banner {
+            transform: scale(1.03);
+        }
+
+        /* Card Content */
+        .card-content {
+            padding: 25px 20px 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-class {
+            display: inline-block;
+            padding: 6px 18px;
+            background: rgba(201, 168, 76, 0.15);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+            border-radius: 50px;
+            color: var(--gold-light);
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            margin: 0 auto 15px;
+        }
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+        .card-desc {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 25px;
+            flex: 1;
+        }
+        .card-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .virsch-card:hover .card-btn {
+            background: linear-gradient(135deg, var(--gold), #b8941f);
+            border-color: transparent;
+            color: var(--dark);
+            box-shadow: 0 10px 30px rgba(201, 168, 76, 0.3);
+        }
+        .card-btn i {
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .virsch-card:hover .card-btn i {
+            transform: translateX(4px);
+        }
+
+        /* Card Colors */
+        .card-10 {
+            background: rgba(0, 136, 204, 0.03);
+            border-color: rgba(0, 136, 204, 0.15);
+        }
+        .card-10:hover {
+            border-color: rgba(0, 136, 204, 0.5);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 80px rgba(0, 136, 204, 0.2);
+        }
+        .card-10 .card-class { background: rgba(0, 136, 204, 0.15); border-color: rgba(0, 136, 204, 0.3); color: #00aaff; }
+        .card-10:hover .card-btn { background: linear-gradient(135deg, #0088cc, #006699); color: white; }
+
+        .card-11 {
+            background: rgba(0, 102, 51, 0.03);
+            border-color: rgba(0, 102, 51, 0.15);
+        }
+        .card-11:hover {
+            border-color: rgba(0, 102, 51, 0.5);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 80px rgba(0, 102, 51, 0.2);
+        }
+        .card-11 .card-class { background: rgba(0, 102, 51, 0.15); border-color: rgba(0, 102, 51, 0.3); color: #00cc66; }
+        .card-11:hover .card-btn { background: linear-gradient(135deg, #006633, #004d26); color: white; }
+
+        .card-12 {
+            background: rgba(201, 168, 76, 0.03);
+            border-color: rgba(201, 168, 76, 0.15);
+        }
+        .card-12:hover {
+            border-color: rgba(201, 168, 76, 0.5);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 80px rgba(201, 168, 76, 0.2);
+        }
+        .card-12 .card-class { background: rgba(201, 168, 76, 0.15); border-color: rgba(201, 168, 76, 0.3); color: var(--gold-light); }
+        .card-12:hover .card-btn { background: linear-gradient(135deg, var(--gold), #b8941f); color: var(--dark); }
+
+        /* Footer */
+        .footer-text {
+            text-align: center;
+            margin-top: 50px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+        .footer-text i { margin: 0 6px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                max-width: 450px;
+                margin: 0 auto;
+            }
+            .card-banner {
+                height: 200px;
+            }
+            .main-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 20px;
+            }
+            .cards-grid {
+                gap: 20px;
+            }
+            .card-banner {
+                height: 180px;
+            }
+            .card-content {
+                padding: 20px 15px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Stars Background -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-wrapper">
+                <div class="logo-ring"></div>
+                <div class="logo-ring"></div>
+                <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68" class="logo-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'90\' height=\'90\' viewBox=\'0 0 90 90\'%3E%3Crect width=\'90\' height=\'90\' fill=\'%23006633\' rx=\'45\'/%3E%3Ctext x=\'50%25\' y=\'55%25\' text-anchor=\'middle\' fill=\'white\' font-size=\'40\' font-weight=\'bold\'%3E68%3C/text%3E%3C/svg%3E'">
+            </div>
+            <div class="header-badge">
+                <i class="fas fa-trophy"></i> VIRTUAL SCHOOL
+            </div>
+            <h1 class="main-title">VIRSCH <span>68</span></h1>
+            <p class="subtitle">Pilih Kelas Virtual School Anda</p>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="cards-grid">
+            <!-- Kelas 10 -->
+            <a href="http://116.197.128.22/" target="_blank" class="virsch-card card-10">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgcU7h3oeQIElGVZwyoTHh_hygQx_3FTbb9IM4_4n8xYce-LzBW5PmKbVX9ZgIOxH_JV9cEW4Geb9CxcmI97xBR5bDCH0fjWpVIFyuKjHp8gEK7A_LuSuJLrz5hV0WAl4hX9gTAF1jo1SJp1NqT_r891tVP2aQAJkHbwbTSDG7VQvgIm0WATpiaRxj6mlYu/s320/ChatGPT%20Image%20Apr%2024,%202026,%2003_19_06%20PM.png" alt="VIRSCH Kelas 10" class="card-banner" loading="lazy">
+                <div class="card-content">
+                    <span class="card-class">KELAS X</span>
+                    <h3 class="card-title">VIRSCH Kelas 10</h3>
+                    <p class="card-desc">Akses pembelajaran virtual untuk siswa kelas 10 SMAN 68 Jakarta</p>
+                    <span class="card-btn">
+                        Masuk <i class="fas fa-arrow-right"></i>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Kelas 11 -->
+            <a href="http://116.197.128.23/" target="_blank" class="virsch-card card-11">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgkJ1-01aHSaR5Ua8JYhkuv2NuJbgOeZZ5TATudW_QoTU5ZsN5OMgLgfO9P5DWLGqzaBXJQg_CxX_WKXWNfruDBBaPoyOmiFh5i2-fZuXran46Eij3XTUUZXsRYswGf1JBllGm5J88wY-jNfR9rpLzmRQiYiQHVYtBA24k0cmjoR6uH5Ty8LdOgGwfIDGHj/s320/ChatGPT%20Image%20Apr%2024,%202026,%2003_18_05%20PM.png" alt="VIRSCH Kelas 11" class="card-banner" loading="lazy">
+                <div class="card-content">
+                    <span class="card-class">KELAS XI</span>
+                    <h3 class="card-title">VIRSCH Kelas 11</h3>
+                    <p class="card-desc">Akses pembelajaran virtual untuk siswa kelas 11 SMAN 68 Jakarta</p>
+                    <span class="card-btn">
+                        Masuk <i class="fas fa-arrow-right"></i>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Kelas 12 -->
+            <a href="http://116.197.128.191/" target="_blank" class="virsch-card card-12">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjcq08ePJi1aug1Q2hyhyMtI31ag0auTtSyBVUr-o8EWJ3VfB7SCJZ6pq_3VlIV7jdk9yU-NI2pFYai8OP8X0ZJqkUCZT_4WI6w-AX_FB-jTuwUeAlczBn-otOOoPio6kX7ZjzwLykwzV_pet0ODfBmBtgiO0pL6GHLk2Xs0DAcxZu2_TlRN6T-yaeGw1nE/s320/ChatGPT%20Image%20Apr%2024,%202026,%2003_17_15%20PM.png" alt="VIRSCH Kelas 12" class="card-banner" loading="lazy">
+                <div class="card-content">
+                    <span class="card-class">KELAS XII</span>
+                    <h3 class="card-title">VIRSCH Kelas 12</h3>
+                    <p class="card-desc">Akses pembelajaran virtual untuk siswa kelas 12 SMAN 68 Jakarta</p>
+                    <span class="card-btn">
+                        Masuk <i class="fas fa-arrow-right"></i>
+                    </span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-text">
+            <i class="fas fa-circle" style="font-size: 3px;"></i> 
+            Disiplin 
+            <i class="fas fa-circle" style="font-size: 3px;"></i> 
+            Kreasi 
+            <i class="fas fa-circle" style="font-size: 3px;"></i> 
+            Prestasi 
+            <i class="fas fa-circle" style="font-size: 3px;"></i>
+        </div>
+    </div>
+
+    <script>
+        // Create stars
+        function createStars() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 3;
+                
+                star.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${posX}%;
+                    top: ${posY}%;
+                    animation-delay: ${delay}s;
+                `;
+                container.appendChild(star);
+            }
+        }
+
+        createStars();
+        console.log('✅ VIRSCH 68 - SMAN 68 Jakarta');
+    </script>
+</body>
+</html>

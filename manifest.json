@@ -1,0 +1,28 @@
+{
+  "background_color": "#ffffff",
+  "description": "Portal Resmi SMA Negeri 68 Jakarta",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "appsman68jkt.github",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "appsman68jkt.github",
+  "start_url": "https://appsman68jkt.github.io/appsman68jk4.0/",
+  "theme_color": "#0f3460",
+  "icons": [
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png",
+      "type": "image/png",
+      "sizes": "3004x3066",
+      "isSquare": false,
+      "isPng": true,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 3004,
+      "is512x512": false,
+      "is256x256": false,
+      "is192x192": false
+    }
+  ],
+  "lang": "id"
+}

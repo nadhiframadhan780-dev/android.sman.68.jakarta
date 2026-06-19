@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f3460">
+    <meta name="description" content="Portal Resmi SMA Negeri 68 Jakarta">
+    <title>SMAN 68 Jakarta — Portal Resmi</title>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Bricolage+Grotesque:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+    <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body id="bodyEl">
+
+<!-- ── BACKGROUND ──────────────────────────────── -->
+<div class="sp-bg" id="spBg"></div>
+<div class="sp-bg-overlay"></div>
+<div class="sp-bg-vignette"></div>
+
+<!-- ── PARTICLES ───────────────────────────────── -->
+<canvas class="sp-canvas" id="spCanvas"></canvas>
+
+<!-- ── LIGHT LEAKS ─────────────────────────────── -->
+<div class="sp-leak sp-leak-1"></div>
+<div class="sp-leak sp-leak-2"></div>
+<div class="sp-leak sp-leak-3"></div>
+
+<!-- ── PAGE TRANSITION ─────────────────────────── -->
+<div class="sp-transition" id="spTransition"></div>
+
+<!-- ══════════════════════════════════════════════
+     NORMAL SPLASH SCREEN
+══════════════════════════════════════════════ -->
+<div class="sp-screen" id="normalScreen" style="display:none">
+    <div class="sp-card" id="spCard">
+
+        <!-- Animated glow top line -->
+        <div class="sp-card-line"></div>
+
+        <!-- LOGO -->
+        <div class="sp-logo-wrap sp-anim" data-delay="0">
+            <div class="sp-logo-glow"></div>
+            <div class="sp-logo-ring sp-ring-1"></div>
+            <div class="sp-logo-ring sp-ring-2"></div>
+            <div class="sp-logo-frame">
+                <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png"
+                     alt="SMAN 68" class="sp-logo-img"
+                     onerror="this.src='https://placehold.co/120x120/065f46/fff?text=68'">
+            </div>
+        </div>
+
+        <!-- BADGE -->
+        <div class="sp-badge sp-anim" data-delay="150">
+            <span class="sp-badge-dot"></span>
+            Portal Resmi &nbsp;·&nbsp; Jakarta Pusat
+        </div>
+
+        <!-- TEKS -->
+        <h1 class="sp-welcome sp-anim" data-delay="280">Selamat Datang</h1>
+        <p class="sp-school sp-anim" data-delay="400">
+            SMA Negeri <strong>68</strong> Jakarta
+        </p>
+        <p class="sp-sub sp-anim" data-delay="500">Aplikasi SMAN 68 Jakarta</p>
+
+        <!-- SLOGAN -->
+        <div class="sp-slogan sp-anim" data-delay="600">
+            <span>Disiplin</span>
+            <span class="sp-sep">◆</span>
+            <span>Kreasi</span>
+            <span class="sp-sep">◆</span>
+            <span>Prestasi</span>
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="sp-progress-wrap sp-anim" data-delay="720">
+            <div class="sp-progress-meta">
+                <span id="spStatus">Mempersiapkan portal…</span>
+                <span class="sp-countdown">
+                    <span id="spCountNum">3</span>s
+                </span>
+            </div>
+            <div class="sp-progress-track">
+                <div class="sp-progress-fill" id="spProgressFill"></div>
+                <div class="sp-progress-glare" id="spProgressGlare"></div>
+            </div>
+            <div class="sp-steps">
+                <span class="sp-step active" id="spStep1">
+                    <i class="fas fa-shield-alt"></i> Aman
+                </span>
+                <span class="sp-step" id="spStep2">
+                    <i class="fas fa-database"></i> Data
+                </span>
+                <span class="sp-step" id="spStep3">
+                    <i class="fas fa-check-circle"></i> Siap
+                </span>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="sp-cta sp-anim" data-delay="860">
+            <a href="./sman68.html" class="sp-btn-enter" id="spSkipBtn">
+                <span class="sp-btn-shine"></span>
+                <i class="fas fa-arrow-right"></i>
+                Masuk Sekarang
+            </a>
+            <p class="sp-cta-hint">Atau tunggu pengalihan otomatis</p>
+        </div>
+
+    </div><!-- /sp-card -->
+
+    <!-- Floating accreditation badge -->
+    <div class="sp-float-badge sp-anim" data-delay="1000">
+        <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="">
+        <span>Akreditasi A &mdash; Unggul</span>
+    </div>
+</div><!-- /normalScreen -->
+
+
+<!-- ══════════════════════════════════════════════
+     MAINTENANCE SCREEN
+══════════════════════════════════════════════ -->
+<div class="sp-screen sp-maint-screen" id="maintenanceScreen" style="display:none">
+    <div class="sp-card sp-maint-card">
+
+        <div class="sp-card-line sp-card-line-gold"></div>
+
+        <!-- Header row: logo + title -->
+        <div class="sp-maint-header">
+            <div class="sp-logo-frame sp-maint-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png"
+                     alt="SMAN 68" class="sp-logo-img"
+                     onerror="this.src='https://placehold.co/70x70/065f46/fff?text=68'">
+            </div>
+            <div class="sp-maint-header-text">
+                <p class="sp-maint-school-name">SMAN 68 Jakarta</p>
+                <div class="sp-maint-status-row">
+                    <span class="sp-maint-status-dot"></span>
+                    <span id="maintStatusText">Tim kami sedang bekerja…</span>
+                </div>
+            </div>
+            <div class="sp-maint-icon-wrap">
+                <i class="fas fa-tools sp-maint-icon"></i>
+            </div>
+        </div>
+
+        <!-- Judul & pesan -->
+        <h2 class="sp-maint-title" id="maintTitle">
+            Website Sedang Dalam Pemeliharaan
+        </h2>
+        <p class="sp-maint-msg" id="maintMsg">
+            Mohon maaf atas ketidaknyamanannya. Website SMAN 68 Jakarta sedang dalam proses pemeliharaan dan peningkatan sistem untuk memberikan pengalaman terbaik.
+        </p>
+
+        <!-- Info row: estimasi + countdown -->
+        <div class="sp-maint-info-row">
+            <!-- Estimasi waktu -->
+            <div class="sp-maint-time" id="maintTimeBadge">
+                <i class="fas fa-clock"></i>
+                <span id="maintTimeText">Estimasi selesai: Segera</span>
+            </div>
+
+            <!-- Countdown timer maintenance -->
+            <div class="sp-maint-countdown" id="maintCountdownWrap" style="display:none">
+                <div class="sp-maint-count-item">
+                    <span class="sp-maint-num" id="maintDaysNum">00</span>
+                    <span class="sp-maint-label">Hari</span>
+                </div>
+                <div class="sp-maint-count-sep">:</div>
+                <div class="sp-maint-count-item">
+                    <span class="sp-maint-num" id="maintHoursNum">00</span>
+                    <span class="sp-maint-label">Jam</span>
+                </div>
+                <div class="sp-maint-count-sep">:</div>
+                <div class="sp-maint-count-item">
+                    <span class="sp-maint-num" id="maintMinsNum">00</span>
+                    <span class="sp-maint-label">Menit</span>
+                </div>
+                <div class="sp-maint-count-sep">:</div>
+                <div class="sp-maint-count-item">
+                    <span class="sp-maint-num" id="maintSecsNum">00</span>
+                    <span class="sp-maint-label">Detik</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress animasi -->
+        <div class="sp-maint-progress">
+            <div class="sp-maint-progress-bar"></div>
+        </div>
+
+        <!-- Tombol aksi -->
+        <div class="sp-maint-actions">
+            <button class="sp-btn-retry" onclick="checkMaintenanceStatus()">
+                <i class="fas fa-sync-alt"></i>
+                <span>Coba Lagi</span>
+            </button>
+            <a href="mailto:emailsman68@gmail.com" class="sp-btn-email">
+                <i class="fas fa-envelope"></i>
+                <span>Hubungi Kami</span>
+            </a>
+        </div>
+
+        <!-- Kontak + Sosial media (satu baris) -->
+        <div class="sp-maint-footer">
+            <div class="sp-maint-contact">
+                <a href="mailto:emailsman68@gmail.com">
+                    <i class="fas fa-envelope"></i> emailsman68@gmail.com
+                </a>
+                <span class="sp-dot">·</span>
+                <a href="tel:0213142929">
+                    <i class="fas fa-phone-alt"></i> (021) 3142929
+                </a>
+            </div>
+            <div class="sp-maint-social">
+                <a href="https://www.instagram.com/smanegeri68jakarta/" target="_blank" title="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.facebook.com/SMAN68/" target="_blank" title="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.youtube.com/@sman68jaya60" target="_blank" title="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+        </div>
+
+    </div><!-- /sp-maint-card -->
+</div><!-- /maintenanceScreen -->
+
+<script src="scripts.js"></script>
+</body>
+</html>

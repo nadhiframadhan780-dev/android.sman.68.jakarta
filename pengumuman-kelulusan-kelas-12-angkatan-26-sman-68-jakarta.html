@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Pengumuman Kelulusan Kelas XII - SMAN 68 Jakarta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+    
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        :root {
+            --primary: #006633;
+            --blue: #0088cc;
+            --gold: #c9a84c;
+            --white: #ffffff;
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.3);
+            --radius-lg: 24px;
+            --radius-full: 50px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* Background */
+        .bg-image {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: url('https://media.indozone.id/crop/0x0:0x0/images/2026/01/14/1768352620_6966eb6c54bf6_maxresdefault.jpg') center/cover no-repeat;
+            filter: brightness(0.3) blur(2px);
+            transform: scale(1.05);
+            z-index: 0;
+        }
+        .bg-overlay {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: linear-gradient(135deg, rgba(0,102,51,0.8) 0%, rgba(0,136,204,0.7) 100%);
+            z-index: 1;
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            padding: 30px;
+            animation: fadeInUp 1s ease;
+            max-width: 750px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        @keyframes fadeInUp {
+            from { opacity:0; transform:translateY(30px); }
+            to { opacity:1; transform:translateY(0); }
+        }
+
+        /* Logo */
+        .logo-wrapper {
+            position: relative;
+            display: block;
+            margin: 0 auto 25px auto;
+            text-align: center;
+            width: fit-content;
+            margin-bottom: 25px;
+        }
+        .logo-ring {
+            position: absolute; inset: -12px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            animation: ringRotate 12s linear infinite;
+        }
+        .logo-ring:nth-child(2) {
+            inset: -22px;
+            border-style: dashed;
+            animation-duration: 18s;
+            animation-direction: reverse;
+        }
+        @keyframes ringRotate {
+            from { transform:rotate(0deg); }
+            to { transform:rotate(360deg); }
+        }
+        .logo-img {
+            width: 90px; height: 90px;
+            border-radius: 50%; object-fit: cover;
+            background: white; padding: 6px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 60px rgba(0,136,204,0.4);
+            position: relative; z-index: 2;
+            animation: logoPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%,100% { transform:scale(1); }
+            50% { transform:scale(1.06); }
+        }
+
+        /* Badge */
+        .badge-kelulusan {
+            display: inline-block;
+            padding: 8px 24px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            border: 1px solid rgba(255,255,255,0.25);
+            margin-bottom: 20px;
+        }
+
+        /* Title */
+        .title {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 15px;
+        }
+        .info-text {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 25px;
+            line-height: 1.8;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Countdown */
+        .countdown-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .countdown-item {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 20px 15px;
+            min-width: 80px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .countdown-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
+        }
+        .countdown-number {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+        }
+        .countdown-label {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.8);
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Date Info */
+        .date-info {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            color: white;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 25px;
+        }
+        .date-info i { color: #f59e0b; }
+        .target-date { font-weight: 700; color: #fbbf24; }
+
+        /* Button */
+        .btn-open {
+            display: inline-block;
+            padding: 16px 35px;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff4500 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255,107,53,0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,100% { box-shadow: 0 10px 30px rgba(255,107,53,0.4); }
+            50% { box-shadow: 0 10px 50px rgba(255,107,53,0.7); }
+        }
+        .btn-open:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255,107,53,0.6);
+        }
+
+        /* Status Message */
+        .status-message {
+            display: none;
+            margin-top: 25px;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+        .status-card {
+            background: rgba(16,185,129,0.15);
+            border: 2px solid rgba(16,185,129,0.4);
+            border-radius: 16px;
+            padding: 25px;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+        .status-card h2 { font-size: 1.5rem; margin-bottom: 10px; }
+        .status-card p { opacity: 0.9; margin-bottom: 15px; }
+        .spinner {
+            display: inline-block;
+            width: 25px; height: 25px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        /* Toast */
+        .toast-container {
+            position: fixed; top: 20px; right: 20px; z-index: 9999;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .toast {
+            background: white; padding: 16px 22px;
+            border-radius: 16px; box-shadow: var(--shadow-lg);
+            display: flex; align-items: center; gap: 12px;
+            transform: translateX(120%);
+            animation: toastIn 0.4s ease forwards;
+            border-left: 5px solid #f59e0b;
+            max-width: 400px;
+        }
+        @keyframes toastIn { to { transform:translateX(0); } }
+        .toast i { font-size: 1.3rem; color: #f59e0b; }
+        .toast-content { flex: 1; }
+        .toast-title { font-weight: 700; color: #1e293b; font-size: 0.9rem; margin-bottom: 2px; }
+        .toast-message { font-size: 0.8rem; color: #64748b; }
+
+        /* Footer */
+        .footer-text {
+            margin-top: 30px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width:480px) {
+            .countdown-item { min-width: 60px; padding: 15px 10px; }
+            .countdown-number { font-size: 1.5rem; }
+            .toast-container { left: 20px; right: 20px; }
+            .toast { max-width: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-image"></div>
+    <div class="bg-overlay"></div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo-wrapper">
+            <div class="logo-ring"></div>
+            <div class="logo-ring"></div>
+            <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68 Jakarta" class="logo-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'90\' height=\'90\' viewBox=\'0 0 90 90\'%3E%3Crect width=\'90\' height=\'90\' fill=\'%23006633\' rx=\'45\'/%3E%3Ctext x=\'50%25\' y=\'55%25\' text-anchor=\'middle\' fill=\'white\' font-size=\'40\' font-weight=\'bold\'%3E68%3C/text%3E%3C/svg%3E'">
+        </div>
+
+        <!-- Badge -->
+        <div class="badge-kelulusan">
+            <i class="fas fa-graduation-cap"></i> ANGKATAN 26
+        </div>
+
+        <!-- Title -->
+        <h1 class="title">Pengumuman Kelulusan</h1>
+        <p class="subtitle">Kelas XII SMA Negeri 68 Jakarta</p>
+        <p class="info-text">
+            Pengumuman kelulusan akan disampaikan secara online pada waktu yang telah ditentukan. 
+            Seluruh siswa diimbau untuk tetap di rumah dan tidak merayakan kelulusan secara berlebihan. 
+            Jika diketahui melakukan aksi yang mencoreng nama baik sekolah, Surat Keterangan Kelulusan (SKL) 
+            dan Rapor tidak akan dibagikan.
+        </p>
+
+        <!-- Date Info -->
+        <div class="date-info">
+            <i class="fas fa-calendar-check"></i>
+            <span>Dibuka: <span class="target-date">Senin, 4 Mei 2026 • 10:00 WIB</span></span>
+        </div>
+
+        <!-- Countdown -->
+        <div class="countdown-wrapper" id="countdownWrapper">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">Hari</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">Jam</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Menit</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Detik</div>
+            </div>
+        </div>
+
+        <!-- Button -->
+        <button class="btn-open" id="btnOpen">
+            <i class="fas fa-external-link-alt"></i> Buka Pengumuman Sekarang
+        </button>
+
+        <!-- Status Open -->
+        <div class="status-message" id="statusOpen">
+            <div class="status-card">
+                <h2>🎉 Pengumuman Telah Dibuka!</h2>
+                <p>Anda akan dialihkan ke halaman pengumuman dalam <strong><span id="redirectCount">3</span> detik</strong>...</p>
+                <div class="spinner"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-text">
+            <i class="fas fa-circle" style="font-size:3px;"></i> Disiplin 
+            <i class="fas fa-circle" style="font-size:3px;"></i> Kreasi 
+            <i class="fas fa-circle" style="font-size:3px;"></i> Prestasi
+        </div>
+    </div>
+
+    <script>
+        // Target date: 4 Mei 2026, 10:00 WIB
+        const targetDate = new Date('2026-05-04T10:00:00+07:00');
+        // GANTI dengan link pengumuman asli nanti
+        const pengumumanUrl = 'https://lulus.sma68.id/'; // GANTI INI
+
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const countdownWrapper = document.getElementById('countdownWrapper');
+        const statusOpen = document.getElementById('statusOpen');
+        const redirectCount = document.getElementById('redirectCount');
+        const btnOpen = document.getElementById('btnOpen');
+
+        let countdownActive = true;
+        let redirectTimer = null;
+
+        function pad(num) { return num < 10 ? '0' + num : num; }
+
+        function getState() {
+            return new Date() >= targetDate ? 'open' : 'before';
+        }
+
+        function updateUI(state) {
+            if (state === 'open' && countdownActive) {
+                countdownActive = false;
+                countdownWrapper.style.display = 'none';
+                btnOpen.style.display = 'none';
+                statusOpen.style.display = 'block';
+                startRedirect();
+            }
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = targetDate - now;
+            const state = getState();
+            
+            if (state === 'open') { updateUI('open'); return; }
+            if (diff <= 0) { updateUI('open'); return; }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            daysEl.textContent = pad(days);
+            hoursEl.textContent = pad(hours);
+            minutesEl.textContent = pad(minutes);
+            secondsEl.textContent = pad(seconds);
+        }
+
+        function startRedirect() {
+            let count = 3;
+            redirectCount.textContent = count;
+            redirectTimer = setInterval(() => {
+                count--;
+                redirectCount.textContent = count;
+                if (count <= 0) {
+                    clearInterval(redirectTimer);
+                    window.location.href = pengumumanUrl;
+                }
+            }, 1000);
+            setTimeout(() => {
+                if (redirectTimer) clearInterval(redirectTimer);
+                window.location.href = pengumumanUrl;
+            }, 3000);
+        }
+
+        // Toast Notification
+        function showToast(title, message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `
+                <i class="fas fa-info-circle"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.transform = 'translateX(120%)'; setTimeout(() => toast.remove(), 300); }, 5000);
+        }
+
+        // Button Click
+        btnOpen.addEventListener('click', (e) => {
+            e.preventDefault();
+            const state = getState();
+            if (state === 'open') {
+                window.location.href = pengumumanUrl;
+            } else {
+                showToast(
+                    'Pengumuman Belum Dibuka',
+                    'Silahkan tunggu sesuai jadwal yang ditentukan. Pengumuman akan dibuka pada Senin, 4 Mei 2026 pukul 10:00 WIB.'
+                );
+            }
+        });
+
+        // Init
+        function init() {
+            const state = getState();
+            if (state === 'open') {
+                updateUI('open');
+            } else {
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
+            }
+        }
+
+        init();
+        console.log('✅ Pengumuman Kelulusan SMAN 68 Jakarta - Loaded');
+    </script>
+</body>
+</html>

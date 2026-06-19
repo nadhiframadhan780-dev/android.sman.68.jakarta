@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Guru — SMAN 68 Jakarta</title>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link rel="stylesheet" href="portal-guru.css">
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader" class="preloader">
+  <div class="preloader-box">
+    <div class="preloader-logo-wrap">
+      <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68">
+      <div class="spin-ring"></div>
+    </div>
+    <p class="preloader-name">Portal Guru</p>
+    <p class="preloader-school">SMAN 68 Jakarta</p>
+    <div class="preloader-progress"><div id="preloaderBar" class="preloader-progress-fill"></div></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- ===========================
+     HALAMAN LOGIN
+     =========================== -->
+<div id="loginPage" class="login-page">
+
+  <!-- Background foto sekolah -->
+  <div class="login-bg-wrap">
+    <img src="https://media.indozone.id/crop/0x0:0x0/images/2026/01/14/1768352620_6966eb6c54bf6_maxresdefault.jpg" alt="SMAN 68 Jakarta" class="login-bg-img">
+    <div class="login-bg-overlay"></div>
+  </div>
+
+  <!-- Running text -->
+  <div class="running-bar">
+    <div class="running-bar-label"><i class="fas fa-school"></i> SMAN 68 Jakarta</div>
+    <div class="running-bar-track"><div class="running-bar-text">
+      Selamat datang di Portal Guru SMAN 68 Jakarta &nbsp;•&nbsp;
+      Lakukan absensi setiap hari sebelum pukul 06.30 WIB &nbsp;•&nbsp;
+      Pastikan data profil Anda selalu terbarui &nbsp;•&nbsp;
+      Untuk bantuan hubungi operator sekolah &nbsp;•&nbsp;
+      Selamat datang di Portal Guru SMAN 68 Jakarta &nbsp;•&nbsp;
+      Lakukan absensi setiap hari sebelum pukul 06.30 WIB &nbsp;•&nbsp;
+    </div></div>
+  </div>
+
+  <!-- Konten login -->
+  <div class="login-body">
+
+    <!-- Panel kiri: info -->
+    <div class="login-left">
+      <div class="login-clock-wrap">
+        <div id="loginClock" class="login-clock">00:00:00</div>
+        <div id="loginDate" class="login-date">Senin, 1 Januari 2026</div>
+      </div>
+      <div class="login-quote-card">
+        <i class="fas fa-quote-left login-quote-icon"></i>
+        <p id="quoteText" class="login-quote-text">Guru adalah pahlawan tanpa tanda jasa yang membentuk masa depan bangsa.</p>
+        <span id="quoteAuthor" class="login-quote-author">— Ki Hajar Dewantara</span>
+      </div>
+      <div class="login-status-row">
+        <span class="status-dot-live"></span>
+        <span class="login-status-text">Sistem Aktif & Online</span>
+        <span class="login-status-sep">|</span>
+        <span class="status-dot-live"></span>
+        <span class="login-status-text">Firebase Connected</span>
+      </div>
+    </div>
+
+    <!-- Panel kanan: form login -->
+    <div class="login-right">
+      <div class="login-card">
+        <!-- Logo -->
+        <div class="login-logo-area">
+          <div class="logo-ring"></div>
+          <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68" class="login-logo">
+        </div>
+        <h1 class="login-title">Portal Guru</h1>
+        <p class="login-subtitle">SMAN 68 Jakarta</p>
+
+        <form id="loginForm">
+          <div class="field-wrap">
+            <label class="field-label"><i class="fas fa-id-card"></i> NIP / NUPTK</label>
+            <input id="fNip" type="text" class="field-input" placeholder="Masukkan NIP atau NUPTK" inputmode="numeric" autocomplete="username">
+          </div>
+          <div class="field-wrap">
+            <label class="field-label"><i class="fas fa-lock"></i> Password</label>
+            <div class="field-input-wrap">
+              <input id="fPass" type="password" class="field-input" placeholder="Masukkan password" autocomplete="current-password">
+              <button type="button" id="togglePass" class="toggle-pass"><i class="fas fa-eye" id="togglePassIcon"></i></button>
+            </div>
+          </div>
+          <div class="login-opts">
+            <label class="check-label">
+              <input type="checkbox" id="rememberMe" class="check-input">
+              <span class="check-box"></span>
+              Ingat saya
+            </label>
+            <button type="button" id="btnForgot" class="link-btn">Lupa Password?</button>
+          </div>
+          <button type="submit" id="btnLogin" class="btn-primary w-full">
+            <span id="btnLoginText"><i class="fas fa-sign-in-alt"></i> Masuk</span>
+            <span id="btnLoginLoad" style="display:none"><i class="fas fa-circle-notch fa-spin"></i> Memverifikasi...</span>
+          </button>
+          <button type="button" id="btnCekReset" class="btn-outline w-full" style="margin-top:10px;">
+            <i class="fas fa-search"></i> Cek Status Reset Password
+          </button>
+          <button type="button" id="btnKeBerandaLogin" class="btn-outline w-full" style="margin-top:10px;background:transparent;border-color:#e2e8f0;color:#64748b;" onclick="window.location.replace('./sman68.html')">
+            <i class="fas fa-house"></i> Kembali ke Beranda
+          </button>
+          <div style="margin-top:18px;text-align:center;padding-top:14px;border-top:1px solid #f1f5f9;">
+            <span style="font-size:.8rem;color:#94a3b8;">Belum punya akun guru?</span>
+            <button type="button" onclick="window.location.replace('./daftar-guru.html')" style="background:none;border:none;font-size:.8rem;font-weight:700;color:#059669;cursor:pointer;padding:0 0 0 5px;text-decoration:underline;text-underline-offset:3px;">Daftar Sekarang →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===========================
+     MODAL: LUPA PASSWORD
+     =========================== -->
+<div id="modalForgot" class="modal-bg">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-icon green"><i class="fas fa-key"></i></div>
+      <h2>Lupa Password</h2>
+      <p>Ajukan permintaan reset ke operator sekolah</p>
+      <button class="modal-x" data-close="modalForgot"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="forgotForm">
+      <div class="field-wrap">
+        <label class="field-label"><i class="fas fa-id-badge"></i> NIP / NUPTK</label>
+        <input id="fForgotNip" type="text" class="field-input" placeholder="Masukkan NIP atau NUPTK">
+      </div>
+      <div class="field-wrap">
+        <label class="field-label"><i class="fas fa-fingerprint"></i> NUPTK (16 digit)</label>
+        <input id="fForgotNuptk" type="text" class="field-input" placeholder="16 digit NUPTK" maxlength="16" inputmode="numeric">
+      </div>
+      <div class="field-wrap">
+        <label class="field-label"><i class="fas fa-user"></i> Nama Lengkap</label>
+        <input id="fForgotNama" type="text" class="field-input" placeholder="Nama sesuai data sistem">
+      </div>
+      <button type="submit" id="btnForgotSubmit" class="btn-primary w-full">
+        <i class="fas fa-paper-plane"></i> Kirim Permintaan
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ===========================
+     MODAL: CEK STATUS RESET
+     =========================== -->
+<div id="modalCekReset" class="modal-bg">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-icon blue"><i class="fas fa-search"></i></div>
+      <h2>Cek Status Reset Password</h2>
+      <p>Masukkan NIP untuk melihat status permintaan</p>
+      <button class="modal-x" data-close="modalCekReset"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="field-wrap" style="display:flex;gap:8px;align-items:flex-end;">
+      <div style="flex:1;">
+        <label class="field-label"><i class="fas fa-id-badge"></i> NIP / NUPTK</label>
+        <input id="fCekNip" type="text" class="field-input" placeholder="NIP atau NUPTK">
+      </div>
+      <button id="btnDoCek" class="btn-primary" style="padding:11px 18px;white-space:nowrap;"><i class="fas fa-search"></i></button>
+    </div>
+    <div id="cekResetResult" style="margin-top:16px;"></div>
+  </div>
+</div>
+
+<!-- ===========================
+     MODAL: RESET PASSWORD BARU
+     =========================== -->
+<div id="modalResetPass" class="modal-bg">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-icon green"><i class="fas fa-shield-alt"></i></div>
+      <h2>Buat Password Baru</h2>
+      <p>Link hanya berlaku 3 menit. Segera ganti password Anda.</p>
+      <button class="modal-x" data-close="modalResetPass"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="countdown-wrap">
+      <div class="countdown-ring-wrap">
+        <svg viewBox="0 0 80 80" class="countdown-svg">
+          <circle class="countdown-track" cx="40" cy="40" r="34"/>
+          <circle id="countdownArc" class="countdown-arc" cx="40" cy="40" r="34"/>
+        </svg>
+        <span id="countdownNum" class="countdown-num">3:00</span>
+      </div>
+      <p class="countdown-label">Sisa waktu reset password</p>
+    </div>
+    <form id="resetPassForm">
+      <div class="field-wrap">
+        <label class="field-label"><i class="fas fa-lock"></i> Password Baru</label>
+        <input id="fNewPass" type="password" class="field-input" placeholder="Minimal 8 karakter">
+      </div>
+      <div class="field-wrap">
+        <label class="field-label"><i class="fas fa-lock"></i> Konfirmasi Password</label>
+        <input id="fConfPass" type="password" class="field-input" placeholder="Ulangi password baru">
+      </div>
+      <button type="submit" id="btnResetPassSubmit" class="btn-primary w-full">
+        <i class="fas fa-save"></i> Simpan Password Baru
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ===========================
+     MODAL: BACA PENGUMUMAN
+     =========================== -->
+<div id="modalReadAnn" class="modal-bg">
+  <div class="modal-card modal-card-wide">
+    <div class="modal-head">
+      <div class="modal-icon" id="modalAnnIcon"><i class="fas fa-bullhorn"></i></div>
+      <h2 id="modalAnnTitle">Judul Pengumuman</h2>
+      <p id="modalAnnMeta">Tanggal • Penulis</p>
+      <button class="modal-x" data-close="modalReadAnn"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="modalAnnBody" class="ann-full-body"></div>
+  </div>
+</div>
+
+<!-- ===========================
+     PORTAL UTAMA
+     =========================== -->
+<div id="portalApp" class="portal-app" style="display:none;">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-brand">
+      <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="Logo" class="sidebar-brand-logo">
+      <div class="sidebar-brand-text">
+        <span class="sidebar-brand-name">Portal Guru</span>
+        <span class="sidebar-brand-school">SMAN 68 Jakarta</span>
+      </div>
+    </div>
+
+    <div class="sidebar-profile">
+      <div class="sidebar-avatar" id="sidebarAvatar"><i class="fas fa-user"></i></div>
+      <div class="sidebar-profile-info">
+        <span class="sidebar-profile-name" id="sidebarName">—</span>
+        <span class="sidebar-profile-role" id="sidebarRole">Guru</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-group-label">MENU UTAMA</span>
+      <button class="nav-btn active" data-page="dashboard"><i class="fas fa-th-large"></i><span>Dashboard</span></button>
+      <button class="nav-btn" data-page="absensi"><i class="fas fa-clipboard-check"></i><span>Absensi</span></button>
+      <button class="nav-btn" data-page="jadwal"><i class="fas fa-clock"></i><span>Jam Mengajar</span></button>
+      <button class="nav-btn" data-page="kalender"><i class="fas fa-calendar-alt"></i><span>Kalender Pendidikan</span></button>
+      <span class="nav-group-label" style="margin-top:8px;">LAINNYA</span>
+      <button class="nav-btn" data-page="pengumuman"><i class="fas fa-bullhorn"></i><span>Pengumuman</span><span class="nav-badge" id="navBadgeAnn">0</span></button>
+      <button class="nav-btn" data-page="laporan"><i class="fas fa-chart-bar"></i><span>Laporan Absensi</span></button>
+      <button class="nav-btn" data-page="profil"><i class="fas fa-user-circle"></i><span>Profil Saya</span></button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="nav-btn nav-btn-logout" id="btnLogout"><i class="fas fa-sign-out-alt"></i><span>Keluar</span></button>
+    </div>
+  </aside>
+
+  <!-- Overlay sidebar (mobile) -->
+  <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+
+  <!-- MAIN -->
+  <div class="portal-main" id="portalMain">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" id="hamburger" onclick="toggleMobileSidebar()">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="topbar-breadcrumb" id="topbarBreadcrumb"><i class="fas fa-th-large"></i> Dashboard</div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-clock">
+          <div class="topbar-time" id="topbarTime">00:00</div>
+          <div class="topbar-datestr" id="topbarDateStr">Sen, 1 Jan</div>
+        </div>
+        <div class="topbar-divider"></div>
+        <div class="topbar-user-info">
+          <span class="topbar-user-name" id="topbarName">—</span>
+          <span class="topbar-user-role" id="topbarRole">—</span>
+        </div>
+        <div class="topbar-avatar" id="topbarAvatar"><i class="fas fa-user"></i></div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENTS -->
+    <main class="page-area">
+
+      <!-- == DASHBOARD == -->
+      <section id="pg-dashboard" class="pg active">
+        <div class="pg-header">
+          <div>
+            <h1 class="pg-title" id="dashGreeting">Selamat Datang!</h1>
+            <p class="pg-sub" id="dashDate">—</p>
+          </div>
+          <div class="pg-header-right">
+            <span class="date-chip" id="dashDateChip"><i class="fas fa-calendar-day"></i> —</span>
+          </div>
+        </div>
+
+        <!-- Stat cards -->
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-icon hadir"><i class="fas fa-check-circle"></i></div>
+            <div><div class="stat-val" id="stHadir">0</div><div class="stat-lbl">Hari Hadir</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon sakit"><i class="fas fa-notes-medical"></i></div>
+            <div><div class="stat-val" id="stSakit">0</div><div class="stat-lbl">Hari Sakit</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon izin"><i class="fas fa-envelope-open-text"></i></div>
+            <div><div class="stat-val" id="stIzin">0</div><div class="stat-lbl">Hari Izin</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon persen"><i class="fas fa-percent"></i></div>
+            <div><div class="stat-val" id="stPersen">—</div><div class="stat-lbl">Kehadiran Bulan Ini</div></div>
+          </div>
+        </div>
+
+        <!-- Dashboard grid -->
+        <div class="dash-grid">
+
+          <!-- Absensi cepat -->
+          <div class="panel">
+            <div class="panel-head">
+              <i class="fas fa-bolt"></i>
+              <h3>Absensi Cepat</h3>
+              <span id="quickAbsenBadge" class="badge-warn">Belum Absen</span>
+            </div>
+            <div class="quick-status-row">
+              <div class="qs hadir" data-s="hadir"><i class="fas fa-check-circle"></i><span>Hadir</span></div>
+              <div class="qs sakit" data-s="sakit"><i class="fas fa-notes-medical"></i><span>Sakit</span></div>
+              <div class="qs izin" data-s="izin"><i class="fas fa-envelope"></i><span>Izin</span></div>
+              <div class="qs dinas" data-s="dispensasi_dinas"><i class="fas fa-building"></i><span>Dinas</span></div>
+            </div>
+            <div id="quickForm" style="display:none;margin-top:12px;">
+              <input id="qBukti" type="url" class="field-input" placeholder="Link Google Drive (bukti wajib)" style="margin-bottom:8px;">
+              <textarea id="qKet" class="field-input" rows="2" placeholder="Keterangan (opsional)..." style="resize:none;"></textarea>
+              <button id="btnQuickAbsen" class="btn-primary w-full" style="margin-top:8px;"><i class="fas fa-paper-plane"></i> Kirim Absensi</button>
+            </div>
+          </div>
+
+          <!-- Jadwal hari ini -->
+          <div class="panel">
+            <div class="panel-head">
+              <i class="fas fa-clock"></i>
+              <h3>Jadwal Hari Ini</h3>
+              <span class="panel-action" data-goto="jadwal">Lihat semua →</span>
+            </div>
+            <div id="dashJadwal" class="dash-jadwal-list"></div>
+          </div>
+
+          <!-- Pengumuman terbaru -->
+          <div class="panel panel-full">
+            <div class="panel-head">
+              <i class="fas fa-bullhorn"></i>
+              <h3>Pengumuman Terbaru</h3>
+              <span class="panel-action" data-goto="pengumuman">Lihat semua →</span>
+            </div>
+            <div id="dashAnn" class="dash-ann-list"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- == ABSENSI == -->
+      <section id="pg-absensi" class="pg" style="display:none;">
+        <div class="pg-header">
+          <div><h1 class="pg-title">Absensi Kehadiran</h1><p class="pg-sub" id="absensiDate">—</p></div>
+        </div>
+        <div class="two-col">
+          <!-- Form absensi -->
+          <div class="panel">
+            <div class="panel-head"><i class="fas fa-clipboard-check"></i><h3>Pilih Status Kehadiran</h3></div>
+            <div class="status-grid">
+              <div class="status-opt hadir" data-s="hadir">
+                <div class="status-icon-wrap hadir"><i class="fas fa-check-circle"></i></div>
+                <span>Hadir</span>
+              </div>
+              <div class="status-opt sakit" data-s="sakit">
+                <div class="status-icon-wrap sakit"><i class="fas fa-notes-medical"></i></div>
+                <span>Sakit</span>
+              </div>
+              <div class="status-opt izin" data-s="izin">
+                <div class="status-icon-wrap izin"><i class="fas fa-envelope-open-text"></i></div>
+                <span>Izin</span>
+              </div>
+              <div class="status-opt dinas" data-s="dispensasi_dinas">
+                <div class="status-icon-wrap dinas"><i class="fas fa-building"></i></div>
+                <span>Dispensasi Dinas</span>
+              </div>
+              <div class="status-opt sekolah" data-s="dispensasi_sekolah">
+                <div class="status-icon-wrap sekolah"><i class="fas fa-school"></i></div>
+                <span>Dispensasi Sekolah</span>
+              </div>
+            </div>
+            <form id="absensiForm" style="padding:0 20px 20px;">
+              <div id="ketGroup" style="display:none;margin-bottom:12px;">
+                <label class="field-label"><i class="fas fa-comment-alt"></i> Keterangan <span class="req">*</span></label>
+                <textarea id="aKet" class="field-input" rows="3" placeholder="Tuliskan keterangan..."></textarea>
+              </div>
+              <div style="margin-bottom:12px;">
+                <label class="field-label"><i class="fab fa-google-drive"></i> Link Bukti Google Drive <span class="req">*</span></label>
+                <input id="aBukti" type="url" class="field-input" placeholder="https://drive.google.com/...">
+              </div>
+              <button type="submit" id="btnAbsen" class="btn-primary w-full"><i class="fas fa-paper-plane"></i> Kirim Absensi</button>
+            </form>
+          </div>
+          <!-- Riwayat -->
+          <div class="panel">
+            <div class="panel-head"><i class="fas fa-history"></i><h3>Riwayat Absensi</h3><span class="badge-info" id="riwayatCount">0</span></div>
+            <div id="riwayatList" class="riwayat-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- == JADWAL == -->
+      <section id="pg-jadwal" class="pg" style="display:none;">
+        <div class="pg-header">
+          <div><h1 class="pg-title" id="jadwalPageTitle">Jadwal</h1><p class="pg-sub" id="jadwalDate">—</p></div>
+          <div class="pg-header-right" id="jadwalAddBtnWrap" style="display:none;">
+            <button class="btn-primary" id="btnTambahJadwal"><i class="fas fa-plus"></i> Tambah Jadwal</button>
+          </div>
+        </div>
+        <div class="panel" id="jadwalPanel">
+          <div class="panel-head"><i class="fas fa-chalkboard-teacher"></i><h3 id="jadwalPanelTitle">Jadwal Hari Ini</h3></div>
+          <div id="jadwalList" class="jadwal-list-wrap"></div>
+        </div>
+      </section>
+
+      <!-- == KALENDER == -->
+      <section id="pg-kalender" class="pg" style="display:none;">
+        <div class="pg-header"><div><h1 class="pg-title">Kalender Pendidikan</h1><p class="pg-sub">Tahun Ajaran 2025/2026</p></div></div>
+        <div class="panel">
+          <div class="panel-head">
+            <i class="fas fa-calendar-alt"></i>
+            <h3 id="kalTitle">Kalender</h3>
+            <div style="margin-left:auto;display:flex;gap:6px;">
+              <button class="btn-icon" id="kalPrev"><i class="fas fa-chevron-left"></i></button>
+              <button class="btn-icon" id="kalNext"><i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+          <div id="kalGrid" class="kal-grid-area" style="padding:16px 20px;"></div>
+          <div class="kal-legend">
+            <span class="kal-leg-item"><span class="kal-dot red"></span> Libur Nasional</span>
+            <span class="kal-leg-item"><span class="kal-dot yellow"></span> Ujian / Penilaian</span>
+            <span class="kal-leg-item"><span class="kal-dot green"></span> Libur Semester</span>
+            <span class="kal-leg-item"><span class="kal-dot blue"></span> Kegiatan Sekolah</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- == PENGUMUMAN == -->
+      <section id="pg-pengumuman" class="pg" style="display:none;">
+        <div class="pg-header"><div><h1 class="pg-title">Pengumuman Sekolah</h1><p class="pg-sub">Informasi terkini dari pihak sekolah</p></div></div>
+        <div id="pengumumanGrid" class="ann-grid"></div>
+        <div id="pengumumanEmpty" class="empty-state" style="display:none;">
+          <i class="fas fa-bullhorn"></i>
+          <p>Belum ada pengumuman dari operator.</p>
+        </div>
+      </section>
+
+      <!-- == LAPORAN == -->
+      <section id="pg-laporan" class="pg" style="display:none;">
+        <div class="pg-header">
+          <div><h1 class="pg-title">Laporan Absensi</h1><p class="pg-sub">Rekap kehadiran bulanan</p></div>
+          <div class="pg-header-right"><button class="btn-outline" onclick="window.print()"><i class="fas fa-print"></i> Cetak</button></div>
+        </div>
+        <div class="panel" style="padding:16px 20px;margin-bottom:20px;">
+          <div class="filter-row">
+            <div class="field-wrap" style="flex:1;min-width:140px;margin-bottom:0;">
+              <label class="field-label">Bulan</label>
+              <select id="lBulan" class="field-input field-select">
+                <option value="0">Januari</option><option value="1">Februari</option>
+                <option value="2">Maret</option><option value="3">April</option>
+                <option value="4">Mei</option><option value="5" selected>Juni</option>
+                <option value="6">Juli</option><option value="7">Agustus</option>
+                <option value="8">September</option><option value="9">Oktober</option>
+                <option value="10">November</option><option value="11">Desember</option>
+              </select>
+            </div>
+            <div class="field-wrap" style="flex:1;min-width:100px;margin-bottom:0;">
+              <label class="field-label">Tahun</label>
+              <input id="lTahun" type="number" class="field-input" value="2026" min="2020" max="2030">
+            </div>
+            <button id="btnLoadLaporan" class="btn-primary" style="align-self:flex-end;"><i class="fas fa-search"></i> Tampilkan</button>
+          </div>
+        </div>
+        <div class="summary-row" id="laporanSummary"></div>
+        <div class="panel">
+          <div class="panel-head"><i class="fas fa-table"></i><h3>Detail Absensi</h3></div>
+          <div class="table-wrap">
+            <table class="data-table" id="laporanTable">
+              <thead><tr><th>No</th><th>Tanggal</th><th>Hari</th><th>Status</th><th>Jam</th><th>Keterangan</th><th>Bukti</th></tr></thead>
+              <tbody id="laporanBody"><tr><td colspan="7" class="tbl-empty">Pilih bulan dan tahun lalu klik Tampilkan</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- == PROFIL == -->
+      <section id="pg-profil" class="pg" style="display:none;">
+        <div class="pg-header"><div><h1 class="pg-title">Profil Saya</h1><p class="pg-sub">Kelola informasi profil Anda</p></div></div>
+        <div class="profile-layout">
+          <div class="panel profile-left-panel">
+            <div class="profile-avatar-wrap">
+              <div class="profile-avatar" id="profileAvatarDiv"><i class="fas fa-user"></i></div>
+              <label class="profile-upload-btn" for="avatarInput" title="Ganti foto">
+                <i class="fas fa-camera"></i>
+                <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+              </label>
+            </div>
+            <h2 class="profile-name" id="profileName">—</h2>
+            <p class="profile-role" id="profileRole">—</p>
+            <div class="profile-qr">
+              <p class="profile-qr-label"><i class="fas fa-qrcode" style="margin-right:5px;"></i>QR Code Absensi</p>
+              <div style="display:flex;align-items:center;justify-content:center;width:100%;">
+                <div id="profileQrBox" style="display:inline-flex;align-items:center;justify-content:center;background:#ffffff;border:2px solid #e2e8f0;border-radius:14px;padding:10px;width:152px;height:152px;box-sizing:border-box;flex-shrink:0;">
+                  <i class="fas fa-circle-notch fa-spin" style="color:#94a3b8;font-size:1.2rem;"></i>
+                </div>
+              </div>
+              <p style="font-size:.68rem;color:#94a3b8;margin-top:8px;text-align:center;"><i class="fas fa-mobile-screen-button" style="margin-right:3px;"></i>Scan untuk absensi cepat</p>
+            </div>
+            <button id="btnLogoutProfil" class="btn-logout-profil">
+              <i class="fas fa-sign-out-alt"></i> Keluar dari Akun
+            </button>
+          </div>
+          <div class="panel profile-right-panel">
+            <div class="panel-head"><i class="fas fa-edit"></i><h3>Edit Profil</h3></div>
+            <form id="profileForm" style="padding:20px;">
+              <div class="form-2col">
+                <div class="field-wrap"><label class="field-label">Nama Lengkap</label><input id="pNama" type="text" class="field-input"></div>
+                <div class="field-wrap"><label class="field-label">NIP</label><input id="pNip" type="text" class="field-input" readonly></div>
+              </div>
+              <div class="form-2col">
+                <div class="field-wrap"><label class="field-label">NUPTK</label><input id="pNuptk" type="text" class="field-input"></div>
+                <div class="field-wrap"><label class="field-label">Mata Pelajaran</label><input id="pMapel" type="text" class="field-input"></div>
+              </div>
+              <div class="form-2col">
+                <div class="field-wrap"><label class="field-label">No. HP</label><input id="pHp" type="tel" class="field-input"></div>
+                <div class="field-wrap"><label class="field-label">Email</label><input id="pEmail" type="email" class="field-input"></div>
+              </div>
+              <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Simpan Perubahan</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div><!-- end portal-main -->
+</div><!-- end portal-app -->
+
+<!-- Mobile Bottom Nav -->
+<nav id="bottomNav" class="bottom-nav" style="display:none;">
+  <button class="bn active" data-page="dashboard"><i class="fas fa-th-large"></i><span>Beranda</span></button>
+  <button class="bn" data-page="absensi"><i class="fas fa-clipboard-check"></i><span>Absensi</span></button>
+  <button class="bn" data-page="jadwal"><i class="fas fa-clock"></i><span>Jadwal</span></button>
+  <button class="bn" data-page="pengumuman"><i class="fas fa-bullhorn"></i><span>Info</span></button>
+  <button class="bn" data-page="profil"><i class="fas fa-user-circle"></i><span>Profil</span></button>
+</nav>
+
+<!-- ===========================
+     MODAL: KONFIRMASI LOGOUT
+     =========================== -->
+<div id="modalLogout" class="modal-bg" style="z-index:9999;">
+  <div class="modal-card" style="max-width:360px;text-align:center;">
+    <div style="display:flex;justify-content:flex-end;"><button class="modal-x" data-close="modalLogout" style="position:relative;top:0;right:0;"><i class="fas fa-times"></i></button></div>
+    <div style="margin:-8px 0 16px;">
+      <div style="width:64px;height:64px;border-radius:50%;background:#fef2f2;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+        <i class="fas fa-arrow-right-from-bracket" style="font-size:1.6rem;color:#dc2626;"></i>
+      </div>
+      <h2 style="font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:8px;">Keluar dari Portal?</h2>
+      <p style="font-size:.83rem;color:#64748b;line-height:1.5;">Sesi Anda akan diakhiri. Pastikan sudah melakukan absensi hari ini sebelum keluar.</p>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button data-close="modalLogout" style="flex:1;padding:12px;background:#f1f5f9;border:none;border-radius:10px;font-size:.86rem;font-weight:600;color:#374151;cursor:pointer;">
+        <i class="fas fa-xmark" style="margin-right:4px;"></i>Batal
+      </button>
+      <button id="btnLogoutConfirm" style="flex:1;padding:12px;background:#dc2626;border:none;border-radius:10px;font-size:.86rem;font-weight:700;color:#fff;cursor:pointer;">
+        <i class="fas fa-sign-out-alt" style="margin-right:4px;"></i>Ya, Keluar
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="portal-guru.js"></script>
+</body>
+</html>

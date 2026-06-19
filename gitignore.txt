@@ -1,0 +1,18 @@
+# ============================================
+# KEAMANAN FIREBASE - JANGAN HAPUS BARIS INI
+# ============================================
+firebase-config.js
+firebase-config.*.js
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
