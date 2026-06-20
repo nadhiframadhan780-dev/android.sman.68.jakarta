@@ -71,10 +71,10 @@ const linkUrls = {
     loginGuru:           'portal-guru.html',
     ppdb:                'https://spmb.jakarta.go.id/',
     virsch:              './virsch-68.html',
-    penmurmut:           './hasil-pengumuman-penmurmut-2026.html ',
+    penmurmut:           './hasil-pengumuman-penmurmut-2026.html',
     pemeringkatan:       './pemeringkatan-ptn-indonesia-2026.html',
     topJurusan:          './jurusan-kuliah-terbaik-2026.html',
-    kelulusan:           './jadwal_unduh_sman68jakarta.html',
+    kelulusan:           './pusat-layanan.sman68jkt.html',
     hukum:               './hukum.html',
     sertifikatAkreditasi:'https://bansm.kemdikbud.go.id/sispena2/akreditasi'
 };
@@ -542,7 +542,7 @@ function initKelulusanLink() {
 
     if (now >= target) {
         el.classList.remove('nav-disabled', 'nav-special');
-        el.textContent   = 'Jadwal & Unduh';
+        el.textContent   = 'Pusat Layanan';
         el.style.cssText = 'pointer-events:auto;opacity:1;cursor:pointer;';
     }
 }

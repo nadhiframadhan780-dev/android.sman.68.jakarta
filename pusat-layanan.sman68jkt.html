@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pusat Layanan - SMAN 68 Jakarta</title>
+<link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+:root{
+  --g9:#0a4a2e;--g8:#0d5c38;--g7:#0f7045;--g6:#12885a;
+  --g5:#16a068;--g4:#22c07a;--g3:#4dd99a;--g2:#a8f0cc;--g1:#e6faf2;
+  --b9:#0b2a4a;--b8:#0e3a6b;--b7:#1050a0;--b6:#1a65c8;
+  --b5:#2278e8;--b4:#4a9af5;--b2:#b3d9ff;--b1:#e8f4ff;
+  --white:#fff;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-300:#cbd5e1;--gray-400:#94a3b8;--gray-500:#64748b;--gray-700:#334155;--gray-900:#0f172a;
+  --red:#ef4444;--yellow:#f59e0b;--orange:#f97316;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:0 4px 16px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.18);
+  --radius:14px;--radius-sm:8px;
+  --transition:.18s cubic-bezier(.4,0,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#f0f9f4;color:var(--gray-900);min-height:100vh;overflow-x:hidden}
+
+/* ==================== SERVER CAPACITY OVERLAY ==================== */
+#serverOverlay{
+  display:none;position:fixed;inset:0;z-index:9000;
+  background:rgba(10,30,20,.85);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;padding:20px;
+  animation:fadeInBg .3s ease
+}
+#serverOverlay.show{display:flex}
+@keyframes fadeInBg{from{opacity:0}to{opacity:1}}
+.server-popup{
+  background:#fff;border-radius:28px;padding:40px 36px;
+  max-width:440px;width:100%;text-align:center;
+  box-shadow:0 25px 50px rgba(0,0,0,.4);
+  animation:popUp .4s cubic-bezier(.34,1.56,.64,1)
+}
+@keyframes popUp{from{transform:scale(.85) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.server-icon{width:72px;height:72px;background:linear-gradient(135deg,#fee2e2,#fecaca);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:32px;margin:0 auto 18px;color:var(--red)}
+.server-popup h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--gray-900);margin-bottom:12px}
+.server-popup p{font-size:14px;color:var(--gray-500);line-height:1.6;margin-bottom:28px}
+.server-popup-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.server-btn-retry{background:linear-gradient(135deg,var(--g6),var(--b6));color:#fff;border:none;
+  border-radius:12px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;
+  font-family:'Plus Jakarta Sans',sans-serif;transition:var(--transition)}
+.server-btn-retry:hover{opacity:.88;transform:translateY(-2px)}
+.server-btn-cancel{background:var(--gray-100);color:var(--gray-700);border:none;
+  border-radius:12px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;
+  font-family:'Plus Jakarta Sans',sans-serif;transition:var(--transition)}
+.server-btn-cancel:hover{background:var(--gray-200)}
+
+/* ==================== MAINTENANCE OVERLAY ==================== */
+#maintenanceOverlay{
+  display:none;position:fixed;inset:0;z-index:8500;
+  background:linear-gradient(135deg,#0a4a2e 0%,#0b2a4a 50%,#0f7045 100%);
+  align-items:center;justify-content:center;padding:20px;overflow:auto
+}
+.maintenance-card{
+  background:#fff;border-radius:32px;padding:clamp(32px,6vw,52px);
+  max-width:560px;width:100%;text-align:center;
+  box-shadow:0 30px 70px rgba(0,0,0,.5);
+  animation:maintenancePop .45s cubic-bezier(.34,1.4,.64,1)
+}
+@keyframes maintenancePop{from{transform:scale(.9) translateY(30px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.maintenance-logo{
+  width:clamp(72px,16vw,96px);height:clamp(72px,16vw,96px);
+  border-radius:50%;object-fit:cover;border:4px solid var(--g4);
+  box-shadow:0 0 40px rgba(34,192,122,.5);margin-bottom:20px
+}
+.maintenance-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#fff7ed;border:1.5px solid #fed7aa;border-radius:40px;
+  padding:6px 18px;font-size:12px;font-weight:800;color:#c2410c;
+  margin-bottom:20px;letter-spacing:.05em
+}
+.badge-dot{width:8px;height:8px;border-radius:50%;background:var(--orange);display:inline-block;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.8)}}
+.maintenance-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(20px,5vw,28px);
+  font-weight:800;color:var(--gray-900);margin-bottom:14px}
+.maintenance-reason{font-size:clamp(13px,2.5vw,15px);color:#475569;line-height:1.7;margin-bottom:24px}
+.estimasi-box{background:#f0fdf4;border:1.5px solid #a8f0cc;border-radius:18px;padding:14px 20px;margin-bottom:20px}
+.estimasi-box .label{font-size:11px;font-weight:700;color:#0f7045;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.estimasi-box .value{font-size:15px;font-weight:800;color:#0a4a2e;font-family:'Plus Jakarta Sans',sans-serif}
+.kontak-info{font-size:13px;color:#64748b;margin-bottom:20px}
+.kontak-info i{color:var(--b5);margin-right:6px}
+.footer-sekolah{font-size:12px;color:#94a3b8;border-top:1px solid #e2e8f0;padding-top:18px;margin-top:8px}
+
+/* ==================== COUNTDOWN OVERLAY - DIPERBAIKI TOTAL ==================== */
+#countdownOverlay{
+  display:none;position:fixed;inset:0;z-index:8000;
+  background:linear-gradient(135deg,#0a4a2e 0%,#0b2a4a 40%,#0f7045 100%);
+  align-items:center;justify-content:center;padding:20px;
+  flex-direction:column
+}
+.countdown-container{
+  position:relative;z-index:2;text-align:center;width:100%;max-width:780px;
+  background:rgba(255,255,255,.03);backdrop-filter:blur(2px);
+  border-radius:60px;padding:clamp(30px,6vw,50px) clamp(20px,5vw,40px);
+  box-shadow:0 20px 50px rgba(0,0,0,.2)
+}
+.countdown-logo-wrap{
+  display:flex;justify-content:center;margin-bottom:24px
+}
+.countdown-logo{
+  width:clamp(80px,18vw,110px);height:clamp(80px,18vw,110px);
+  border-radius:50%;object-fit:cover;border:4px solid var(--g4);
+  box-shadow:0 0 50px rgba(34,192,122,.6);
+  animation:logoPulse 3s ease-in-out infinite
+}
+@keyframes logoPulse{
+  0%,100%{box-shadow:0 0 40px rgba(34,192,122,.5);transform:scale(1)}
+  50%{box-shadow:0 0 70px rgba(34,192,122,.9);transform:scale(1.02)}
+}
+.countdown-school{
+  font-size:clamp(11px,2vw,14px);font-weight:700;color:rgba(255,255,255,.5);
+  text-transform:uppercase;letter-spacing:.2em;margin-bottom:12px
+}
+.countdown-title{
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(22px,6vw,38px);
+  font-weight:800;color:#fff;margin-bottom:10px;line-height:1.2
+}
+.countdown-message{
+  font-size:clamp(13px,2.5vw,16px);color:rgba(255,255,255,.7);
+  margin-bottom:40px;line-height:1.6;max-width:460px;margin-left:auto;margin-right:auto
+}
+
+/* TIMER - SEMUA SEJAJAR DALAM SATU BARIS (FLEXROW TIDAK WRAP) */
+.countdown-timer-wrapper{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  flex-wrap:nowrap;
+  margin-bottom:36px;
+  overflow-x:auto;
+  padding:8px 4px;
+}
+.timer-block{
+  text-align:center;
+  min-width:90px;
+  flex-shrink:0;
+}
+.timer-number{
+  background:rgba(255,255,255,.12);
+  border:1.5px solid rgba(255,255,255,.25);
+  border-radius:20px;
+  padding:16px 12px;
+  backdrop-filter:blur(12px);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:52px;
+  font-weight:800;
+  color:#fff;
+  line-height:1;
+  text-shadow:0 2px 10px rgba(0,0,0,.2);
+  transition:all .15s ease;
+  min-width:100px;
+}
+.timer-label{
+  font-size:12px;
+  font-weight:700;
+  color:rgba(255,255,255,.5);
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  margin-top:12px;
+}
+.timer-separator{
+  font-size:48px;
+  color:rgba(255,255,255,.3);
+  font-weight:300;
+  flex-shrink:0;
+  margin-bottom:20px;
+}
+/* Special untuk detik - beda warna */
+.timer-block.detik .timer-number{
+  background:rgba(34,192,122,.2);
+  border-color:rgba(34,192,122,.6);
+  color:var(--g4);
+}
+.timer-block.detik .timer-label{
+  color:var(--g3);
+}
+
+.countdown-progress{
+  background:rgba(255,255,255,.12);border-radius:30px;
+  height:6px;max-width:400px;margin:0 auto 28px;overflow:hidden
+}
+.countdown-progress-bar{
+  height:100%;background:linear-gradient(90deg,var(--g4),var(--b5));
+  border-radius:30px;transition:width 1s linear;width:0%
+}
+.countdown-footer{
+  font-size:12px;color:rgba(255,255,255,.35);
+  letter-spacing:.05em
+}
+.countdown-footer i{
+  margin-right:5px;color:rgba(255,255,255,.4)
+}
+
+/* ==================== RESPONSIVE UNTUK LAPTOP & TABLET ==================== */
+@media (max-width: 768px){
+  .timer-block{ min-width: 70px; }
+  .timer-number{ font-size: 36px; padding: 12px 8px; min-width: 70px; }
+  .timer-separator{ font-size: 32px; }
+  .timer-label{ font-size: 10px; margin-top: 8px; }
+  .countdown-timer-wrapper{ gap: 6px; }
+}
+@media (max-width: 550px){
+  .countdown-timer-wrapper{ gap: 4px; }
+  .timer-block{ min-width: 55px; }
+  .timer-number{ font-size: 26px; padding: 8px 4px; min-width: 55px; }
+  .timer-separator{ font-size: 22px; }
+  .timer-label{ font-size: 9px; margin-top: 6px; }
+}
+@media (max-width: 420px){
+  .timer-block{ min-width: 48px; }
+  .timer-number{ font-size: 20px; padding: 6px 2px; min-width: 48px; }
+  .timer-separator{ font-size: 18px; }
+}
+
+/* ==================== NAVIGASI ==================== */
+nav{
+  background:linear-gradient(135deg,var(--g9) 0%,var(--b9) 100%);
+  box-shadow:0 2px 20px rgba(0,0,0,.3);position:sticky;top:0;z-index:100
+}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:14px;height:64px}
+.nav-logo{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--g4);flex-shrink:0;transition:var(--transition);cursor:pointer}
+.nav-logo:hover{transform:scale(1.08)}
+.nav-title{flex:1;min-width:0}
+.nav-title h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(12px,2vw,16px);font-weight:800;color:#fff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-title p{font-size:10px;color:var(--g3);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-tabs{display:flex;gap:3px;flex-shrink:0}
+.nav-tab{background:transparent;border:none;color:rgba(255,255,255,.72);padding:7px 12px;border-radius:8px;
+  font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition);white-space:nowrap;
+  font-family:'Inter',sans-serif;display:flex;align-items:center;gap:5px}
+.nav-tab:hover,.nav-tab.active{background:rgba(255,255,255,.16);color:#fff}
+.nav-tab.active{background:var(--g7)}
+.hamburger{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:6px;flex-shrink:0}
+.mobile-nav{display:none;background:var(--g9);border-top:1px solid rgba(255,255,255,.1);padding:8px 14px;gap:4px;flex-wrap:wrap}
+.mobile-nav.open{display:flex}
+.mobile-nav .nav-tab{font-size:12px;padding:8px 12px}
+
+/* ==================== HERO ==================== */
+.hero{
+  background:linear-gradient(160deg,var(--g8) 0%,var(--b8) 55%,var(--g7) 100%);
+  padding:36px 20px 44px;text-align:center;color:#fff;position:relative;overflow:hidden
+}
+.hero::before{content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2316a068' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.hero-logo{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid var(--g4);
+  margin-bottom:14px;box-shadow:0 0 28px rgba(22,160,104,.5);position:relative}
+.hero h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(18px,4vw,28px);font-weight:800;margin-bottom:6px;position:relative}
+.hero p{font-size:13px;color:var(--g2);max-width:480px;margin:0 auto;position:relative}
+
+/* ==================== SECTIONS ==================== */
+.section{max-width:1280px;margin:0 auto;padding:28px 20px}
+.section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(15px,2.5vw,20px);font-weight:800;
+  color:var(--g9);display:flex;align-items:center;gap:9px;margin-bottom:18px}
+.section-title i{color:var(--g5)}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--gray-200);overflow:hidden;transition:var(--transition)}
+.tab-bar{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.tab-btn{padding:8px 18px;border-radius:20px;border:2px solid var(--g5);background:#fff;
+  color:var(--g7);font-weight:700;font-size:13px;cursor:pointer;transition:var(--transition);font-family:'Inter',sans-serif}
+.tab-btn.active{background:var(--g5);color:#fff;box-shadow:0 4px 12px rgba(22,160,104,.28)}
+.tab-btn:hover:not(.active){background:var(--g1)}
+.jadwal-pane{display:none;animation:fadeSlide .22s ease}
+.jadwal-pane.active{display:block}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.jadwal-table-wrap{overflow-x:auto;border-radius:var(--radius-sm)}
+.jadwal-table{width:100%;border-collapse:collapse;font-size:13px}
+.jadwal-table th{background:linear-gradient(135deg,var(--g7),var(--b7));color:#fff;padding:11px 13px;text-align:left;font-weight:700;white-space:nowrap}
+.jadwal-table td{padding:10px 13px;border-bottom:1px solid var(--gray-100);color:var(--gray-700)}
+.jadwal-table tbody tr:hover td{background:var(--g1)}
+.jadwal-image-wrap{text-align:center;padding:16px}
+.jadwal-image-wrap img{max-width:100%;border-radius:var(--radius-sm);box-shadow:var(--shadow-md);cursor:zoom-in}
+.empty-state{text-align:center;padding:46px 20px;color:var(--gray-400)}
+.empty-state i{font-size:36px;color:var(--gray-300);margin-bottom:10px;display:block}
+
+/* Kalender Akademik */
+.akademik-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.year-btn{padding:7px 16px;border-radius:20px;border:2px solid var(--g4);background:#fff;
+  color:var(--g7);font-weight:700;font-size:13px;cursor:pointer;transition:var(--transition)}
+.year-btn.active{background:var(--g5);color:#fff;border-color:var(--g5)}
+.year-btn:hover:not(.active){background:var(--g1)}
+.event-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:9px;border-left:4px solid}
+.event-item.red{background:#fff0f0;border-color:#ef4444}
+.event-item.green{background:#f0fff4;border-color:#22c55e}
+.event-item.yellow{background:#fffbeb;border-color:#f59e0b}
+.event-item.blue{background:#eff6ff;border-color:#3b82f6}
+.event-date{font-weight:700;font-size:13px;min-width:110px}
+
+/* Big Calendar */
+.calendar-nav{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.cal-nav-btn{background:linear-gradient(135deg,var(--g6),var(--b6));color:#fff;border:none;border-radius:9px;
+  width:36px;height:36px;font-size:15px;cursor:pointer;transition:var(--transition)}
+.cal-nav-btn:hover{opacity:.85;transform:scale(1.05)}
+.cal-month-label{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--g9);flex:1}
+.cal-year-input{border:2px solid var(--g4);border-radius:8px;padding:5px 9px;font-size:13px;
+  font-weight:700;color:var(--g8);width:76px;text-align:center;outline:none}
+.cal-year-input:focus{border-color:var(--b5);box-shadow:0 0 0 3px rgba(34,120,232,.12)}
+.cal-grid-wrap{border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--gray-200)}
+.cal-header-row{display:grid;grid-template-columns:repeat(7,1fr);background:linear-gradient(135deg,var(--g7),var(--b7))}
+.cal-day-hdr{text-align:center;font-size:11px;font-weight:700;color:#fff;padding:8px 0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr)}
+.cal-cell{min-height:60px;border-right:1px solid var(--gray-100);border-bottom:1px solid var(--gray-100);
+  padding:5px 4px;cursor:pointer;transition:background var(--transition);position:relative}
+.cal-cell:hover{background:var(--g1)}
+.cal-cell.empty{background:var(--gray-50);cursor:default}
+.cal-cell .day-num{font-size:12px;font-weight:700;color:var(--gray-700);align-self:flex-start}
+.cal-cell.today .day-num{background:linear-gradient(135deg,var(--g5),var(--b5));color:#fff;border-radius:50%;
+  width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+.cal-cell.has-agenda::after{content:'';position:absolute;bottom:4px;right:4px;width:7px;height:7px;border-radius:50%;background:var(--b5)}
+.cal-cell.red-day{background:#fff5f5}
+.cal-cell.green-day{background:#f0fff4}
+.cal-cell.yellow-day{background:#fffdf0}
+.cal-cell.blue-day{background:#f0f6ff}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:500;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(2px)}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:var(--radius);width:100%;max-width:460px;box-shadow:var(--shadow-lg);overflow:hidden;animation:modalPop .24s cubic-bezier(.34,1.4,.64,1)}
+@keyframes modalPop{from{transform:scale(.9) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.modal-header{background:linear-gradient(135deg,var(--g7),var(--b7));color:#fff;padding:15px 20px;display:flex;align-items:center;justify-content:space-between}
+.modal-close{background:rgba(255,255,255,.15);border:none;color:#fff;font-size:15px;cursor:pointer;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:rgba(255,255,255,.28)}
+.modal-body{padding:18px;max-height:70vh;overflow-y:auto}
+.form-group{margin-bottom:11px}
+.form-group label{display:block;font-size:11px;font-weight:700;color:var(--gray-700);margin-bottom:4px}
+.form-group input{width:100%;padding:9px 12px;border:2px solid var(--gray-200);border-radius:8px;font-size:13px;outline:none}
+.form-group input:focus{border-color:var(--g4);box-shadow:0 0 0 3px rgba(34,192,122,.1)}
+.btn{padding:9px 18px;border-radius:9px;border:none;font-weight:700;font-size:13px;cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:linear-gradient(135deg,var(--g6),var(--b6));color:#fff}
+.btn-primary:hover{opacity:.88;transform:translateY(-1px)}
+
+/* Unduh */
+.unduh-cat{margin-bottom:20px}
+.unduh-cat-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;
+  color:var(--g8);margin-bottom:10px;display:flex;align-items:center;gap:8px;border-bottom:2px solid var(--g2)}
+.unduh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.unduh-btn{background:#fff;border-radius:10px;padding:13px 14px;border:1.5px solid var(--gray-200);
+  display:flex;align-items:center;gap:12px;transition:var(--transition);cursor:pointer}
+.unduh-btn:hover{box-shadow:var(--shadow-md);border-color:var(--g4);transform:translateY(-2px)}
+.unduh-btn-icon{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--g5),var(--b5));
+  display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff}
+.unduh-btn-info h4{font-size:13px;font-weight:700;color:var(--gray-900);margin-bottom:2px}
+.unduh-btn-info p{font-size:11px;color:var(--gray-500)}
+
+/* ═══════ LAYANAN LAINNYA ═══════ */
+.fl-section-sub{font-size:12.5px;color:var(--gray-500);margin:-10px 0 18px;line-height:1.5}
+.fl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+@media(max-width:980px){.fl-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.fl-grid{grid-template-columns:1fr}}
+
+.fl-card{
+  position:relative;background:linear-gradient(160deg,rgba(255,255,255,.85),rgba(255,255,255,.6));
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1.5px solid rgba(255,255,255,.5);border-radius:22px;padding:26px 20px;
+  text-align:center;overflow:hidden;cursor:pointer;
+  box-shadow:0 8px 28px rgba(15,112,69,.10),0 2px 8px rgba(16,80,160,.06);
+  transition:transform .32s cubic-bezier(.34,1.4,.64,1),box-shadow .32s cubic-bezier(.34,1.4,.64,1),border-color .32s ease;
+  animation:flSlideUp .5s cubic-bezier(.22,1,.36,1) backwards;
+  isolation:isolate;
+}
+@keyframes flSlideUp{from{opacity:0;transform:translateY(26px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.fl-card::before{
+  content:'';position:absolute;inset:0;z-index:0;opacity:0;
+  background:linear-gradient(160deg,rgba(34,192,122,.10),rgba(34,122,232,.10));
+  transition:opacity .32s ease;
+}
+.fl-card:hover{
+  transform:translateY(-8px) scale(1.025);
+  box-shadow:0 20px 44px rgba(15,112,69,.18),0 6px 16px rgba(16,80,160,.12);
+  border-color:rgba(34,192,122,.45);
+}
+.fl-card:hover::before{opacity:1}
+.fl-card:active{transform:translateY(-4px) scale(.99)}
+
+.fl-card-icon{
+  position:relative;z-index:1;width:64px;height:64px;border-radius:18px;margin:0 auto 16px;
+  display:flex;align-items:center;justify-content:center;font-size:27px;color:#fff;
+  background:linear-gradient(135deg,var(--g6),var(--b6));
+  box-shadow:0 8px 18px rgba(18,136,90,.35);
+  transition:transform .32s cubic-bezier(.34,1.4,.64,1);
+}
+.fl-card:hover .fl-card-icon{transform:scale(1.12) rotate(-4deg)}
+.fl-card-name{position:relative;z-index:1;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;
+  color:var(--gray-900);margin-bottom:7px;line-height:1.3}
+.fl-card-desc{position:relative;z-index:1;font-size:12.5px;color:var(--gray-500);line-height:1.55;margin-bottom:18px;
+  min-height:36px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fl-card-btn{
+  position:relative;z-index:1;display:inline-flex;align-items:center;gap:7px;
+  background:linear-gradient(135deg,var(--g6),var(--b6));color:#fff;border:none;
+  border-radius:30px;padding:10px 22px;font-size:12.5px;font-weight:700;font-family:'Inter',sans-serif;
+  letter-spacing:.01em;overflow:hidden;transition:opacity .2s ease,transform .2s ease;
+}
+.fl-card-btn:hover{opacity:.92}
+.fl-card-btn i{transition:transform .25s cubic-bezier(.34,1.4,.64,1)}
+.fl-card:hover .fl-card-btn i{transform:translateX(3px)}
+
+/* Ripple effect */
+.fl-ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);
+  transform:scale(0);animation:flRippleAnim .55s ease-out;pointer-events:none;z-index:2}
+@keyframes flRippleAnim{to{transform:scale(2.6);opacity:0}}
+
+.fl-empty{grid-column:1/-1;text-align:center;padding:36px 18px;color:var(--gray-400)}
+.fl-empty i{font-size:32px;color:var(--gray-300);margin-bottom:8px;display:block}
+
+/* Toast */
+#toast-stack{position:fixed;bottom:20px;right:20px;z-index:4000;display:flex;flex-direction:column-reverse;gap:8px;pointer-events:none}
+.toast-item{background:var(--g8);color:#fff;padding:12px 16px;border-radius:10px;
+  box-shadow:var(--shadow-lg);font-size:13px;font-weight:600;max-width:280px;
+  animation:toastIn .3s cubic-bezier(.34,1.4,.64,1);pointer-events:all}
+@keyframes toastIn{from{opacity:0;transform:translateX(30px) scale(.9)}to{opacity:1;transform:translateX(0) scale(1)}}
+.toast-item.fadeout{animation:toastOut .3s ease forwards}
+@keyframes toastOut{to{opacity:0;transform:translateX(20px)}}
+
+/* Lightbox */
+#lightbox{display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.88);
+  align-items:center;justify-content:center;cursor:zoom-out}
+#lightbox.show{display:flex}
+#lightbox img{max-width:94vw;max-height:94vh;border-radius:10px}
+
+/* Footer */
+footer{background:linear-gradient(135deg,var(--g9),var(--b9));color:rgba(255,255,255,.68);
+  text-align:center;padding:22px 20px;margin-top:32px;font-size:12px;line-height:1.7}
+footer strong{color:#fff}
+
+/* Responsive nav */
+@media(max-width:700px){
+  .hamburger{display:block}
+  .nav-tabs{display:none}
+  .mobile-nav.open{display:flex}
+}
+</style>
+</head>
+<body>
+
+<!-- SERVER CAPACITY OVERLAY -->
+<div id="serverOverlay">
+  <div class="server-popup">
+    <div class="server-icon"><i class="fas fa-server"></i></div>
+    <h2>Server Sedang Padat</h2>
+    <p>Kapasitas akses pengguna saat ini telah penuh.<br>Silakan coba lagi beberapa saat kemudian.</p>
+    <div class="server-popup-btns">
+      <button class="server-btn-retry" onclick="retryAccess()"><i class="fas fa-rotate-right"></i> Coba Lagi</button>
+      <button class="server-btn-cancel" onclick="cancelAccess()"><i class="fas fa-arrow-left"></i> Kembali</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAINTENANCE OVERLAY -->
+<div id="maintenanceOverlay">
+  <div class="maintenance-card">
+    <img id="mtLogo" class="maintenance-logo" src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68"/>
+    <div class="maintenance-badge"><span class="badge-dot"></span> MAINTENANCE</div>
+    <h2 id="mtTitle" class="maintenance-title">Website Sedang Dalam Perbaikan</h2>
+    <p id="mtReason" class="maintenance-reason">Kami sedang melakukan pembaruan sistem. Website akan kembali normal segera.</p>
+    <div id="mtEstimasiBox" class="estimasi-box" style="display:none">
+      <div class="label"><i class="fas fa-clock"></i> Estimasi Selesai</div>
+      <div id="mtEstimasiValue" class="value"></div>
+    </div>
+    <div id="mtKontakBox" class="kontak-info" style="display:none">
+      <i class="fas fa-envelope"></i> <span id="mtKontakValue"></span>
+    </div>
+    <div class="footer-sekolah">
+      <strong>SMAN 68 Jakarta</strong> &nbsp;·&nbsp; Jl. Salemba Raya No.18, Jakarta Pusat
+    </div>
+  </div>
+</div>
+
+<!-- COUNTDOWN OVERLAY - DIPERBAIKI TOTAL -->
+<div id="countdownOverlay">
+  <div class="countdown-container">
+    <div class="countdown-logo-wrap">
+      <img class="countdown-logo" src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68"/>
+    </div>
+    <div class="countdown-school">SMAN 68 JAKARTA</div>
+    <h2 class="countdown-title">Website Akan Segera Dibuka</h2>
+    <p id="cdMessage" class="countdown-message">Website akan segera dibuka. Mohon tunggu sebentar.</p>
+
+    <!-- TIMER - SEMUA SEJAJAR DALAM SATU BARIS! -->
+    <div class="countdown-timer-wrapper">
+      <div class="timer-block">
+        <div id="cdDays" class="timer-number">00</div>
+        <div class="timer-label">HARI</div>
+      </div>
+      <div class="timer-separator">:</div>
+      <div class="timer-block">
+        <div id="cdHours" class="timer-number">00</div>
+        <div class="timer-label">JAM</div>
+      </div>
+      <div class="timer-separator">:</div>
+      <div class="timer-block">
+        <div id="cdMinutes" class="timer-number">00</div>
+        <div class="timer-label">MENIT</div>
+      </div>
+      <div class="timer-separator">:</div>
+      <div class="timer-block detik">
+        <div id="cdSeconds" class="timer-number">00</div>
+        <div class="timer-label">DETIK</div>
+      </div>
+    </div>
+
+    <div class="countdown-progress">
+      <div id="cdProgress" class="countdown-progress-bar" style="width:0%"></div>
+    </div>
+    <div class="countdown-footer">
+      <i class="fas fa-map-marker-alt"></i> Jl. Salemba Raya No.18, Jakarta Pusat
+    </div>
+  </div>
+</div>
+
+<!-- NAVIGASI -->
+<nav>
+  <div class="nav-inner">
+    <img class="nav-logo" src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="Logo SMAN 68" onclick="showSection('jadwal',document.querySelector('.nav-tab'))"/>
+    <div class="nav-title">
+      <h1>Pusat Layanan - SMAN 68 Jakarta</h1>
+      <p>Portal Jadwal, Kalender & Dokumen Resmi</p>
+    </div>
+    <div class="nav-tabs" id="navTabs">
+      <button class="nav-tab active" data-sec="jadwal" onclick="showSection('jadwal',this)"><i class="fa fa-calendar-alt"></i> Jadwal</button>
+      <button class="nav-tab" data-sec="akademik" onclick="showSection('akademik',this)"><i class="fa fa-book-open"></i> Kal. Akademik</button>
+      <button class="nav-tab" data-sec="kalender" onclick="showSection('kalender',this)"><i class="fa fa-calendar"></i> Kalender</button>
+      <button class="nav-tab" data-sec="unduh" onclick="showSection('unduh',this)"><i class="fa fa-download"></i> Unduh</button>
+      <button class="nav-tab" data-sec="fiturlain" onclick="showSection('fiturlain',this)"><i class="fa fa-th-large"></i> Layanan Lainnya</button>
+    </div>
+    <button class="hamburger" onclick="toggleMobileNav()"><i class="fa fa-bars"></i></button>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <button class="nav-tab active" data-sec="jadwal" onclick="showSection('jadwal',this);closeMobileNav()"><i class="fa fa-calendar-alt"></i> Jadwal</button>
+    <button class="nav-tab" data-sec="akademik" onclick="showSection('akademik',this);closeMobileNav()"><i class="fa fa-book-open"></i> Kal. Akademik</button>
+    <button class="nav-tab" data-sec="kalender" onclick="showSection('kalender',this);closeMobileNav()"><i class="fa fa-calendar"></i> Kalender</button>
+    <button class="nav-tab" data-sec="unduh" onclick="showSection('unduh',this);closeMobileNav()"><i class="fa fa-download"></i> Unduh</button>
+    <button class="nav-tab" data-sec="fiturlain" onclick="showSection('fiturlain',this);closeMobileNav()"><i class="fa fa-th-large"></i> Layanan Lainnya</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <img class="hero-logo" src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68"/>
+  <h2>Pusat Layanan - SMAN 68 Jakarta</h2>
+  <p>Portal Jadwal Pelajaran, Kalender Akademik, Unduh Dokumen, dan Akses Layanan Resmi Sekolah</p>
+</div>
+
+<!-- JADWAL -->
+<div class="section" id="sec-jadwal">
+  <div class="section-title"><i class="fa fa-calendar-alt"></i> Jadwal Pelajaran</div>
+  <div class="tab-bar" id="jadwalTabBar">
+    <button class="tab-btn active" id="tabGenap" onclick="switchJadwal('genap')">📘 Semester Genap</button>
+    <button class="tab-btn" id="tabGanjil" onclick="switchJadwal('ganjil')">📗 Semester Ganjil</button>
+    <button class="tab-btn" id="tabPTS" onclick="switchJadwal('pts')">📝 Jadwal PTS</button>
+    <button class="tab-btn" id="tabPAS" onclick="switchJadwal('pas')">📋 Jadwal PAS</button>
+  </div>
+  <div class="card" style="padding:18px">
+    <div class="jadwal-pane active" id="pane-genap">
+      <div id="jadwal-genap-image" class="jadwal-image-wrap" style="display:none"></div>
+      <div id="jadwal-genap-table" class="jadwal-table-wrap"></div>
+      <div id="jadwal-genap-empty" class="empty-state"><i class="fa fa-inbox"></i><p>Jadwal Semester Genap belum tersedia.</p></div>
+    </div>
+    <div class="jadwal-pane" id="pane-ganjil">
+      <div id="jadwal-ganjil-image" class="jadwal-image-wrap" style="display:none"></div>
+      <div id="jadwal-ganjil-table" class="jadwal-table-wrap"></div>
+      <div id="jadwal-ganjil-empty" class="empty-state"><i class="fa fa-inbox"></i><p>Jadwal Semester Ganjil belum tersedia.</p></div>
+    </div>
+    <div class="jadwal-pane" id="pane-pts">
+      <div id="jadwal-pts-image" class="jadwal-image-wrap" style="display:none"></div>
+      <div id="jadwal-pts-table" class="jadwal-table-wrap"></div>
+      <div id="jadwal-pts-empty" class="empty-state"><i class="fa fa-inbox"></i><p>Jadwal PTS belum tersedia.</p></div>
+    </div>
+    <div class="jadwal-pane" id="pane-pas">
+      <div id="jadwal-pas-image" class="jadwal-image-wrap" style="display:none"></div>
+      <div id="jadwal-pas-table" class="jadwal-table-wrap"></div>
+      <div id="jadwal-pas-empty" class="empty-state"><i class="fa fa-inbox"></i><p>Jadwal PAS belum tersedia.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- KALENDER AKADEMIK -->
+<div class="section" id="sec-akademik" style="display:none">
+  <div class="section-title"><i class="fa fa-book-open"></i> Kalender Akademik</div>
+  <div class="card" style="padding:18px">
+    <div class="akademik-header">
+      <span style="font-weight:700;color:var(--g8);font-size:14px">Tahun Ajaran</span>
+      <div id="akademikYearBtns" style="display:flex;gap:7px;flex-wrap:wrap"></div>
+    </div>
+    <div id="akademik-content">
+      <div class="empty-state"><i class="fa fa-book-open"></i><p>Pilih tahun ajaran untuk melihat kalender akademik.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- KALENDER BESAR -->
+<div class="section" id="sec-kalender" style="display:none">
+  <div class="section-title"><i class="fa fa-calendar"></i> Kalender & Agenda Pribadi</div>
+  <div class="card" style="padding:18px">
+    <div class="calendar-nav">
+      <button class="cal-nav-btn" onclick="changeMonth(-1)"><i class="fa fa-chevron-left"></i></button>
+      <div style="display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap">
+        <span class="cal-month-label" id="calMonthLabel"></span>
+        <input type="number" class="cal-year-input" id="calYearInput" min="1900" max="2100" onchange="goToYear(this.value)"/>
+      </div>
+      <button class="cal-nav-btn" onclick="changeMonth(1)"><i class="fa fa-chevron-right"></i></button>
+    </div>
+    <div class="cal-grid-wrap">
+      <div class="cal-header-row">
+        <div class="cal-day-hdr">Min</div><div class="cal-day-hdr">Sen</div>
+        <div class="cal-day-hdr">Sel</div><div class="cal-day-hdr">Rab</div>
+        <div class="cal-day-hdr">Kam</div><div class="cal-day-hdr">Jum</div>
+        <div class="cal-day-hdr">Sab</div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--gray-500)">
+      <span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:50%;background:var(--b4)"></span>Ada Agenda</span>
+      <span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:50%;background:var(--g5)"></span>Hari Ini</span>
+    </div>
+  </div>
+</div>
+
+<!-- UNDUH -->
+<div class="section" id="sec-unduh" style="display:none">
+  <div class="section-title"><i class="fa fa-download"></i> Unduh Dokumen</div>
+  <div class="card" style="padding:18px">
+    <div id="unduhContent">
+      <div class="empty-state"><i class="fa fa-folder-open"></i><p>Belum ada dokumen tersedia.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- LAYANAN LAINNYA ← FITUR BARU (section mandiri) -->
+<div class="section" id="sec-fiturlain" style="display:none">
+  <div class="section-title"><i class="fa fa-rocket"></i> Layanan Lainnya</div>
+  <p class="fl-section-sub">Berbagai layanan tambahan resmi SMAN 68 Jakarta yang bisa kamu akses langsung dari sini.</p>
+  <div class="fl-grid" id="fiturLainnyaGrid">
+    <div class="fl-empty"><i class="fa fa-th-large"></i><p>Belum ada fitur tersedia saat ini.</p></div>
+  </div>
+</div>
+
+<footer>
+  <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--g4);vertical-align:middle;margin-right:8px" alt=""/>
+  <strong>SMAN 68 Jakarta</strong><br>
+  Jl. Salemba Raya No.18, Jakarta Pusat &nbsp;|&nbsp;
+  &copy; <span id="footerYear"></span> Hak Cipta Dilindungi
+</footer>
+
+<!-- AGENDA MODAL -->
+<div class="modal-overlay" id="agendaModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalDateLabel">Agenda</h3>
+      <button class="modal-close" onclick="closeModal()"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="agenda-list" id="agendaList"></div>
+      <div style="border-top:1px solid var(--gray-200);padding-top:14px;margin-top:4px">
+        <p style="font-size:11px;font-weight:700;color:var(--gray-500);margin-bottom:10px">Tambah Agenda Baru</p>
+        <div class="form-group"><label>Nama Agenda</label><input type="text" id="agendaName" placeholder="Contoh: Rapat OSIS"/></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="form-group"><label>Jam Mulai</label><input type="time" id="agendaStart"/></div>
+          <div class="form-group"><label>Jam Selesai</label><input type="time" id="agendaEnd"/></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="saveAgenda()"><i class="fa fa-plus"></i> Simpan Agenda</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="lightbox" onclick="closeLightbox()"><img id="lightboxImg" src="" alt=""/></div>
+<div id="toast-stack"></div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+import { getDatabase, ref, onValue, set, get, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyDAcKcg3alPOTH3FFGelYmsW7jcMMe2PLI",
+  authDomain:"upnvjdatsystem.firebaseapp.com",
+  databaseURL:"https://upnvjdatsystem-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:"upnvjdatsystem",
+  storageBucket:"upnvjdatsystem.firebasestorage.app",
+  messagingSenderId:"57095309946",
+  appId:"1:57095309946:web:b0e9f3f86380d549ffc9c3"
+};
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
+
+// ==================== SESSION TRACKING ====================
+const SESSION_KEY = 'sman68_' + Math.random().toString(36).substr(2,12);
+const sessionRef = ref(db, `server_capacity/active_sessions/${SESSION_KEY}`);
+let sessionRegistered = false;
+let serverCapacity = 0;
+let serverBlocked = false;
+
+function getDeviceInfo(){
+  const ua = navigator.userAgent;
+  let os = 'Unknown';
+  if(/Windows/.test(ua)) os='Windows';
+  else if(/Android/.test(ua)) os='Android';
+  else if(/iPhone|iPad/.test(ua)) os='iOS';
+  else if(/Mac/.test(ua)) os='macOS';
+  else if(/Linux/.test(ua)) os='Linux';
+  let browser = 'Browser';
+  if(/Edg\//.test(ua)) browser='Edge';
+  else if(/Firefox\//.test(ua)) browser='Firefox';
+  else if(/Chrome\//.test(ua)) browser='Chrome';
+  else if(/Safari\//.test(ua)) browser='Safari';
+  let deviceType = 'Desktop';
+  if(/Mobi|Android.*Mobile|iPhone|iPod/.test(ua)) deviceType='Smartphone';
+  else if(/iPad|Tablet/.test(ua)) deviceType='Tablet';
+  return { os, browser, deviceType, ts: Date.now() };
+}
+
+async function registerSession(){
+  await set(sessionRef, getDeviceInfo());
+  await onDisconnect(sessionRef).remove();
+  sessionRegistered = true;
+}
+
+async function checkServerCapacity(){
+  const capSnap = await get(ref(db,'server_capacity/max_users'));
+  const max = capSnap.val() || 0;
+  serverCapacity = max;
+  if(max <= 0){
+    await registerSession();
+    return true;
+  }
+  const sessionSnap = await get(ref(db,'server_capacity/active_sessions'));
+  const sessions = sessionSnap.val() || {};
+  const now = Date.now();
+  const activeSessions = Object.entries(sessions).filter(([k,v])=>(now - (v.ts||0)) < 10*60*1000);
+  if(activeSessions.length < max){
+    await registerSession();
+    return true;
+  } else {
+    serverBlocked = true;
+    document.getElementById('serverOverlay').classList.add('show');
+    return false;
+  }
+}
+
+window.retryAccess = async function(){
+  document.getElementById('serverOverlay').classList.remove('show');
+  serverBlocked = false;
+  const ok = await checkServerCapacity();
+  if(!ok){
+    serverBlocked = true;
+    setTimeout(()=>document.getElementById('serverOverlay').classList.add('show'), 600);
+  }
+};
+window.cancelAccess = function(){
+  if(sessionRegistered){
+    onDisconnect(sessionRef).cancel();
+    remove(sessionRef);
+  }
+  window.location.href = './sman68.html';
+};
+
+// ==================== AUTO NONAKTIF MAINTENANCE & COUNTDOWN ====================
+async function checkAndDeactivateMaintenance(){
+  const mtSnap = await get(ref(db,'site_mode/maintenance'));
+  const mt = mtSnap.val();
+  if(mt && mt.active && mt.estimasi && mt.estimasi <= Date.now()){
+    await set(ref(db,'site_mode/maintenance'), { active: false });
+    return true;
+  }
+  return false;
+}
+
+async function checkAndDeactivateCountdown(){
+  const cdSnap = await get(ref(db,'site_mode/countdown'));
+  const cd = cdSnap.val();
+  if(cd && cd.active && cd.targetTs && cd.targetTs <= Date.now()){
+    await set(ref(db,'site_mode/countdown'), { active: false, targetTs: null, message: '' });
+    return true;
+  }
+  return false;
+}
+
+// ==================== WATCH SITE MODE ====================
+let isContentLoaded = false;
+
+function watchSiteMode(){
+  onValue(ref(db,'site_mode/maintenance'), async (snap) => {
+    const d = snap.val();
+    if(d && d.active && d.estimasi && d.estimasi <= Date.now()){
+      await set(ref(db,'site_mode/maintenance'), { active: false });
+      const newSnap = await get(ref(db,'site_mode/maintenance'));
+      handleMaintenanceChange(newSnap.val());
+    } else {
+      handleMaintenanceChange(d);
+    }
+  });
+  
+  onValue(ref(db,'site_mode/countdown'), async (snap) => {
+    const d = snap.val();
+    if(d && d.active && d.targetTs && d.targetTs <= Date.now()){
+      await set(ref(db,'site_mode/countdown'), { active: false, targetTs: null, message: '' });
+      const newSnap = await get(ref(db,'site_mode/countdown'));
+      handleCountdownChange(newSnap.val());
+    } else {
+      handleCountdownChange(d);
+    }
+  });
+}
+
+function handleMaintenanceChange(d){
+  const mtActive = d && d.active;
+  const ov = document.getElementById('maintenanceOverlay');
+  const cdOv = document.getElementById('countdownOverlay');
+  
+  if(mtActive){
+    ov.style.display = 'flex';
+    cdOv.style.display = 'none';
+    document.getElementById('mtTitle').textContent = d.title || 'Website Sedang Dalam Perbaikan';
+    document.getElementById('mtReason').textContent = d.reason || 'Kami sedang melakukan pembaruan sistem.';
+    const estimasiBox = document.getElementById('mtEstimasiBox');
+    if(d.estimasi){
+      estimasiBox.style.display = 'block';
+      document.getElementById('mtEstimasiValue').textContent = new Date(d.estimasi).toLocaleString('id-ID', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
+    } else { estimasiBox.style.display = 'none'; }
+    const kontakBox = document.getElementById('mtKontakBox');
+    if(d.kontak){
+      kontakBox.style.display = 'block';
+      document.getElementById('mtKontakValue').textContent = d.kontak;
+    } else { kontakBox.style.display = 'none'; }
+  } else if(ov.style.display === 'flex'){
+    ov.style.display = 'none';
+    checkAndLoadContent();
+  }
+}
+
+let cdTimer = null;
+let cdStartTs = null;
+let cdTargetTs = null;
+
+function handleCountdownChange(d){
+  const mtActive = document.getElementById('maintenanceOverlay').style.display === 'flex';
+  if(mtActive) return;
+  
+  const cdActive = d && d.active && d.targetTs && d.targetTs > Date.now();
+  const ov = document.getElementById('countdownOverlay');
+  
+  if(cdActive){
+    ov.style.display = 'flex';
+    if(cdTimer) clearInterval(cdTimer);
+    cdTargetTs = d.targetTs;
+    cdStartTs = Date.now();
+    document.getElementById('cdMessage').textContent = d.message || 'Website akan segera dibuka. Mohon tunggu sebentar.';
+    startCountdownTimer();
+  } else if(ov.style.display === 'flex'){
+    ov.style.display = 'none';
+    if(cdTimer) clearInterval(cdTimer);
+    if(!isContentLoaded){
+      checkAndLoadContent();
+    } else {
+      showToast('🎉 Website sudah dibuka!');
+    }
+  }
+}
+
+function startCountdownTimer(){
+  cdTimer = setInterval(() => {
+    const now = Date.now();
+    const diff = cdTargetTs - now;
+    if(diff <= 0){
+      clearInterval(cdTimer);
+      document.getElementById('cdDays').textContent = '00';
+      document.getElementById('cdHours').textContent = '00';
+      document.getElementById('cdMinutes').textContent = '00';
+      document.getElementById('cdSeconds').textContent = '00';
+      document.getElementById('cdProgress').style.width = '100%';
+      setTimeout(() => {
+        document.getElementById('countdownOverlay').style.display = 'none';
+        if(!isContentLoaded){
+          loadAllContent();
+        } else {
+          showToast('🎉 Website sekarang sudah dibuka!');
+        }
+      }, 500);
+      return;
+    }
+    const days = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const minutes = Math.floor((diff % 3600000) / 60000);
+    const seconds = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cdDays').textContent = String(days).padStart(2,'0');
+    document.getElementById('cdHours').textContent = String(hours).padStart(2,'0');
+    document.getElementById('cdMinutes').textContent = String(minutes).padStart(2,'0');
+    document.getElementById('cdSeconds').textContent = String(seconds).padStart(2,'0');
+    
+    const total = cdTargetTs - cdStartTs;
+    const elapsed = now - cdStartTs;
+    const pct = Math.min(100, (elapsed / total) * 100);
+    document.getElementById('cdProgress').style.width = pct + '%';
+  }, 1000);
+}
+
+async function checkAndLoadContent(){
+  const mtSnap = await get(ref(db,'site_mode/maintenance'));
+  const mt = mtSnap.val();
+  if(mt && mt.active) return;
+  const cdSnap = await get(ref(db,'site_mode/countdown'));
+  const cd = cdSnap.val();
+  if(cd && cd.active && cd.targetTs && cd.targetTs > Date.now()) return;
+  if(!isContentLoaded){
+    loadAllContent();
+  }
+}
+
+function loadAllContent(){
+  isContentLoaded = true;
+  loadAllJadwal();
+  loadAkademikYears();
+  loadUnduh();
+  checkServerCapacity();
+  renderCalendar();
+  showToast('🎉 Website telah dibuka!');
+}
+
+// ==================== JADWAL ====================
+const JADWAL_KEYS = ['genap','ganjil','pts','pas'];
+JADWAL_KEYS.forEach(sem => {
+  onValue(ref(db, `jadwal/${sem}`), snap => {
+    renderJadwal(sem, snap.val());
+  });
+});
+
+function renderJadwal(sem, data){
+  const imgEl = document.getElementById(`jadwal-${sem}-image`);
+  const tblEl = document.getElementById(`jadwal-${sem}-table`);
+  const emptyEl = document.getElementById(`jadwal-${sem}-empty`);
+  if(imgEl) imgEl.style.display = 'none';
+  if(tblEl) tblEl.innerHTML = '';
+  if(emptyEl) emptyEl.style.display = 'none';
+  if(!data){ if(emptyEl) emptyEl.style.display = 'block'; return; }
+  if(data.type === 'image' && data.url){
+    if(imgEl){
+      imgEl.innerHTML = `<img src="${data.url}" alt="Jadwal ${sem}" onclick="openLightbox('${data.url.replace(/'/g,"\\'")}')"/>`;
+      imgEl.style.display = 'block';
+    }
+  } else if(data.type === 'table' && data.headers && data.rows){
+    let html = `<table class="jadwal-table"><thead><tr>`;
+    data.headers.forEach(h => html += `<th>${h}</th>`);
+    html += `</tr></thead><tbody>`;
+    data.rows.forEach(row => {
+      html += `<tr>`;
+      row.forEach(c => html += `<td>${c || '–'}</td>`);
+      html += `</tr>`;
+    });
+    html += `</tbody></table>`;
+    if(tblEl) tblEl.innerHTML = html;
+  } else { if(emptyEl) emptyEl.style.display = 'block'; }
+}
+
+function loadAllJadwal(){}
+
+// ==================== KALENDER AKADEMIK ====================
+let akademikYears = {};
+onValue(ref(db,'akademik_years'), snap => {
+  akademikYears = snap.val() || {};
+  buildYearButtons();
+});
+
+function buildYearButtons(){
+  const wrap = document.getElementById('akademikYearBtns');
+  const years = Object.keys(akademikYears).sort().reverse();
+  if(!years.length){
+    if(wrap) wrap.innerHTML = '';
+    const content = document.getElementById('akademik-content');
+    if(content) content.innerHTML = `<div class="empty-state"><i class="fa fa-book-open"></i><p>Kalender akademik belum tersedia.</p></div>`;
+    return;
+  }
+  if(wrap){
+    wrap.innerHTML = years.map((y,i) => `<button class="year-btn${i===0?' active':''}" data-yr="${y}" onclick="loadAkademik('${y}',this)">${y.replace(/-/,'/')}</button>`).join('');
+    loadAkademik(years[0], wrap.querySelector('.year-btn'));
+  }
+}
+
+window.loadAkademik = function(yr, btnEl){
+  document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
+  if(btnEl) btnEl.classList.add('active');
+  const content = document.getElementById('akademik-content');
+  if(!content) return;
+  content.innerHTML = `<div style="padding:30px;text-align:center"><div class="skel" style="height:18px;width:60%;margin:0 auto 10px;background:#e2e8f0;border-radius:4px"></div></div>`;
+  onValue(ref(db, `akademik/${yr}`), snap => {
+    const data = snap.val();
+    if(!data){
+      content.innerHTML = `<div class="empty-state"><i class="fa fa-book-open"></i><p>Data belum tersedia.</p></div>`;
+      return;
+    }
+    let html = '<div class="akademik-content">';
+    if(data.imageUrl){
+      html += `<div class="akademik-image-wrap"><img src="${data.imageUrl}" alt="Kalender ${yr}" onclick="openLightbox('${data.imageUrl.replace(/'/g,"\\'")}')" style="max-width:100%;border-radius:12px;cursor:pointer"/></div>`;
+    }
+    if(data.events && data.events.length){
+      html += `<div class="akademik-events">`;
+      data.events.forEach(ev => {
+        html += `<div class="event-item ${ev.color || 'default'}">
+          <span class="event-date"><i class="fa fa-calendar-day" style="margin-right:5px"></i>${ev.date || ''}</span>
+          <span class="event-name">${ev.name || ''}</span>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    html += '</div>';
+    content.innerHTML = html;
+  }, { onlyOnce: true });
+};
+
+function loadAkademikYears(){ buildYearButtons(); }
+
+// ==================== UNDUH ====================
+onValue(ref(db,'unduh'), snap => {
+  const data = snap.val();
+  const wrap = document.getElementById('unduhContent');
+  if(!wrap) return;
+  if(!data || !Object.keys(data).length){
+    wrap.innerHTML = `<div class="empty-state"><i class="fa fa-folder-open"></i><p>Belum ada dokumen tersedia.</p></div>`;
+    return;
+  }
+  const cats = {};
+  const catOrder = [];
+  Object.entries(data).forEach(([id, item]) => {
+    if(!item.name || !item.url) return;
+    const cat = item.category || 'Dokumen Umum';
+    if(!cats[cat]){ cats[cat] = []; catOrder.push(cat); }
+    cats[cat].push({ id, ...item });
+  });
+  const catIcons = { 'Mutasi Siswa':'fa-user-graduate','Kalender Akademik':'fa-calendar-check',
+    'Kelulusan':'fa-graduation-cap','Formulir':'fa-file-alt','Surat Edaran':'fa-envelope',
+    'Rapor':'fa-file-invoice','Dokumen Umum':'fa-file','default':'fa-file-arrow-down' };
+  let html = '';
+  catOrder.forEach(cat => {
+    const icon = catIcons[cat] || catIcons.default;
+    html += `<div class="unduh-cat"><div class="unduh-cat-title"><i class="fa ${icon}"></i>${cat}</div><div class="unduh-grid">`;
+    cats[cat].forEach(item => {
+      const ext = (item.name.match(/\.(\w+)$/) || ['',''])[1].toUpperCase() || 'FILE';
+      const extIcons = { 'PDF':'fa-file-pdf','DOC':'fa-file-word','DOCX':'fa-file-word',
+        'XLS':'fa-file-excel','XLSX':'fa-file-excel','ZIP':'fa-file-zipper','default':'fa-file-arrow-down' };
+      const ficon = extIcons[ext] || extIcons.default;
+      html += `<div class="unduh-btn" onclick="doDownload('${btoa(item.url)}','${item.name.replace(/'/g,"\\'")}')">
+        <div class="unduh-btn-icon"><i class="fa ${ficon}"></i></div>
+        <div class="unduh-btn-info"><h4>${item.name}</h4><p>${item.desc || 'Klik untuk mengunduh'}</p></div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  wrap.innerHTML = html;
+});
+
+function loadUnduh(){}
+
+// ==================== LAYANAN LAINNYA ====================
+onValue(ref(db,'fitur_lainnya'), snap => {
+  const data = snap.val();
+  const grid = document.getElementById('fiturLainnyaGrid');
+  if(!grid) return;
+  if(!data || !Object.keys(data).length){
+    grid.innerHTML = `<div class="fl-empty"><i class="fa fa-th-large"></i><p>Belum ada fitur tersedia saat ini.</p></div>`;
+    return;
+  }
+  const FITUR_GRAD_MAP = {
+    'g6,b6':'linear-gradient(135deg,var(--g6),var(--b6))',
+    'g5,g3':'linear-gradient(135deg,var(--g5),var(--g3))',
+    'b6,b4':'linear-gradient(135deg,var(--b6),var(--b4))',
+    'orange,yellow':'linear-gradient(135deg,var(--orange),var(--yellow))',
+    'red,orange':'linear-gradient(135deg,var(--red),var(--orange))'
+  };
+  const entries = Object.entries(data)
+    .filter(([, d]) => d && d.name && d.url && d.active !== false)
+    .sort((a, b) => (a[1].order ?? 0) - (b[1].order ?? 0));
+  if(!entries.length){
+    grid.innerHTML = `<div class="fl-empty"><i class="fa fa-th-large"></i><p>Belum ada fitur tersedia saat ini.</p></div>`;
+    return;
+  }
+  grid.innerHTML = entries.map(([id, d], i) => {
+    const grad = FITUR_GRAD_MAP[d.colorGrad] || FITUR_GRAD_MAP['g6,b6'];
+    const icon = d.icon || 'fa-link';
+    const desc = d.desc || 'Buka untuk informasi lebih lanjut';
+    return `<div class="fl-card" style="animation-delay:${Math.min(i,8)*0.06}s" data-fitur-id="${id}" onclick="openFiturLink(event,'${btoa(unescape(encodeURIComponent(d.url)))}')">
+      <div class="fl-card-icon" style="background:${grad}"><i class="fa ${icon}"></i></div>
+      <div class="fl-card-name">${d.name}</div>
+      <div class="fl-card-desc">${desc}</div>
+      <span class="fl-card-btn"><i class="fa fa-arrow-right"></i> Buka Fitur</span>
+    </div>`;
+  }).join('');
+});
+
+window.openFiturLink = function(e, b64url){
+  // Ripple effect
+  try{
+    const card = e.currentTarget;
+    const ripple = document.createElement('span');
+    ripple.className = 'fl-ripple';
+    const rect = card.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height) * 1.4;
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+    ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+    card.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  }catch(err){}
+  try{
+    const url = decodeURIComponent(escape(atob(b64url)));
+    setTimeout(() => { window.open(url, '_blank', 'noopener,noreferrer'); }, 140);
+  }catch(err){
+    showToast('❌ Gagal membuka fitur');
+  }
+};
+
+
+// ==================== KALENDER AGENDA ====================
+const months_id = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const today = new Date();
+let calYear = today.getFullYear();
+let calMonth = today.getMonth();
+let agendaData = {};
+let selectedDate = null;
+
+try{ const s = localStorage.getItem('sman68_agenda'); if(s) agendaData = JSON.parse(s); } catch(e){}
+function saveAgendaToStorage(){ try{ localStorage.setItem('sman68_agenda', JSON.stringify(agendaData)); } catch(e){} }
+
+function renderCalendar(){
+  const grid = document.getElementById('calGrid');
+  if(!grid) return;
+  const monthLabel = document.getElementById('calMonthLabel');
+  if(monthLabel) monthLabel.textContent = months_id[calMonth] + ' ';
+  const yearInput = document.getElementById('calYearInput');
+  if(yearInput) yearInput.value = calYear;
+  grid.innerHTML = '';
+  const first = new Date(calYear, calMonth, 1).getDay();
+  const total = new Date(calYear, calMonth+1, 0).getDate();
+  for(let i=0;i<first;i++){
+    const e = document.createElement('div'); e.className = 'cal-cell empty'; grid.appendChild(e);
+  }
+  for(let d=1;d<=total;d++){
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell';
+    const dateKey = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    if(calYear===today.getFullYear() && calMonth===today.getMonth() && d===today.getDate()) cell.classList.add('today');
+    const agendas = agendaData[dateKey] || [];
+    if(agendas.length) cell.classList.add('has-agenda');
+    const numEl = document.createElement('div'); numEl.className = 'day-num'; numEl.textContent = d; cell.appendChild(numEl);
+    cell.addEventListener('click', () => openAgendaModal(dateKey));
+    grid.appendChild(cell);
+  }
+}
+
+function openAgendaModal(dateKey){
+  selectedDate = dateKey;
+  const p = dateKey.split('-');
+  document.getElementById('modalDateLabel').textContent = `${parseInt(p[2])} ${months_id[parseInt(p[1])-1]} ${p[0]}`;
+  renderAgendaList();
+  document.getElementById('agendaModal').classList.add('open');
+}
+
+function renderAgendaList(){
+  const list = document.getElementById('agendaList');
+  const agendas = agendaData[selectedDate] || [];
+  if(!list) return;
+  if(!agendas.length){
+    list.innerHTML = '<p style="font-size:13px;color:var(--gray-400);padding:4px 0">Belum ada agenda di hari ini.</p>';
+    return;
+  }
+  list.innerHTML = '';
+  agendas.forEach((ag, i) => {
+    const div = document.createElement('div'); div.className = 'agenda-entry';
+    div.innerHTML = `<div class="agenda-entry-info">
+      <div class="agenda-entry-name">${ag.name}</div>
+      <div class="agenda-entry-time"><i class="fa fa-clock"></i> ${ag.start||'—'} – ${ag.end||'—'}</div>
+    </div>
+    <button class="agenda-entry-delete" onclick="deleteAgenda('${selectedDate}',${i})"><i class="fa fa-trash"></i></button>`;
+    list.appendChild(div);
+  });
+}
+
+window.closeModal = function(){ document.getElementById('agendaModal').classList.remove('open'); selectedDate = null; };
+window.saveAgenda = function(){
+  const name = document.getElementById('agendaName').value.trim();
+  const start = document.getElementById('agendaStart').value;
+  const end = document.getElementById('agendaEnd').value;
+  if(!name){ showToast('⚠️ Nama agenda tidak boleh kosong!'); return; }
+  if(!agendaData[selectedDate]) agendaData[selectedDate] = [];
+  agendaData[selectedDate].push({ name, start, end });
+  saveAgendaToStorage();
+  document.getElementById('agendaName').value = '';
+  document.getElementById('agendaStart').value = '';
+  document.getElementById('agendaEnd').value = '';
+  renderAgendaList();
+  renderCalendar();
+  showToast('✅ Agenda berhasil disimpan!');
+};
+window.deleteAgenda = function(dk, idx){
+  agendaData[dk].splice(idx,1);
+  if(!agendaData[dk].length) delete agendaData[dk];
+  saveAgendaToStorage();
+  renderAgendaList();
+  renderCalendar();
+};
+
+window.changeMonth = function(dir){
+  calMonth += dir;
+  if(calMonth > 11){ calMonth = 0; calYear++; }
+  if(calMonth < 0){ calMonth = 11; calYear--; }
+  renderCalendar();
+};
+window.goToYear = function(yr){
+  const v = parseInt(yr);
+  if(isNaN(v) || v<1900 || v>2100) return;
+  calYear = v;
+  renderCalendar();
+};
+
+// ==================== INIT ====================
+async function init(){
+  await checkAndDeactivateMaintenance();
+  await checkAndDeactivateCountdown();
+  const mtSnap = await get(ref(db,'site_mode/maintenance'));
+  const mt = mtSnap.val();
+  if(mt && mt.active){
+    showMaintenanceOnly(mt);
+    watchSiteMode();
+    return;
+  }
+  const cdSnap = await get(ref(db,'site_mode/countdown'));
+  const cd = cdSnap.val();
+  if(cd && cd.active && cd.targetTs && cd.targetTs > Date.now()){
+    showCountdownOnly(cd);
+    watchSiteMode();
+    return;
+  }
+  const ok = await checkServerCapacity();
+  if(!ok) return;
+  watchSiteMode();
+  loadAllContent();
+  renderCalendar();
+}
+
+function showMaintenanceOnly(d){
+  const ov = document.getElementById('maintenanceOverlay');
+  ov.style.display = 'flex';
+  document.getElementById('mtTitle').textContent = d.title || 'Website Sedang Dalam Perbaikan';
+  document.getElementById('mtReason').textContent = d.reason || 'Kami sedang melakukan pembaruan sistem.';
+  const estimasiBox = document.getElementById('mtEstimasiBox');
+  if(d.estimasi){
+    estimasiBox.style.display = 'block';
+    document.getElementById('mtEstimasiValue').textContent = new Date(d.estimasi).toLocaleString('id-ID', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+  } else { estimasiBox.style.display = 'none'; }
+  const kontakBox = document.getElementById('mtKontakBox');
+  if(d.kontak){
+    kontakBox.style.display = 'block';
+    document.getElementById('mtKontakValue').textContent = d.kontak;
+  } else { kontakBox.style.display = 'none'; }
+}
+
+function showCountdownOnly(d){
+  const ov = document.getElementById('countdownOverlay');
+  ov.style.display = 'flex';
+  cdTargetTs = d.targetTs;
+  cdStartTs = Date.now();
+  document.getElementById('cdMessage').textContent = d.message || 'Website akan segera dibuka. Mohon tunggu sebentar.';
+  startCountdownTimer();
+}
+
+init();
+
+// ==================== UI HELPERS ====================
+window.showSection = function(id, btn){
+  ['jadwal','akademik','kalender','unduh','fiturlain'].forEach(s => {
+    const el = document.getElementById('sec-'+s);
+    if(el) el.style.display = s===id ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-tab').forEach(b => {
+    b.classList.toggle('active', b.dataset.sec === id);
+  });
+  if(id === 'kalender') renderCalendar();
+};
+
+window.switchJadwal = function(sem){
+  document.querySelectorAll('.jadwal-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#jadwalTabBar .tab-btn').forEach(b => b.classList.remove('active'));
+  const pane = document.getElementById('pane-'+sem);
+  if(pane) pane.classList.add('active');
+  const tabIds = { genap:'tabGenap', ganjil:'tabGanjil', pts:'tabPTS', pas:'tabPAS' };
+  const tabId = tabIds[sem];
+  if(tabId) document.getElementById(tabId)?.classList.add('active');
+};
+
+window.toggleMobileNav = function(){ document.getElementById('mobileNav').classList.toggle('open'); };
+window.closeMobileNav = function(){ document.getElementById('mobileNav').classList.remove('open'); };
+
+window.doDownload = function(b64url, name){
+  try{
+    const url = atob(b64url);
+    const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  } catch(e){ showToast('❌ Gagal membuka dokumen'); }
+};
+
+window.openLightbox = function(src){
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('show');
+};
+window.closeLightbox = function(){ document.getElementById('lightbox').classList.remove('show'); };
+
+function showToast(msg, duration=3200){
+  const stack = document.getElementById('toast-stack');
+  const t = document.createElement('div'); t.className = 'toast-item'; t.textContent = msg;
+  stack.appendChild(t);
+  setTimeout(() => {
+    t.classList.add('fadeout');
+    setTimeout(() => t.remove(), 320);
+  }, duration);
+}
+window.showToast = showToast;
+
+document.getElementById('agendaModal')?.addEventListener('click', function(e){ if(e.target === this) window.closeModal(); });
+document.getElementById('lightbox')?.addEventListener('click', closeLightbox);
+document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+window.loadAkademik = window.loadAkademik;
+window.loadAkademikYears = loadAkademikYears;
+window.renderCalendar = renderCalendar;
+</script>
+</body>
+</html>
