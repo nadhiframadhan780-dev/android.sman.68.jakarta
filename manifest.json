@@ -1,28 +1,75 @@
 {
-  "background_color": "#ffffff",
-  "description": "Portal Resmi SMA Negeri 68 Jakarta",
-  "dir": "ltr",
-  "display": "standalone",
-  "name": "appsman68jkt.github",
-  "orientation": "any",
+  "name": "SMAN 68 Jakarta — Portal Resmi",
+  "short_name": "SMAN 68 Jkt",
+  "description": "Portal Resmi SMA Negeri 68 Jakarta — Informasi sekolah, pendaftaran, pengumuman, dan layanan akademik.",
+  "start_url": "/index.html",
   "scope": "/",
-  "short_name": "appsman68jkt.github",
-  "start_url": "https://appsman68jkt.github.io/appsman68jk4.0/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f3460",
   "theme_color": "#0f3460",
+  "lang": "id",
+  "dir": "ltr",
+  "categories": ["education", "government"],
   "icons": [
     {
       "src": "https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png",
+      "sizes": "192x192",
       "type": "image/png",
-      "sizes": "3004x3066",
-      "isSquare": false,
-      "isPng": true,
-      "isWebp": false,
-      "isJpg": false,
-      "width": 3004,
-      "is512x512": false,
-      "is256x256": false,
-      "is192x192": false
+      "purpose": "any"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "lang": "id"
+  "shortcuts": [
+    {
+      "name": "Portal Siswa",
+      "short_name": "Siswa",
+      "description": "Akses portal khusus siswa SMAN 68",
+      "url": "/portal-siswa-68.html",
+      "icons": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Portal Guru",
+      "short_name": "Guru",
+      "description": "Akses portal khusus guru SMAN 68",
+      "url": "/portal-guru.html",
+      "icons": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Layanan Aduan",
+      "short_name": "Aduan",
+      "description": "Sampaikan aduan atau saran ke SMAN 68",
+      "url": "/layanan-aduan.sman68jkt.html",
+      "icons": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "label": "Halaman Utama SMAN 68 Jakarta"
+    }
+  ],
+  "prefer_related_applications": false
 }
