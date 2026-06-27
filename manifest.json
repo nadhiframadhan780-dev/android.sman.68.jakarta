@@ -1,28 +1,85 @@
 {
+  "id": "/",
   "name": "SMAN 68 Jakarta — Portal Resmi",
   "short_name": "SMAN 68 Jkt",
   "description": "Portal Resmi SMA Negeri 68 Jakarta — Informasi sekolah, pendaftaran, pengumuman, dan layanan akademik.",
   "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "browser"],
   "orientation": "portrait-primary",
   "background_color": "#0f3460",
   "theme_color": "#0f3460",
   "lang": "id",
   "dir": "ltr",
   "categories": ["education", "government"],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
   "icons": [
     {
-      "src": "https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png",
+      "src": "pwa-assets/icon-48x48.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa-assets/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa-assets/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa-assets/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa-assets/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa-assets/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa-assets/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png",
+      "src": "pwa-assets/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa-assets/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "pwa-assets/icon-192x192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "pwa-assets/icon-512x512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "shortcuts": [
@@ -33,8 +90,9 @@
       "url": "/portal-siswa-68.html",
       "icons": [
         {
-          "src": "https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png",
-          "sizes": "96x96"
+          "src": "pwa-assets/icon-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     },
@@ -45,8 +103,9 @@
       "url": "/portal-guru.html",
       "icons": [
         {
-          "src": "https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png",
-          "sizes": "96x96"
+          "src": "pwa-assets/icon-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     },
@@ -57,18 +116,27 @@
       "url": "/layanan-aduan.sman68jkt.html",
       "icons": [
         {
-          "src": "https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png",
-          "sizes": "96x96"
+          "src": "pwa-assets/icon-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     }
   ],
   "screenshots": [
     {
-      "src": "https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png",
-      "sizes": "512x512",
+      "src": "pwa-assets/screenshot-wide.png",
+      "sizes": "1280x640",
       "type": "image/png",
-      "label": "Halaman Utama SMAN 68 Jakarta"
+      "form_factor": "wide",
+      "label": "Halaman Utama SMAN 68 Jakarta (Desktop)"
+    },
+    {
+      "src": "pwa-assets/screenshot-narrow.png",
+      "sizes": "720x1280",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Portal SMAN 68 Jakarta (Mobile)"
     }
   ],
   "prefer_related_applications": false

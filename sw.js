@@ -1,12 +1,12 @@
 // ============================================================
 // Service Worker — SMAN 68 Jakarta
-// Versi: 1.0.0
+// Versi: 2.0.0
 // ============================================================
 
-const CACHE_NAME = 'sman68-cache-v1';
+const CACHE_NAME = 'sman68-cache-v2';
 const OFFLINE_URL = '/offline.html';
 
-// Daftar file yang di-cache saat install (App Shell)
+// File App Shell yang di-cache saat install
 const PRECACHE_URLS = [
   '/',
   '/index.html',
@@ -16,17 +16,16 @@ const PRECACHE_URLS = [
   '/sman68.js',
   '/styles.css',
   '/scripts.js',
-  '/manifest.json'
+  '/manifest.json',
+  '/pwa-assets/icon-192x192.png',
+  '/pwa-assets/icon-512x512.png'
 ];
 
 // ── INSTALL ──────────────────────────────────────────────────
-// Pre-cache App Shell saat service worker pertama kali dipasang
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       console.log('[SW] Pre-caching App Shell...');
-      // addAll akan gagal jika salah satu URL tidak bisa diakses;
-      // gunakan Promise.allSettled agar tidak memblokir instalasi
       return Promise.allSettled(
         PRECACHE_URLS.map((url) =>
           cache.add(url).catch((err) =>
@@ -39,7 +38,6 @@ self.addEventListener('install', (event) => {
 });
 
 // ── ACTIVATE ─────────────────────────────────────────────────
-// Hapus cache lama agar tidak memakai storage berlebih
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) =>
@@ -56,25 +54,21 @@ self.addEventListener('activate', (event) => {
 });
 
 // ── FETCH ────────────────────────────────────────────────────
-// Strategi: Network-first untuk HTML, Cache-first untuk aset statis
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Abaikan request non-HTTP (misalnya chrome-extension://)
   if (!url.protocol.startsWith('http')) return;
 
-  // Abaikan request ke domain eksternal selain yang diperlukan
-  // (Firebase, Google Fonts, CDN) — biarkan browser menangani
+  // Abaikan request ke domain eksternal
   const isExternal = url.origin !== self.location.origin;
   if (isExternal) return;
 
-  // Navigasi halaman → Network-first, fallback ke cache, lalu offline.html
+  // Navigasi halaman → Network-first, fallback offline.html
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          // Simpan salinan segar ke cache
           const cloned = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(request, cloned));
           return response;
@@ -88,7 +82,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Aset statis (CSS, JS, gambar, font lokal) → Cache-first, fallback network
+  // Aset statis → Cache-first, fallback network
   if (
     request.destination === 'style' ||
     request.destination === 'script' ||
