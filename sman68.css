@@ -126,6 +126,20 @@ html {
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+}
+
+/* Offset scroll agar section tidak tertutup navbar sticky + topbar */
+/* Desktop: topbar(40) + navbar(72) + extra(8) = 120px */
+#home, #profil, #program, #berita, #agenda, #galeri, #kontak {
+    scroll-margin-top: 120px;
+}
+
+/* Mobile: topbar tersembunyi, navbar(60) + extra(8) = 68px */
+@media (max-width: 768px) {
+    #home, #profil, #program, #berita, #agenda, #galeri, #kontak {
+        scroll-margin-top: 68px;
+    }
 }
 
 body {
@@ -2278,8 +2292,9 @@ section { padding: 96px 0; position: relative; overflow: hidden; }
 .contact-detail-item h5 { font-size: 0.8rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
 .contact-detail-item p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; }
 .op-hours-list { display: flex; flex-direction: column; gap: 4px; }
-.op-hours-list div { font-size: 0.75rem; color: var(--text-secondary); }
-.op-hours-list strong { color: var(--text); }
+.op-hours-list div { font-size: 0.75rem; color: var(--text-secondary); display: grid; grid-template-columns: 5.5rem 1fr; align-items: baseline; column-gap: 8px; }
+.op-hours-list strong { color: var(--text); white-space: nowrap; }
+.op-hours-list span { color: var(--text-secondary); }
 .contact-form-panel {
     background: var(--card-bg);
     border: 1px solid var(--border);

@@ -76,7 +76,7 @@ const linkUrls = {
     topJurusan:          './jurusan-kuliah-terbaik-2026.html',
     kelulusan:           './pusat-layanan.sman68jkt.html',
     hukum:               './hukum.html',
-    sertifikatAkreditasi:'https://smanegeri68jakarta.vercel.app/pdf files/Sertifikat Akreditasi SMAN 68 Jakarta.pdf'
+    sertifikatAkreditasi:'./pdf files/Sertifikat Akreditasi SMAN 68 Jakarta.pdf'
 };
 
 // ============================================
@@ -324,23 +324,9 @@ function initSmoothScroll() {
     });
 }
 
-// Fungsi terpusat: hitung offset akurat lalu scroll
+// Fungsi terpusat: scroll ke section dengan hormati scroll-margin-top (CSS)
 function scrollToSection(el) {
-    const style  = getComputedStyle(document.documentElement);
-    const navH   = parseInt(style.getPropertyValue('--navbar-h')) || 72;
-
-    // Top bar hanya ada di desktop; cek apakah benar-benar tampil
-    const topBar = document.getElementById('topBar');
-    const topH   = (topBar && topBar.offsetHeight > 0)
-                   ? (parseInt(style.getPropertyValue('--topbar-h')) || 40)
-                   : 0;
-
-    const extraPad = 16;
-    const offset   = navH + topH + extraPad;
-
-    // Gunakan getBoundingClientRect agar akurat meski halaman baru dibuka
-    const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
-    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ============================================
@@ -1132,13 +1118,13 @@ async function loadOperationalHours() {
             const data = doc.data();
             el.innerHTML = days
                 .filter(d => data[d])
-                .map((d, i) => `<div><strong>${lbls[i]}:</strong> ${data[d]}</div>`)
+                .map((d, i) => `<div><strong>${lbls[i]}:</strong><span>${data[d]}</span></div>`)
                 .join('');
         } else {
-            el.innerHTML = fallback.map(f => `<div><strong>${f.label}:</strong> ${f.val}</div>`).join('');
+            el.innerHTML = fallback.map(f => `<div><strong>${f.label}:</strong><span>${f.val}</span></div>`).join('');
         }
     } catch {
-        el.innerHTML = fallback.map(f => `<div><strong>${f.label}:</strong> ${f.val}</div>`).join('');
+        el.innerHTML = fallback.map(f => `<div><strong>${f.label}:</strong><span>${f.val}</span></div>`).join('');
     }
 }
 
@@ -2031,12 +2017,18 @@ function closeCookieBanner() {
 }
 
 // ============================================
-// DOWNLOAD APK BUTTON
+// DOWNLOAD APK / EXE BUTTON
 // ============================================
 function initDownloadAPK() {
     $('btnDownloadAPK')?.addEventListener('click', e => {
         e.preventDefault();
-        const url = 'https://github.com/nadhiframadhan780-dev/android.sman.68.jakarta/raw/refs/heads/main/SMAN%2068%20Jakarta.apk';
+        const url = 'https://www.sman68jakarta.xyz/SMAN%2068%20Jakarta.apk';
+        window.open(url, '_blank');
+    });
+
+    $('btnDownloadEXE')?.addEventListener('click', e => {
+        e.preventDefault();
+        const url = 'https://www.dropbox.com/scl/fi/dce9u6hdp81pu2voo250b/SMAN68Jakarta_Setup.exe?rlkey=udfer77lxdqulxl7gdt8su9bt&st=1gelovcc&dl=1';
         window.open(url, '_blank');
     });
 }
