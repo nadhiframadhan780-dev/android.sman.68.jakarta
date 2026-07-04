@@ -1,0 +1,1944 @@
+<!-- daftar.ulang.html - VERSI UPDATE DENGAN DATA DIRI LENGKAP -->
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Ulang – SMAN 68 Jakarta</title>
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* ================================
+       ROOT — Sama dengan sistem utama
+    ================================ */
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Space+Mono:wght@400;700&display=swap');
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-base: #f0f4f8;
+      --bg-card: #ffffff;
+      --bg-card2: #f8fafc;
+      --bg-input: #f1f5f9;
+      --bg-input-focus: #ffffff;
+      --border: #e2e8f0;
+      --border-focus: #006633;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.05);
+      --shadow-lg: 0 20px 50px rgba(0,0,0,0.12);
+      --shadow-xl: 0 32px 64px rgba(0,0,0,0.16);
+      --green: #006633;
+      --green-light: #00883f;
+      --green-pale: #e8f5e9;
+      --blue: #0077bb;
+      --blue-light: #0099dd;
+      --blue-pale: #e3f2fd;
+      --grad: linear-gradient(135deg, #006633 0%, #0077bb 100%);
+      --grad-soft: linear-gradient(135deg, rgba(0,102,51,0.08) 0%, rgba(0,119,187,0.08) 100%);
+      --warn-bg: #fffbeb; --warn-border: #f59e0b; --warn-text: #92400e;
+      --info-bg: #eff6ff; --info-border: #3b82f6; --info-text: #1e40af;
+      --success-bg: #f0fdf4; --success-border: #22c55e; --success-text: #14532d;
+      --danger-bg: #fff1f2; --danger-border: #f43f5e; --danger-text: #881337;
+      --radius-xs: 6px; --radius-sm: 10px; --radius-md: 16px; --radius-lg: 24px; --radius-full: 9999px;
+      --transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg-base: #0d1117;
+      --bg-card: #161b22;
+      --bg-card2: #1c2128;
+      --bg-input: #21262d;
+      --bg-input-focus: #2d333b;
+      --border: #30363d;
+      --border-focus: #00cc66;
+      --text-primary: #e6edf3;
+      --text-secondary: #8b949e;
+      --text-muted: #484f58;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+      --shadow-lg: 0 20px 50px rgba(0,0,0,0.5);
+      --shadow-xl: 0 32px 64px rgba(0,0,0,0.6);
+      --green: #00cc66;
+      --green-light: #00ff88;
+      --green-pale: rgba(0,204,102,0.12);
+      --blue: #58a6ff;
+      --blue-light: #79c0ff;
+      --blue-pale: rgba(88,166,255,0.12);
+      --grad: linear-gradient(135deg, #00cc66 0%, #58a6ff 100%);
+      --grad-soft: linear-gradient(135deg, rgba(0,204,102,0.1) 0%, rgba(88,166,255,0.1) 100%);
+      --warn-bg: rgba(245,158,11,0.12); --warn-border: #d97706; --warn-text: #fcd34d;
+      --info-bg: rgba(59,130,246,0.12); --info-border: #3b82f6; --info-text: #93c5fd;
+      --success-bg: rgba(34,197,94,0.12); --success-border: #22c55e; --success-text: #86efac;
+      --danger-bg: rgba(244,63,94,0.12); --danger-border: #f43f5e; --danger-text: #fda4af;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-base); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-base);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* ================================
+       TOAST
+    ================================ */
+    .toast-wrap {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-lg);
+      min-width: 280px;
+      max-width: 380px;
+      pointer-events: all;
+      animation: slideIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+      border-left: 4px solid var(--green);
+    }
+    .toast-item.t-error { border-left-color: #f43f5e; }
+    .toast-item.t-warn { border-left-color: #f59e0b; }
+    .toast-item.t-success { border-left-color: #22c55e; }
+    .toast-item.t-info { border-left-color: #3b82f6; }
+    .toast-item i { font-size: 1.1rem; flex-shrink: 0; }
+    .toast-item.t-error i { color: #f43f5e; }
+    .toast-item.t-warn i { color: #f59e0b; }
+    .toast-item.t-success i { color: #22c55e; }
+    .toast-item.t-info i { color: #3b82f6; }
+    .toast-msg { font-size: 0.875rem; font-weight: 500; flex: 1; }
+    @keyframes slideIn { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+    /* ================================
+       HEADER
+    ================================ */
+    .header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--shadow-sm);
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .header-logo-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .header-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      object-fit: contain;
+      border: 2px solid var(--border);
+      background: white;
+      padding: 3px;
+    }
+    .header-brand {
+      flex: 1;
+      min-width: 0;
+    }
+    .header-brand h1 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header-brand p {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .clock-display {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--green);
+      background: var(--green-pale);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      letter-spacing: 1px;
+      border: 1px solid rgba(0,102,51,0.2);
+      min-width: 90px;
+      text-align: center;
+    }
+    [data-theme="dark"] .clock-display { border-color: rgba(0,204,102,0.2); }
+    .theme-toggle {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--bg-input);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: var(--transition);
+      color: var(--text-secondary);
+    }
+    .theme-toggle:hover { border-color: var(--green); color: var(--green); background: var(--green-pale); }
+
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      background: var(--bg-input);
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+    .logout-btn:hover { border-color: #f43f5e; color: #f43f5e; background: var(--danger-bg); }
+
+    /* ================================
+       MAIN WRAP
+    ================================ */
+    .main-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    /* ================================
+       CARD
+    ================================ */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-icon {
+      width: 40px; height: 40px;
+      background: var(--grad);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .card-header h2 { font-size: 1.05rem; font-weight: 700; }
+    .card-header p { font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px; }
+
+    /* ================================
+       FORM
+    ================================ */
+    .form-group { margin-bottom: 18px; }
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 7px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .form-label i { color: var(--green); width: 14px; font-size: 0.8rem; }
+    .req { color: #ef4444; font-size: 0.75rem; }
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      background: var(--bg-input);
+      color: var(--text-primary);
+      transition: var(--transition);
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: var(--border-focus);
+      background: var(--bg-input-focus);
+      box-shadow: 0 0 0 3px rgba(0,102,51,0.1);
+    }
+    [data-theme="dark"] .form-input:focus { box-shadow: 0 0 0 3px rgba(0,204,102,0.12); }
+    .form-input:disabled, .form-input[readonly] {
+      background: var(--bg-card2);
+      cursor: default;
+      opacity: 0.8;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .form-hint { font-size: 0.78rem; color: var(--text-muted); margin-top: 5px; display: flex; align-items: center; gap: 5px; }
+
+    .data-source-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-card2);
+      padding: 2px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border);
+      margin-left: 8px;
+    }
+    .data-source-badge i { color: var(--green); font-size: 0.65rem; }
+
+    .field-readonly {
+      position: relative;
+    }
+    .field-readonly .form-input {
+      background: var(--bg-card2);
+      border-style: dashed;
+    }
+    .field-readonly .form-input:focus {
+      border-color: var(--border);
+      box-shadow: none;
+    }
+
+    /* ================================
+       ALERT
+    ================================ */
+    .alert {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+      border: 1px solid;
+    }
+    .alert i { margin-top: 1px; flex-shrink: 0; }
+    .alert-warn { background: var(--warn-bg); border-color: var(--warn-border); color: var(--warn-text); }
+    .alert-info { background: var(--info-bg); border-color: var(--info-border); color: var(--info-text); }
+    .alert-success { background: var(--success-bg); border-color: var(--success-border); color: var(--success-text); }
+    .alert-danger { background: var(--danger-bg); border-color: var(--danger-border); color: var(--danger-text); }
+
+    /* ================================
+       BUTTONS
+    ================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border: none;
+      border-radius: var(--radius-full);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--grad);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(0,102,51,0.25);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,102,51,0.35); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; background: var(--text-muted); box-shadow: none; }
+    .btn-success {
+      background: #22c55e;
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(34,197,94,0.3);
+    }
+    .btn-success:hover { transform: translateY(-2px); background: #16a34a; }
+    .btn-secondary {
+      background: var(--bg-input);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+    .btn-full { width: 100%; }
+    .btn-lg { padding: 16px 30px; font-size: 1rem; }
+    .btn-group { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+
+    .btn-social {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: var(--radius-full);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      color: #fff;
+    }
+    .btn-social.instagram { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .btn-social.tiktok { background: linear-gradient(135deg, #000000, #25f4ee, #fe2c55); }
+    .btn-social.whatsapp { background: #25d366; }
+    .btn-social.email { background: #ea4335; }
+    .btn-social:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+
+    /* ================================
+       RULES SCROLL
+    ================================ */
+    .rules-scroll {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px 22px;
+      max-height: 280px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+    }
+    .rules-scroll ol { padding-left: 18px; }
+    .rules-scroll li { margin-bottom: 9px; font-size: 0.875rem; color: var(--text-secondary); }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px 16px;
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+    .checkbox-row input[type="checkbox"] {
+      width: 18px; height: 18px;
+      margin-top: 2px;
+      accent-color: var(--green);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .checkbox-row label { font-size: 0.875rem; font-weight: 500; cursor: pointer; color: var(--success-text); }
+
+    /* ================================
+       LOGIN PAGE
+    ================================ */
+    #loginPage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 80px);
+      padding: 20px;
+    }
+    .login-card {
+      max-width: 440px;
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px 36px;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+    }
+    .login-card .login-logo {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
+    .login-card h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .login-card p.sub {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+    .login-card .form-group { text-align: left; }
+
+    /* ================================
+       DASHBOARD
+    ================================ */
+    .welcome-banner {
+      background: var(--grad);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      color: #fff;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .welcome-banner::after {
+      content: '';
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+    }
+    .welcome-banner h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+    .welcome-banner p { font-size: 0.9rem; opacity: 0.85; }
+
+    /* ================================
+       STATUS CARD
+    ================================ */
+    .status-card {
+      text-align: center;
+      padding: 28px 24px;
+      border-radius: var(--radius-lg);
+      border: 1.5px solid;
+      margin-top: 20px;
+    }
+    .status-card .status-icon { font-size: 3.5rem; margin-bottom: 12px; }
+    .status-card h3 { font-size: 1.2rem; margin-bottom: 8px; }
+    .status-card p { font-size: 0.9rem; color: var(--text-secondary); }
+    .status-card.s-proses { background: var(--info-bg); border-color: var(--info-border); color: var(--info-text); }
+    .status-card.s-proses .status-icon { color: #3b82f6; }
+    .status-card.s-valid { background: var(--success-bg); border-color: var(--success-border); color: var(--success-text); }
+    .status-card.s-valid .status-icon { color: #22c55e; }
+    .status-card.s-tidak-valid { background: var(--danger-bg); border-color: var(--danger-border); color: var(--danger-text); }
+    .status-card.s-tidak-valid .status-icon { color: #f43f5e; }
+    .status-meta {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.5);
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      text-align: left;
+    }
+    [data-theme="dark"] .status-meta { background: rgba(0,0,0,0.2); }
+    .status-meta strong { display: block; margin-bottom: 6px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.7; }
+
+    .social-links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .social-links .btn-social { min-width: 120px; justify-content: center; }
+
+    /* ================================
+       GATE / WEBSITE CLOSED
+    ================================ */
+    #websiteGate {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      background: var(--bg-base);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+    #websiteGate.active { display: flex; }
+    .gate-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 48px 40px;
+      max-width: 540px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-xl);
+      animation: gateIn 0.4s cubic-bezier(0.4,0,0.2,1) both;
+    }
+    @keyframes gateIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.97); }
+      to { opacity: 1; transform: none; }
+    }
+    .gate-card .gate-icon-wrap {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: var(--danger-bg);
+      border: 2px solid var(--danger-border);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 32px;
+      color: var(--danger-text);
+    }
+    .gate-card .gate-logo {
+      width: 60px; height: 60px;
+      object-fit: contain;
+      margin: 0 auto 16px;
+      display: block;
+      opacity: 0.7;
+    }
+    .gate-card h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 12px; }
+    .gate-card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; }
+
+    /* ================================
+       MODAL SUKSES
+    ================================ */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+      z-index: 9000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-xl);
+      animation: modalUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes modalUp { from { transform: translateY(30px) scale(0.96); opacity: 0; } to { transform: none; opacity: 1; } }
+    .modal-icon { font-size: 4rem; margin-bottom: 16px; }
+    .modal-icon.success { color: #22c55e; }
+    .modal-box h2 { font-size: 1.4rem; margin-bottom: 10px; }
+    .modal-box p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 10px; }
+
+    /* ================================
+       DATA COMPLETE INDICATOR
+    ================================ */
+    .data-complete-indicator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin: 16px 0;
+      border: 2px solid;
+    }
+    .data-complete-indicator.success {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+    .data-complete-indicator.warning {
+      background: var(--warn-bg);
+      border-color: var(--warn-border);
+      color: var(--warn-text);
+    }
+    .data-complete-indicator i { font-size: 1.3rem; }
+
+    /* ================================
+       RESPONSIVE
+    ================================ */
+    @media (max-width: 768px) {
+      .card { padding: 20px 16px; }
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+      .header-brand h1 { font-size: 0.9rem; }
+      .btn-group { flex-direction: column; }
+      .login-card { padding: 28px 20px; }
+      .welcome-banner { padding: 20px; }
+      .welcome-banner h2 { font-size: 1.1rem; }
+      .social-links .btn-social { min-width: 100%; }
+    }
+    @media (max-width: 480px) {
+      .clock-display { font-size: 0.78rem; padding: 5px 8px; min-width: 70px; }
+      .header-logo { width: 38px; height: 38px; }
+      .main-wrap { padding: 20px 12px 60px; }
+      .gate-card { padding: 32px 20px; }
+    }
+
+    .hidden { display: none !important; }
+    .divider { height: 1px; background: var(--border); margin: 20px 0; }
+    .mt-12 { margin-top: 12px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-20 { margin-top: 20px; }
+    .flex-center { display: flex; align-items: center; justify-content: center; gap: 8px; }
+  </style>
+</head>
+<body>
+
+<!-- Toast -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ================================
+     WEBSITE GATE (Ditutup oleh Operator)
+================================ -->
+<div id="websiteGate">
+  <div class="gate-card">
+    <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68" class="gate-logo"/>
+    <div class="gate-icon-wrap"><i class="fas fa-door-closed"></i></div>
+    <h2>Halaman Daftar Ulang Ditutup</h2>
+    <p>Halaman Daftar Ulang Penerimaan Murid Mutasi Tahun Ajaran 2026/2027 telah ditutup. Terima kasih atas partisipasi dan kerja sama seluruh calon murid.</p>
+  </div>
+</div>
+
+<!-- ================================
+     HEADER
+================================ -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-logo-wrap">
+      <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68" class="header-logo">
+    </div>
+    <div class="header-brand">
+      <h1>Daftar Ulang Murid Mutasi</h1>
+      <p>SMA Negeri 68 Jakarta · T.A. 2026/2027</p>
+    </div>
+    <div class="header-right">
+      <div class="clock-display" id="clockDisplay">00:00:00</div>
+      <button class="theme-toggle" id="themeToggle" title="Ganti tema">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+      <button class="logout-btn" id="logoutBtn" style="display:none;">
+        <i class="fas fa-right-from-bracket"></i> Keluar
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ================================
+     MAIN WRAP
+================================ -->
+<div class="main-wrap" id="appContainer">
+
+  <!-- ===== LOGIN PAGE ===== -->
+  <div id="loginPage">
+    <div class="login-card">
+      <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68" class="login-logo">
+      <h2>Login Daftar Ulang</h2>
+      <p class="sub">Masukkan Nomor Pendaftaran &amp; Tanggal Lahir Anda</p>
+
+      <div id="loginAlert" class="alert alert-danger hidden">
+        <i class="fas fa-circle-xmark"></i>
+        <span id="loginAlertText">—</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fas fa-hashtag"></i> Nomor Pendaftaran</label>
+        <input type="text" id="loginNoDaftar" class="form-input" placeholder="198168XXXXXXXX" maxlength="14" style="font-family:var(--font-mono);letter-spacing:1px;">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fas fa-calendar-days"></i> Tanggal Lahir</label>
+        <input type="date" id="loginTglLahir" class="form-input">
+      </div>
+      <button class="btn btn-primary btn-full btn-lg" id="loginBtn">
+        <i class="fas fa-right-to-bracket"></i> Login
+      </button>
+      <p style="margin-top:16px;font-size:0.75rem;color:var(--text-muted);">
+        <i class="fas fa-circle-info"></i> Hanya calon murid yang <strong>LULUS SELEKSI</strong> dapat login.
+      </p>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD (setelah login) ===== -->
+  <div id="dashboardPage" style="display:none;">
+
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+      <h2 id="welcomeName">Selamat datang, [Nama]</h2>
+      <p>Selamat atas kelulusan Anda dalam seleksi mutasi SMAN 68 Jakarta. Lanjutkan proses daftar ulang untuk menjadi bagian dari keluarga besar SMAN 68.</p>
+    </div>
+
+    <!-- ===== DATA DIRI ===== -->
+    <div class="card" id="dataDiriCard">
+      <div class="card-header">
+        <div class="card-icon"><i class="fas fa-id-card"></i></div>
+        <div>
+          <h2>Data Diri Calon Murid</h2>
+          <p>Data diri yang terdaftar dalam sistem seleksi mutasi</p>
+        </div>
+      </div>
+
+      <div id="dataDiriAlert" class="alert alert-info">
+        <i class="fas fa-circle-info"></i>
+        <span id="dataDiriAlertText">Memuat data diri Anda...</span>
+      </div>
+
+      <!-- Data yang berasal dari database (readonly) -->
+      <div class="form-row">
+        <div class="form-group field-readonly">
+          <label class="form-label">
+            <i class="fas fa-hashtag"></i> Nomor Pendaftaran
+            <span class="data-source-badge"><i class="fas fa-database"></i> Dari Database</span>
+          </label>
+          <input type="text" id="duNoDaftar" class="form-input" readonly>
+        </div>
+        <div class="form-group field-readonly">
+          <label class="form-label">
+            <i class="fas fa-user"></i> Nama Lengkap
+            <span class="data-source-badge"><i class="fas fa-database"></i> Dari Database</span>
+          </label>
+          <input type="text" id="duNama" class="form-input" readonly>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group field-readonly">
+          <label class="form-label">
+            <i class="fas fa-calendar-days"></i> Tanggal Lahir
+            <span class="data-source-badge"><i class="fas fa-database"></i> Dari Database</span>
+          </label>
+          <input type="date" id="duTglLahir" class="form-input" readonly>
+        </div>
+        <div class="form-group" id="sekolahAsalWrap">
+          <label class="form-label">
+            <i class="fas fa-school"></i> Asal Sekolah Sebelumnya
+            <span class="req">*</span>
+            <span id="sekolahAsalSourceBadge" class="data-source-badge hidden"><i class="fas fa-database"></i> Dari Database</span>
+          </label>
+          <input type="text" id="duSekolahAsal" class="form-input" placeholder="Masukkan nama sekolah asal">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" id="npsnWrap">
+          <label class="form-label">
+            <i class="fas fa-building-columns"></i> NPSN Sekolah Asal
+            <span class="req">*</span>
+            <span id="npsnSourceBadge" class="data-source-badge hidden"><i class="fas fa-database"></i> Dari Database</span>
+          </label>
+          <input type="text" id="duNpsn" class="form-input" placeholder="Masukkan NPSN sekolah asal" maxlength="8" inputmode="numeric">
+        </div>
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-id-badge"></i> NISN
+            <span class="req">*</span>
+            <span id="nisnSourceBadge" class="data-source-badge hidden"><i class="fas fa-database"></i> Dari Database</span>
+          </label>
+          <input type="text" id="duNisn" class="form-input" placeholder="Masukkan NISN (10 digit angka)" maxlength="10" inputmode="numeric">
+          <div class="form-hint"><i class="fas fa-info"></i> Nomor Induk Siswa Nasional — 10 digit angka</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fab fa-whatsapp"></i> Nomor WhatsApp / Telepon
+            <span class="req">*</span>
+            <span id="telpSourceBadge" class="data-source-badge hidden"><i class="fas fa-database"></i> Dari Database</span>
+          </label>
+          <input type="tel" id="duTelp" class="form-input" placeholder="08xxxxxxxxxx" inputmode="tel">
+          <div class="form-hint"><i class="fas fa-info"></i> Format: 08xxxxxxxxxx (minimal 10 digit, maksimal 13 digit)</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-envelope"></i> Email
+            <span id="emailSourceBadge" class="data-source-badge hidden"><i class="fas fa-database"></i> Dari Database</span>
+          </label>
+          <input type="email" id="duEmail" class="form-input" placeholder="email@example.com">
+          <div class="form-hint"><i class="fas fa-info"></i> Email aktif untuk komunikasi</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-layer-group"></i> Kelas Saat Ini
+            <span class="req">*</span>
+          </label>
+          <input type="text" id="duKelasSaatIni" class="form-input" placeholder="Contoh: XI MIPA 3">
+          <div class="form-hint"><i class="fas fa-info"></i> Kelas di sekolah asal sebelum mutasi</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-arrow-right-arrow-left"></i> Mutasi ke Kelas
+            <span class="req">*</span>
+          </label>
+          <select id="duMutasiKe" class="form-input">
+            <option value="">Pilih Kelas Tujuan</option>
+            <option value="X">Kelas X (Sepuluh)</option>
+            <option value="XI">Kelas XI (Sebelas)</option>
+            <option value="XII">Kelas XII (Dua Belas)</option>
+          </select>
+          <div class="form-hint"><i class="fas fa-info"></i> Kelas tujuan di SMAN 68 Jakarta</div>
+        </div>
+      </div>
+
+      <!-- Tombol Simpan Perubahan -->
+      <div class="btn-group" id="dataDiriActions">
+        <button class="btn btn-primary btn-lg" id="simpanDataDiriBtn">
+          <i class="fas fa-save"></i> Simpan Perubahan
+        </button>
+      </div>
+
+      <!-- Data Complete Indicator -->
+      <div id="dataCompleteIndicator" class="data-complete-indicator warning mt-16">
+        <i class="fas fa-circle-exclamation"></i>
+        <span id="dataCompleteText">Mohon lengkapi seluruh data yang wajib diisi sebelum melanjutkan.</span>
+      </div>
+    </div>
+
+    <!-- ===== DAFTAR ULANG FORM ===== -->
+    <div id="daftarUlangSection">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon"><i class="fas fa-file-pen"></i></div>
+          <div><h2>Proses Daftar Ulang</h2><p>Pastikan seluruh data sudah lengkap dan benar</p></div>
+        </div>
+
+        <!-- Peringatan Kejujuran -->
+        <div class="alert alert-warn">
+          <i class="fas fa-triangle-exclamation"></i>
+          <span><strong>Pastikan seluruh data yang Anda isi adalah benar, jujur, dan sesuai dengan kondisi sebenarnya.</strong> Apabila ditemukan ketidaksesuaian atau kesalahan data pada proses verifikasi, maka peserta dapat dinyatakan gugur meskipun telah dinyatakan lulus seleksi.</span>
+        </div>
+
+        <!-- ===== PERATURAN ===== -->
+        <div class="card" style="margin-top:20px;">
+          <div class="card-header">
+            <div class="card-icon"><i class="fas fa-gavel"></i></div>
+            <div><h2>Peraturan Daftar Ulang</h2><p>Baca dan pahami sebelum melanjutkan</p></div>
+          </div>
+          <div class="rules-scroll">
+            <ol>
+              <li>Calon murid mutasi wajib mematuhi seluruh tata tertib yang berlaku di SMAN 68 Jakarta.</li>
+              <li>Calon murid mutasi wajib menyerahkan seluruh dokumen persyaratan yang telah ditentukan dalam jadwal yang telah ditetapkan.</li>
+              <li>Calon murid mutasi wajib mengikuti seluruh rangkaian kegiatan orientasi dan pengenalan lingkungan sekolah.</li>
+              <li>Calon murid mutasi wajib menggunakan seragam resmi SMAN 68 Jakarta sesuai dengan ketentuan yang berlaku.</li>
+              <li>Calon murid mutasi tidak diperkenankan membawa kendaraan bermotor ke lingkungan sekolah.</li>
+              <li>Calon murid mutasi wajib menjaga nama baik sekolah dan almamater SMAN 68 Jakarta.</li>
+              <li>Calon murid mutasi wajib mengikuti seluruh kegiatan akademik dan non-akademik yang telah dijadwalkan.</li>
+              <li>Calon murid mutasi wajib menghormati guru, staf, dan seluruh warga sekolah.</li>
+              <li>Calon murid mutasi dilarang terlibat dalam kegiatan yang bersifat kriminal, perundungan, atau penyalahgunaan narkoba.</li>
+              <li>Calon murid mutasi wajib mengikuti tes penempatan dan wawancara ulang jika diperlukan oleh panitia.</li>
+              <li>Calon murid mutasi bersedia mengikuti masa adaptasi dan pembinaan karakter selama satu semester pertama.</li>
+              <li>Calon murid mutasi wajib melengkapi administrasi keuangan sekolah sesuai dengan ketentuan yang berlaku.</li>
+              <li>Calon murid mutasi wajib mengikuti kegiatan ekstrakurikuler minimal satu bidang sesuai dengan minat dan bakat.</li>
+              <li>Calon murid mutasi wajib menjaga kebersihan, keindahan, dan kenyamanan lingkungan sekolah.</li>
+              <li>Seluruh data yang diisi dalam formulir daftar ulang adalah benar dan dapat dipertanggungjawabkan, serta bersedia menerima sanksi apabila terbukti memalsukan data.</li>
+            </ol>
+          </div>
+
+          <div class="checkbox-row">
+            <input type="checkbox" id="agreeDaftarUlang">
+            <label for="agreeDaftarUlang">Saya telah membaca, memahami, dan menyetujui seluruh peraturan daftar ulang di atas serta bersedia mematuhinya.</label>
+          </div>
+
+          <button class="btn btn-full btn-lg" id="submitDaftarUlangBtn" disabled style="margin-top:16px;">
+            <i class="fas fa-paper-plane"></i> Proses Daftar Ulang
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STATUS DAFTAR ULANG ===== -->
+    <div id="statusDaftarUlangSection" style="display:none;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon"><i class="fas fa-circle-check"></i></div>
+          <div><h2>Status Daftar Ulang</h2><p>Informasi terkini proses daftar ulang Anda</p></div>
+        </div>
+        <div id="statusDaftarUlangContent"></div>
+      </div>
+    </div>
+
+  </div><!-- /dashboardPage -->
+</div><!-- /main-wrap -->
+
+<!-- ================================
+     MODAL SUKSES DAFTAR ULANG
+================================ -->
+<div class="modal-overlay" id="modalSuksesDU">
+  <div class="modal-box">
+    <div class="modal-icon success"><i class="fas fa-circle-check"></i></div>
+    <h2>Daftar Ulang Berhasil!</h2>
+    <p>Daftar Ulang sebagai Murid Mutasi SMAN 68 Jakarta Berhasil.</p>
+    <p style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;">Data Anda telah kami terima dan akan segera diverifikasi.</p>
+    <button class="btn btn-primary btn-full" id="closeModalSuksesDU"><i class="fas fa-check"></i> Lihat Status</button>
+  </div>
+</div>
+
+<!-- ================================
+     MODAL VALIDASI DATA
+================================ -->
+<div class="modal-overlay" id="modalValidasiData">
+  <div class="modal-box">
+    <div class="modal-icon warning" style="color:#f59e0b;"><i class="fas fa-triangle-exclamation"></i></div>
+    <h2>Data Belum Lengkap</h2>
+    <p style="text-align:left;font-size:0.9rem;color:var(--text-secondary);" id="validasiDataList">
+      Mohon lengkapi data berikut sebelum melanjutkan:
+    </p>
+    <ul id="validasiDataItems" style="text-align:left;font-size:0.85rem;color:var(--text-secondary);margin:12px 0;padding-left:20px;list-style:disc;line-height:1.8;"></ul>
+    <button class="btn btn-primary btn-full" id="closeValidasiModal"><i class="fas fa-check"></i> Saya Mengerti</button>
+  </div>
+</div>
+
+<!-- ================================
+     FIREBASE & MAIN SCRIPT
+================================ -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script>
+// ============================================================
+// FIREBASE INIT
+// ============================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyDAcKcg3alPOTH3FFGelYmsW7jcMMe2PLI",
+  authDomain: "upnvjdatsystem.firebaseapp.com",
+  projectId: "upnvjdatsystem",
+  storageBucket: "upnvjdatsystem.firebasestorage.app",
+  messagingSenderId: "57095309946",
+  appId: "1:57095309946:web:b0e9f3f86380d549ffc9c3"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ============================================================
+// HELPERS
+// ============================================================
+function toast(msg, type = 'info') {
+  const w = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className = `toast-item t-${type}`;
+  const ic = { success: 'fa-check-circle', error: 'fa-exclamation-circle', warn: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+  el.innerHTML = `<i class="fas ${ic[type] || ic.info}"></i><span class="toast-msg">${msg}</span>`;
+  w.appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateX(110%)'; el.style.transition = '.3s ease'; setTimeout(() => el.remove(), 300); }, 4500);
+}
+
+function esc(s) { if (!s) return ''; const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML; }
+
+function fmtTgl(t) {
+  if (!t) return '—';
+  try { const d = new Date(t); return isNaN(d) ? t : d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); } catch { return t; }
+}
+
+// Menormalkan nilai tanggal dari Firestore (bisa berupa Firestore Timestamp,
+// string ISO, atau string "YYYY-MM-DD") menjadi objek Date yang valid.
+function toJSDate(val) {
+  if (!val) return null;
+  if (typeof val === 'object' && typeof val.toDate === 'function') return val.toDate(); // Firestore Timestamp
+  const d = new Date(val);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+// Menormalkan nilai tanggal menjadi format "YYYY-MM-DD" agar bisa
+// dibandingkan secara konsisten maupun dipakai sebagai value <input type="date">.
+function toDateInputValue(val) {
+  const d = toJSDate(val);
+  if (!d) return '';
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+// Menandai sebuah field input sebagai "readonly" (dari database) atau
+// "editable" (perlu diisi manual) sekaligus menampilkan/menyembunyikan
+// badge sumber data dan styling dashed-border pada wrapper yang benar.
+function setFieldReadonlyState(inputId, badgeId, isReadonly) {
+  const input = document.getElementById(inputId);
+  const badge = badgeId ? document.getElementById(badgeId) : null;
+  const wrap = input ? input.closest('.form-group') : null;
+  if (!input) return;
+  input.readOnly = !!isReadonly;
+  if (wrap) wrap.classList.toggle('field-readonly', !!isReadonly);
+  if (badge) badge.classList.toggle('hidden', !isReadonly);
+}
+
+// ============================================================
+// PENJAGA KEPEMILIKAN DATA (CRITICAL SECURITY GUARD)
+// ------------------------------------------------------------
+// Fungsi ini WAJIB dipanggil sebelum menampilkan data `daftarUlang`
+// milik siapa pun ke layar. Jika `noDaftar` pada data yang mau
+// ditampilkan TIDAK cocok dengan `noDaftar` milik sesi yang sedang
+// login, data tersebut DITOLAK MENTAH-MENTAH — apa pun penyebabnya
+// (query yang salah, dokumen ganda di database, sesi basi, dsb),
+// calon siswa tidak akan pernah melihat data calon siswa lain.
+// ============================================================
+function dataBelongsToSession(session, data) {
+  if (!session || !data) return false;
+  return String(session.noDaftar || '').trim() === String(data.noDaftar || '').trim();
+}
+
+function rejectForeignData(context) {
+  console.error('[SECURITY] Data mismatch terdeteksi & diblokir pada:', context);
+  if (duStatusUnsubscribe) { duStatusUnsubscribe(); duStatusUnsubscribe = null; }
+  document.getElementById('statusDaftarUlangContent').innerHTML = '';
+  clearSession();
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('dashboardPage').style.display = 'none';
+  document.getElementById('logoutBtn').style.display = 'none';
+  toast('Sesi tidak valid terdeteksi dan telah diamankan. Silakan login kembali.', 'error');
+}
+
+function statusBadgeDU(status) {
+  const map = {
+    'proses': { cls: 's-proses', icon: 'fa-clock', title: 'Sedang Diproses', msg: 'Daftar ulang Anda sedang diproses. Mohon menunggu maksimal 1×24 jam untuk proses verifikasi oleh tim verifikator.' },
+    'valid': { cls: 's-valid', icon: 'fa-circle-check', title: 'Valid — Verifikasi Berhasil', msg: 'Selamat. Daftar ulang Anda telah berhasil diverifikasi. Silakan mengikuti media sosial resmi SMAN 68 Jakarta untuk memperoleh informasi kegiatan dan tahapan selanjutnya.' },
+    'tidak-valid': { cls: 's-tidak-valid', icon: 'fa-circle-xmark', title: 'Tidak Valid', msg: 'Mohon maaf. Tim verifikator menemukan ketidaksesuaian atau kesalahan pada data yang Anda kirimkan. Untuk informasi lebih lanjut, silakan menghubungi panitia melalui kontak berikut.' }
+  };
+  return map[status] || map['proses'];
+}
+
+// ============================================================
+// CLOCK
+// ============================================================
+function updateClock() {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+  document.getElementById('clockDisplay').textContent = `${hh}:${mm}:${ss}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ============================================================
+// DARK / LIGHT MODE
+// ============================================================
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+let isDark = localStorage.getItem('theme') === 'dark';
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+}
+applyTheme();
+themeToggle.addEventListener('click', () => {
+  isDark = !isDark;
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  applyTheme();
+});
+
+// ============================================================
+// WEBSITE GATE
+// ============================================================
+let websiteOpen = true;
+let gateUnsubscribe = null;
+
+function initWebsiteGate() {
+  gateUnsubscribe = db.collection('operatorSettings').doc('daftarUlangConfig')
+    .onSnapshot(snap => {
+      if (!snap.exists) {
+        websiteOpen = true;
+        document.getElementById('websiteGate').classList.remove('active');
+        return;
+      }
+      const data = snap.data();
+      websiteOpen = data.websiteOpen !== false;
+      if (!websiteOpen) {
+        document.getElementById('websiteGate').classList.add('active');
+      } else {
+        document.getElementById('websiteGate').classList.remove('active');
+      }
+    }, err => {
+      console.error('Gate listener error:', err);
+      websiteOpen = true;
+      document.getElementById('websiteGate').classList.remove('active');
+    });
+}
+
+// ============================================================
+// LOGIN SCHEDULE
+// ============================================================
+let loginSchedule = null;
+let scheduleUnsubscribe = null;
+
+function initLoginSchedule() {
+  scheduleUnsubscribe = db.collection('operatorSettings').doc('daftarUlangSchedule')
+    .onSnapshot(snap => {
+      if (!snap.exists) {
+        loginSchedule = null;
+        return;
+      }
+      loginSchedule = snap.data();
+    }, err => {
+      console.error('Schedule listener error:', err);
+    });
+}
+
+function checkLoginSchedule() {
+  if (!loginSchedule) return { allowed: true, message: null };
+  const now = new Date();
+  const openTime = toJSDate(loginSchedule.openTime);
+  const closeTime = toJSDate(loginSchedule.closeTime);
+
+  if (openTime && now < openTime) {
+    const tgl = openTime.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    const jam = openTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    return { allowed: false, message: `Jadwal login daftar ulang calon murid baru dapat dilakukan pada ${tgl} pukul ${jam} WIB.` };
+  }
+  if (closeTime && now > closeTime) {
+    const tgl = closeTime.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    const jam = closeTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    return { allowed: false, message: `Mohon maaf, masa daftar ulang telah ditutup sesuai jadwal yang telah ditetapkan pada ${tgl} pukul ${jam} WIB.` };
+  }
+  return { allowed: true, message: null };
+}
+
+// ============================================================
+// SESSION MANAGEMENT
+// ============================================================
+const SESSION_KEY = 'du68_session';
+
+function getSession() {
+  try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)); } catch { return null; }
+}
+
+function setSession(data) {
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify(data));
+}
+
+function clearSession() {
+  sessionStorage.removeItem(SESSION_KEY);
+}
+
+// ============================================================
+// LOGIN
+// ============================================================
+document.getElementById('loginBtn').addEventListener('click', async () => {
+  const noDaftar = document.getElementById('loginNoDaftar').value.trim();
+  const tglLahir = document.getElementById('loginTglLahir').value;
+  const alertEl = document.getElementById('loginAlert');
+  const alertText = document.getElementById('loginAlertText');
+  const btn = document.getElementById('loginBtn');
+
+  alertEl.classList.add('hidden');
+
+  if (!noDaftar || !tglLahir) {
+    alertText.textContent = 'Nomor pendaftaran dan tanggal lahir wajib diisi.';
+    alertEl.classList.remove('hidden');
+    return;
+  }
+  if (!/^\d{14}$/.test(noDaftar)) {
+    alertText.textContent = 'Nomor pendaftaran harus 14 digit angka.';
+    alertEl.classList.remove('hidden');
+    return;
+  }
+
+  const scheduleCheck = checkLoginSchedule();
+  if (!scheduleCheck.allowed) {
+    alertText.textContent = scheduleCheck.message;
+    alertEl.classList.remove('hidden');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memeriksa...';
+
+  try {
+    const snap = await db.collection('pendaftaranMutasi')
+      .where('noDaftar', '==', noDaftar)
+      .get();
+
+    if (snap.empty) {
+      alertText.textContent = 'Nomor pendaftaran tidak ditemukan.';
+      alertEl.classList.remove('hidden');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-right-to-bracket"></i> Login';
+      return;
+    }
+
+    if (snap.size > 1) {
+      console.error('[DATA INTEGRITY] Ditemukan lebih dari satu dokumen pendaftaranMutasi dengan noDaftar yang sama:', noDaftar, '— mohon periksa database.');
+    }
+
+    // Cari dokumen yang tanggal lahirnya benar-benar cocok, bukan asal
+    // mengambil dokumen pertama — supaya kalau ada duplikasi noDaftar di
+    // database, tetap dokumen milik orang yang benar yang terpakai.
+    const matchByTgl = snap.docs.find(d => toDateInputValue(d.data().tglLahir) === tglLahir);
+    const doc = matchByTgl || snap.docs[0];
+    const data = doc.data();
+
+    if (toDateInputValue(data.tglLahir) !== tglLahir) {
+      alertText.textContent = 'Tanggal lahir tidak sesuai dengan data pendaftaran.';
+      alertEl.classList.remove('hidden');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-right-to-bracket"></i> Login';
+      return;
+    }
+
+    const status = (data.status || '').toLowerCase();
+    if (status !== 'lolos' && status !== 'diterima') {
+      alertText.textContent = 'Mohon maaf, hanya calon murid yang LULUS SELEKSI yang dapat login ke sistem daftar ulang.';
+      alertEl.classList.remove('hidden');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-right-to-bracket"></i> Login';
+      return;
+    }
+
+    // Cek apakah sudah daftar ulang
+    const duSnap = await db.collection('daftarUlang')
+      .where('noDaftar', '==', noDaftar)
+      .get();
+
+    if (duSnap.size > 1) {
+      console.error('[DATA INTEGRITY] Ditemukan lebih dari satu dokumen daftarUlang dengan noDaftar yang sama:', noDaftar, '— mohon periksa database, ini berisiko menampilkan data yang salah.');
+    }
+
+    let alreadyRegistered = false;
+    let duData = null;
+    let duDocId = null;
+    if (!duSnap.empty) {
+      // Verifikasi ulang secara eksplisit (defense-in-depth): meskipun query
+      // sudah difilter oleh noDaftar, kita pastikan lagi field noDaftar pada
+      // dokumen yang didapat benar-benar sama persis dengan yang diketik
+      // di form login sebelum data ini dipercaya & ditampilkan.
+      const candidate = duSnap.docs.find(d => String(d.data().noDaftar || '').trim() === String(noDaftar).trim()) || duSnap.docs[0];
+      if (String(candidate.data().noDaftar || '').trim() === String(noDaftar).trim()) {
+        duDocId = candidate.id;
+        duData = candidate.data();
+        alreadyRegistered = true;
+      } else {
+        console.error('[SECURITY] Dokumen daftarUlang yang ditemukan noDaftar-nya tidak cocok, data diabaikan demi keamanan.');
+      }
+    }
+
+    const sessionData = {
+      docId: doc.id,
+      noDaftar: noDaftar,
+      nama: data.namaLengkap || data.nama || 'Calon Murid',
+      tglLahir: toDateInputValue(data.tglLahir),
+      asalSekolah: data.asalSekolah || data.sekolahAsal || '',
+      npsn: data.npsn || '',
+      nisn: data.nisn || '',
+      telp: data.telpMurid || data.telp || data.telepon || '',
+      email: data.email || '',
+      kelasSaatIni: data.kelasSaatIni || '',
+      mutasiKe: data.mutasiKe || '',
+      status: status,
+      sudahDaftarUlang: alreadyRegistered,
+      duDocId: duDocId,
+      duData: duData,
+      duStatus: duData ? duData.status : null
+    };
+    setSession(sessionData);
+
+    toast(`Login berhasil. Selamat datang, ${sessionData.nama}.`, 'success');
+
+    showDashboard();
+
+  } catch (err) {
+    console.error(err);
+    alertText.textContent = 'Terjadi kesalahan. Silakan coba lagi.';
+    alertEl.classList.remove('hidden');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-right-to-bracket"></i> Login';
+  }
+});
+
+document.getElementById('loginTglLahir').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('loginBtn').click(); });
+document.getElementById('loginNoDaftar').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('loginTglLahir').focus(); });
+
+// ============================================================
+// SHOW DASHBOARD
+// ============================================================
+function showDashboard() {
+  const session = getSession();
+  if (!session) return;
+
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('dashboardPage').style.display = 'block';
+  document.getElementById('logoutBtn').style.display = 'flex';
+
+  document.getElementById('welcomeName').textContent = `Selamat datang, ${session.nama}`;
+
+  // Selalu bersihkan sisa konten status lama & listener sebelumnya
+  // SEBELUM memutuskan apa yang akan ditampilkan, supaya tidak pernah ada
+  // data siswa lain yang "menempel" dari render/sesi sebelumnya.
+  if (duStatusUnsubscribe) { duStatusUnsubscribe(); duStatusUnsubscribe = null; }
+  document.getElementById('statusDaftarUlangContent').innerHTML = '';
+
+  // Isi data diri
+  populateDataDiri(session);
+
+  // Cek status daftar ulang — HANYA render jika data benar-benar milik
+  // sesi yang sedang login (noDaftar cocok). Jika tidak cocok, ini
+  // dianggap kebocoran data dan langsung diblokir + paksa logout.
+  if (session.sudahDaftarUlang && session.duData) {
+    if (!dataBelongsToSession(session, session.duData)) {
+      rejectForeignData('showDashboard');
+      return;
+    }
+    document.getElementById('daftarUlangSection').style.display = 'none';
+    document.getElementById('statusDaftarUlangSection').style.display = 'block';
+    renderStatusDaftarUlang(session.duData, session.duStatus);
+    subscribeDaftarUlangStatus(session.duDocId);
+  } else {
+    document.getElementById('daftarUlangSection').style.display = 'block';
+    document.getElementById('statusDaftarUlangSection').style.display = 'none';
+    // Check data completeness
+    checkDataCompleteness();
+  }
+}
+
+// ============================================================
+// POPULATE DATA DIRI
+// ============================================================
+function populateDataDiri(session) {
+  document.getElementById('duNoDaftar').value = session.noDaftar || '';
+  document.getElementById('duNama').value = session.nama || '';
+  document.getElementById('duTglLahir').value = toDateInputValue(session.tglLahir);
+  document.getElementById('duSekolahAsal').value = session.asalSekolah || '';
+  document.getElementById('duNpsn').value = session.npsn || '';
+  document.getElementById('duNisn').value = session.nisn || '';
+  document.getElementById('duTelp').value = session.telp || '';
+  document.getElementById('duEmail').value = session.email || '';
+  document.getElementById('duKelasSaatIni').value = session.kelasSaatIni || '';
+  document.getElementById('duMutasiKe').value = session.mutasiKe || '';
+
+  // Tampilkan badge sumber data & kunci (readonly) hanya untuk field yang
+  // memang sudah terisi dari database. Jika kosong, field tetap bisa diisi
+  // manual oleh calon murid agar tidak ada yang terkunci karena data induk
+  // belum lengkap.
+  setFieldReadonlyState('duSekolahAsal', 'sekolahAsalSourceBadge', !!session.asalSekolah);
+  setFieldReadonlyState('duNpsn', 'npsnSourceBadge', !!session.npsn);
+  setFieldReadonlyState('duNisn', 'nisnSourceBadge', !!session.nisn);
+  setFieldReadonlyState('duTelp', 'telpSourceBadge', !!session.telp);
+  setFieldReadonlyState('duEmail', 'emailSourceBadge', !!session.email);
+
+  // Tampilkan data diri yang sudah diisi dari database.
+  // PENTING: elemen dengan id="dataDiriAlertText" harus tetap ada di dalam
+  // markup baru ini, karena fungsi ini bisa dipanggil berkali-kali dalam
+  // sesi tab yang sama (mis. logout lalu login lagi tanpa reload halaman).
+  // Jika id-nya hilang, pemanggilan berikutnya akan error (null reference).
+  const alertEl = document.getElementById('dataDiriAlert');
+  alertEl.className = 'alert alert-success';
+  alertEl.innerHTML = `<i class="fas fa-circle-check"></i><span id="dataDiriAlertText">Data diri telah dimuat dari database. Field dengan badge <span class="data-source-badge" style="background:var(--success-bg);border-color:var(--success-border);color:var(--success-text);"><i class="fas fa-database"></i> Dari Database</span> bersifat <strong>readonly</strong> dan tidak dapat diubah. Field lain yang masih kosong dapat Anda lengkapi secara manual.</span>`;
+}
+
+// ============================================================
+// CHECK DATA COMPLETENESS
+// ============================================================
+function checkDataCompleteness() {
+  const requiredFields = [
+    { id: 'duNoDaftar', label: 'Nomor Pendaftaran' },
+    { id: 'duNama', label: 'Nama Lengkap' },
+    { id: 'duTglLahir', label: 'Tanggal Lahir' },
+    { id: 'duSekolahAsal', label: 'Asal Sekolah' },
+    { id: 'duNpsn', label: 'NPSN' },
+    { id: 'duNisn', label: 'NISN' },
+    { id: 'duTelp', label: 'Nomor WhatsApp/Telepon' },
+    { id: 'duKelasSaatIni', label: 'Kelas Saat Ini' },
+    { id: 'duMutasiKe', label: 'Mutasi ke Kelas' }
+  ];
+
+  let allComplete = true;
+  let missingFields = [];
+
+  requiredFields.forEach(field => {
+    const el = document.getElementById(field.id);
+    const val = el ? el.value.trim() : '';
+    if (!val) {
+      allComplete = false;
+      missingFields.push(field.label);
+    }
+  });
+
+  const indicator = document.getElementById('dataCompleteIndicator');
+
+  if (allComplete) {
+    indicator.className = 'data-complete-indicator success mt-16';
+    indicator.innerHTML = `<i class="fas fa-circle-check"></i><span>✅ Data Lengkap dan Siap untuk Daftar Ulang</span>`;
+  } else {
+    indicator.className = 'data-complete-indicator warning mt-16';
+    indicator.innerHTML = `<i class="fas fa-circle-exclamation"></i><span>⚠️ Data belum lengkap. Mohon lengkapi: <strong>${missingFields.join(', ')}</strong></span>`;
+  }
+
+  updateSubmitButtonUI(allComplete);
+  return allComplete;
+}
+
+// ============================================================
+// UPDATE TOMBOL SUBMIT (disatukan agar selalu konsisten dipanggil
+// dari checkDataCompleteness() maupun dari event checkbox persetujuan)
+// ============================================================
+function updateSubmitButtonUI(dataComplete) {
+  const btn = document.getElementById('submitDaftarUlangBtn');
+  const agree = document.getElementById('agreeDaftarUlang').checked;
+  if (agree && dataComplete) {
+    btn.disabled = false;
+    btn.className = 'btn btn-success btn-full btn-lg';
+    btn.style.background = '';
+    btn.style.color = '';
+    btn.style.opacity = '1';
+  } else {
+    btn.disabled = true;
+    btn.className = 'btn btn-full btn-lg';
+    btn.style.background = 'var(--text-muted)';
+    btn.style.color = '#fff';
+    btn.style.opacity = '0.7';
+  }
+  btn.innerHTML = '<i class="fas fa-paper-plane"></i> Proses Daftar Ulang';
+}
+
+// ============================================================
+// SIMPAN DATA DIRI
+// ============================================================
+document.getElementById('simpanDataDiriBtn').addEventListener('click', async () => {
+  const session = getSession();
+  if (!session) { toast('Sesi telah berakhir. Silakan login ulang.', 'error'); return; }
+
+  const asalSekolah = document.getElementById('duSekolahAsal').value.trim();
+  const npsn = document.getElementById('duNpsn').value.trim();
+  const nisn = document.getElementById('duNisn').value.trim();
+  const telp = document.getElementById('duTelp').value.trim();
+  const email = document.getElementById('duEmail').value.trim();
+  const kelasSaatIni = document.getElementById('duKelasSaatIni').value.trim();
+  const mutasiKe = document.getElementById('duMutasiKe').value;
+
+  // Validasi NPSN
+  if (npsn && !/^\d{6,8}$/.test(npsn)) {
+    toast('NPSN harus berupa 6-8 digit angka.', 'error');
+    return;
+  }
+
+  // Validasi NISN
+  if (nisn && !/^\d{10}$/.test(nisn)) {
+    toast('NISN harus 10 digit angka.', 'error');
+    return;
+  }
+
+  // Validasi nomor telepon
+  if (telp && !/^08\d{8,11}$/.test(telp)) {
+    toast('Nomor telepon harus dimulai dengan 08 dan terdiri dari 10-13 digit angka.', 'error');
+    return;
+  }
+
+  // Validasi email
+  if (email && !/\S+@\S+\.\S+/.test(email)) {
+    toast('Format email tidak valid.', 'error');
+    return;
+  }
+
+  if (!kelasSaatIni) {
+    toast('Kelas saat ini wajib diisi.', 'error');
+    return;
+  }
+  if (!mutasiKe) {
+    toast('Kelas tujuan mutasi wajib dipilih.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('simpanDataDiriBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+
+  try {
+    const updateData = {
+      asalSekolah: asalSekolah,
+      npsn: npsn,
+      nisn: nisn,
+      telpMurid: telp,
+      telp: telp,
+      email: email,
+      kelasSaatIni: kelasSaatIni,
+      mutasiKe: mutasiKe,
+      updatedAt: new Date().toISOString()
+    };
+
+    await db.collection('pendaftaranMutasi').doc(session.docId).update(updateData);
+
+    // Update session
+    session.asalSekolah = asalSekolah;
+    session.npsn = npsn;
+    session.nisn = nisn;
+    session.telp = telp;
+    session.email = email;
+    session.kelasSaatIni = kelasSaatIni;
+    session.mutasiKe = mutasiKe;
+    setSession(session);
+
+    // Update UI badges & readonly state (dikunci setelah tersimpan agar
+    // konsisten dengan data yang sekarang sudah ada di database)
+    if (asalSekolah) setFieldReadonlyState('duSekolahAsal', 'sekolahAsalSourceBadge', true);
+    if (npsn) setFieldReadonlyState('duNpsn', 'npsnSourceBadge', true);
+    if (nisn) setFieldReadonlyState('duNisn', 'nisnSourceBadge', true);
+    if (telp) setFieldReadonlyState('duTelp', 'telpSourceBadge', true);
+    if (email) setFieldReadonlyState('duEmail', 'emailSourceBadge', true);
+
+    toast('Data berhasil disimpan. Silakan periksa kembali seluruh informasi sebelum melanjutkan proses daftar ulang.', 'success');
+
+    // Check completeness again
+    checkDataCompleteness();
+
+  } catch (err) {
+    console.error(err);
+    toast('Gagal menyimpan data: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-save"></i> Simpan Perubahan';
+  }
+});
+
+// ============================================================
+// SUBMIT DAFTAR ULANG
+// ============================================================
+document.getElementById('agreeDaftarUlang').addEventListener('change', function() {
+  checkDataCompleteness();
+});
+
+// Perbarui status kelengkapan & tombol submit secara langsung (live) setiap
+// kali field wajib diisi/diubah, bukan hanya saat checkbox diklik.
+['duSekolahAsal', 'duNpsn', 'duNisn', 'duTelp', 'duKelasSaatIni'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => checkDataCompleteness());
+});
+document.getElementById('duMutasiKe').addEventListener('change', () => checkDataCompleteness());
+
+// Inisialisasi awal
+document.getElementById('submitDaftarUlangBtn').disabled = true;
+document.getElementById('submitDaftarUlangBtn').style.background = 'var(--text-muted)';
+document.getElementById('submitDaftarUlangBtn').style.color = '#fff';
+
+document.getElementById('submitDaftarUlangBtn').addEventListener('click', async () => {
+  const session = getSession();
+  if (!session) { toast('Sesi Anda telah berakhir. Silakan login ulang.', 'error'); return; }
+
+  // Cek kelengkapan data
+  if (!checkDataCompleteness()) {
+    // Tampilkan modal validasi
+    showValidasiModal();
+    return;
+  }
+
+  if (!document.getElementById('agreeDaftarUlang').checked) {
+    toast('Anda wajib menyetujui peraturan daftar ulang.', 'warn');
+    return;
+  }
+
+  const btn = document.getElementById('submitDaftarUlangBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+
+  try {
+    // Ambil data terbaru dari form
+    const kelasSaatIni = document.getElementById('duKelasSaatIni').value.trim();
+    const mutasiKe = document.getElementById('duMutasiKe').value;
+    const nisn = document.getElementById('duNisn').value.trim();
+    const telp = document.getElementById('duTelp').value.trim();
+    const email = document.getElementById('duEmail').value.trim();
+
+    const pesertaSnap = await db.collection('pendaftaranMutasi').doc(session.docId).get();
+    if (!pesertaSnap.exists) {
+      toast('Data peserta tidak ditemukan.', 'error');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Proses Daftar Ulang';
+      return;
+    }
+    const pesertaData = pesertaSnap.data();
+
+    const duData = {
+      noDaftar: session.noDaftar,
+      nama: session.nama,
+      tglLahir: session.tglLahir,
+      asalSekolah: session.asalSekolah || pesertaData.asalSekolah || pesertaData.sekolahAsal || '',
+      npsn: session.npsn || pesertaData.npsn || '',
+      nisn: nisn || session.nisn || '',
+      telp: telp || session.telp || '',
+      email: email || session.email || '',
+      kelasSaatIni: kelasSaatIni,
+      mutasiKe: mutasiKe,
+      status: 'proses',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      pesertaDocId: session.docId
+    };
+
+    const existing = await db.collection('daftarUlang')
+      .where('noDaftar', '==', session.noDaftar)
+      .get();
+
+    if (existing.size > 1) {
+      console.error('[DATA INTEGRITY] Ditemukan lebih dari satu dokumen daftarUlang dengan noDaftar yang sama:', session.noDaftar, '— mohon periksa database.');
+    }
+
+    // Verifikasi eksplisit sebelum menimpa dokumen manapun — mencegah
+    // kemungkinan (jika ada duplikasi/kesalahan data) menimpa data
+    // daftar ulang milik siswa LAIN secara tidak sengaja.
+    const existingOwn = existing.docs.find(d => String(d.data().noDaftar || '').trim() === String(session.noDaftar).trim());
+    if (existingOwn) {
+      await db.collection('daftarUlang').doc(existingOwn.id).update(duData);
+      session.duDocId = existingOwn.id;
+    } else {
+      const newRef = await db.collection('daftarUlang').add(duData);
+      session.duDocId = newRef.id;
+    }
+    session.sudahDaftarUlang = true;
+    session.duData = duData;
+    session.duStatus = 'proses';
+    setSession(session);
+
+    document.getElementById('modalSuksesDU').classList.add('open');
+
+  } catch (err) {
+    console.error(err);
+    toast('Gagal menyimpan data: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Proses Daftar Ulang';
+  }
+});
+
+// ============================================================
+// SHOW VALIDASI MODAL
+// ============================================================
+function showValidasiModal() {
+  const requiredFields = [
+    { id: 'duNoDaftar', label: 'Nomor Pendaftaran' },
+    { id: 'duNama', label: 'Nama Lengkap' },
+    { id: 'duTglLahir', label: 'Tanggal Lahir' },
+    { id: 'duSekolahAsal', label: 'Asal Sekolah' },
+    { id: 'duNpsn', label: 'NPSN' },
+    { id: 'duNisn', label: 'NISN' },
+    { id: 'duTelp', label: 'Nomor WhatsApp/Telepon' },
+    { id: 'duKelasSaatIni', label: 'Kelas Saat Ini' },
+    { id: 'duMutasiKe', label: 'Mutasi ke Kelas' }
+  ];
+
+  const missing = [];
+  requiredFields.forEach(field => {
+    const el = document.getElementById(field.id);
+    const val = el ? el.value.trim() : '';
+    if (!val) missing.push(field.label);
+  });
+
+  const listEl = document.getElementById('validasiDataItems');
+  if (missing.length) {
+    listEl.innerHTML = missing.map(m => `<li>${m}</li>`).join('');
+  } else {
+    listEl.innerHTML = '<li>Semua data sudah lengkap.</li>';
+  }
+  document.getElementById('modalValidasiData').classList.add('open');
+}
+
+document.getElementById('closeValidasiModal').addEventListener('click', () => {
+  document.getElementById('modalValidasiData').classList.remove('open');
+});
+document.getElementById('modalValidasiData').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalValidasiData')) {
+    document.getElementById('modalValidasiData').classList.remove('open');
+  }
+});
+
+// ============================================================
+// MODAL SUKSES DAFTAR ULANG
+// ============================================================
+document.getElementById('closeModalSuksesDU').addEventListener('click', () => {
+  document.getElementById('modalSuksesDU').classList.remove('open');
+  const session = getSession();
+  if (session) {
+    document.getElementById('daftarUlangSection').style.display = 'none';
+    document.getElementById('statusDaftarUlangSection').style.display = 'block';
+    if (session.duData && dataBelongsToSession(session, session.duData)) {
+      renderStatusDaftarUlang(session.duData, session.duStatus);
+      subscribeDaftarUlangStatus(session.duDocId);
+    } else if (session.duData) {
+      rejectForeignData('closeModalSuksesDU');
+    }
+  }
+});
+document.getElementById('modalSuksesDU').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalSuksesDU')) {
+    document.getElementById('modalSuksesDU').classList.remove('open');
+  }
+});
+
+// ============================================================
+// RENDER STATUS DAFTAR ULANG
+// ============================================================
+function renderStatusDaftarUlang(duData, status) {
+  const container = document.getElementById('statusDaftarUlangContent');
+  const s = statusBadgeDU(status || 'proses');
+
+  let extraHtml = '';
+  if (status === 'valid') {
+    extraHtml = `
+      <div class="social-links">
+        <a href="https://www.instagram.com/smanegeri68jakarta/" target="_blank" class="btn-social instagram">
+          <i class="fab fa-instagram"></i> Instagram
+        </a>
+        <a href="https://www.tiktok.com/@smanegeri68jakarta" target="_blank" class="btn-social tiktok">
+          <i class="fab fa-tiktok"></i> TikTok
+        </a>
+      </div>
+    `;
+  } else if (status === 'tidak-valid') {
+    extraHtml = `
+      <div class="social-links">
+        <a href="https://wa.me/6289535109108" target="_blank" class="btn-social whatsapp">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+        <a href="mailto:operatorsman68jakarta@gmail.com" target="_blank" class="btn-social email">
+          <i class="fas fa-envelope"></i> Email
+        </a>
+      </div>
+    `;
+  }
+
+  container.innerHTML = `
+    <div class="status-card ${s.cls}">
+      <div class="status-icon"><i class="fas ${s.icon}"></i></div>
+      <h3>${s.title}</h3>
+      <p>${s.msg}</p>
+      <div class="status-meta">
+        <strong>Informasi Pendaftaran</strong>
+        Nama: ${esc(duData.nama || '—')}<br>
+        No. Pendaftaran: ${esc(duData.noDaftar || '—')}<br>
+        Asal Sekolah: ${esc(duData.asalSekolah || '—')}<br>
+        Kelas Saat Ini: ${esc(duData.kelasSaatIni || '—')}<br>
+        Mutasi ke Kelas: ${esc(duData.mutasiKe || '—')}<br>
+        NISN: ${esc(duData.nisn || '—')}<br>
+        WhatsApp: ${esc(duData.telp || '—')}
+      </div>
+      ${extraHtml}
+    </div>
+  `;
+}
+
+// ============================================================
+// SUBSCRIBE REAL-TIME STATUS DAFTAR ULANG
+// ============================================================
+let duStatusUnsubscribe = null;
+
+function subscribeDaftarUlangStatus(docId) {
+  if (duStatusUnsubscribe) {
+    duStatusUnsubscribe();
+    duStatusUnsubscribe = null;
+  }
+  if (!docId) return;
+
+  duStatusUnsubscribe = db.collection('daftarUlang').doc(docId)
+    .onSnapshot(snap => {
+      if (!snap.exists) return;
+      const data = snap.data();
+      const session = getSession();
+      if (!dataBelongsToSession(session, data)) {
+        rejectForeignData('subscribeDaftarUlangStatus');
+        return;
+      }
+      session.duData = data;
+      session.duStatus = data.status;
+      setSession(session);
+      renderStatusDaftarUlang(data, data.status);
+    }, err => {
+      console.error('Status listener error:', err);
+    });
+}
+
+// ============================================================
+// LOGOUT
+// ============================================================
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  if (duStatusUnsubscribe) { duStatusUnsubscribe(); duStatusUnsubscribe = null; }
+  clearSession();
+  document.getElementById('statusDaftarUlangContent').innerHTML = '';
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('dashboardPage').style.display = 'none';
+  document.getElementById('logoutBtn').style.display = 'none';
+  document.getElementById('loginNoDaftar').value = '';
+  document.getElementById('loginTglLahir').value = '';
+  document.getElementById('loginAlert').classList.add('hidden');
+  toast('Anda telah logout.', 'info');
+});
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  initWebsiteGate();
+  initLoginSchedule();
+
+  const session = getSession();
+  if (session && session.noDaftar) {
+    db.collection('pendaftaranMutasi').where('noDaftar', '==', session.noDaftar).get()
+      .then(snap => {
+        if (!snap.empty) {
+          if (snap.size > 1) {
+            console.error('[DATA INTEGRITY] Ditemukan lebih dari satu dokumen pendaftaranMutasi dengan noDaftar yang sama:', session.noDaftar, '— mohon periksa database.');
+          }
+          const matchByTgl = snap.docs.find(d => toDateInputValue(d.data().tglLahir) === session.tglLahir);
+          const chosenDoc = matchByTgl || snap.docs[0];
+          const data = chosenDoc.data();
+          const status = (data.status || '').toLowerCase();
+          if (status === 'lolos' || status === 'diterima') {
+            // Update session with latest data
+            session.docId = chosenDoc.id;
+            session.nama = data.namaLengkap || data.nama || session.nama;
+            session.asalSekolah = data.asalSekolah || data.sekolahAsal || session.asalSekolah;
+            session.npsn = data.npsn || session.npsn;
+            session.nisn = data.nisn || session.nisn;
+            session.telp = data.telpMurid || data.telp || session.telp;
+            session.email = data.email || session.email;
+            session.kelasSaatIni = data.kelasSaatIni || session.kelasSaatIni;
+            session.mutasiKe = data.mutasiKe || session.mutasiKe;
+            setSession(session);
+
+            showDashboard();
+            return;
+          }
+        }
+        clearSession();
+        document.getElementById('loginPage').style.display = 'flex';
+        document.getElementById('dashboardPage').style.display = 'none';
+        document.getElementById('logoutBtn').style.display = 'none';
+      })
+      .catch(() => {
+        clearSession();
+        document.getElementById('loginPage').style.display = 'flex';
+        document.getElementById('dashboardPage').style.display = 'none';
+        document.getElementById('logoutBtn').style.display = 'none';
+      });
+  } else {
+    document.getElementById('loginPage').style.display = 'flex';
+    document.getElementById('dashboardPage').style.display = 'none';
+    document.getElementById('logoutBtn').style.display = 'none';
+  }
+}
+
+init();
+
+console.log('✅ Daftar Ulang Murid Mutasi SMAN 68 Jakarta — Loaded');
+</script>
+</body>
+</html>
