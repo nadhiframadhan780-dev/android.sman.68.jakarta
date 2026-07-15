@@ -576,6 +576,24 @@ select.form-input { cursor: pointer; background-image: url("data:image/svg+xml,%
 [data-theme="dark"] .status-meta { background: rgba(0,0,0,0.2); }
 .status-meta strong { display: block; margin-bottom: 6px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.7; }
 
+/* ===== PORTAL ACCESS NOTICE ===== */
+.portal-access {
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  text-align: left;
+  border: 1.5px solid;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.portal-access strong { letter-spacing: 0.02em; }
+.portal-access.pa-belum { background: var(--warn-bg); border-color: var(--warn-border); color: var(--warn-text); }
+.portal-access.pa-tinjau { background: var(--info-bg); border-color: var(--info-border); color: var(--info-text); }
+.portal-access.pa-buka { background: var(--success-bg); border-color: var(--success-border); color: var(--success-text); }
+.portal-access.pa-invalid { background: var(--danger-bg); border-color: var(--danger-border); color: var(--danger-text); }
+
 /* ===== MODAL ===== */
 .modal-overlay {
   display: none;

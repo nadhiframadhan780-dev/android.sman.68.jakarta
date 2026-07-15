@@ -194,43 +194,12 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 });
 
 // ============================================================
-// DOCUMENT LIST
-// ============================================================
-const DOCS = [
-  { id: 'nilaiRapor', icon: 'fa-file-lines', title: 'Nilai Rapor', desc: 'Fotokopi rapor semester terakhir (dilegalisir)' },
-  { id: 'pasFoto', icon: 'fa-camera', title: 'Pas Foto 3×4', desc: 'Background merah, format JPG/PNG' },
-  { id: 'aktaLahir', icon: 'fa-certificate', title: 'Akta Kelahiran', desc: 'Scan/foto akta kelahiran' },
-  { id: 'kartuKeluarga', icon: 'fa-users', title: 'Kartu Keluarga', desc: 'Scan/foto kartu keluarga' },
-  { id: 'ktpOrKia', icon: 'fa-id-card', title: 'KTP / KIA / Kartu Pelajar', desc: 'KTP orang tua atau KIA/kartu pelajar siswa' },
-  { id: 'suratBaik', icon: 'fa-circle-check', title: 'Surat Keterangan Berkelakuan Baik', desc: 'Dari sekolah asal' },
-  { id: 'suratSehat', icon: 'fa-notes-medical', title: 'Surat Keterangan Sehat', desc: 'Dari dokter/puskesmas' },
-  { id: 'suratPindahOrtu', icon: 'fa-file-signature', title: 'Surat Permohonan Pindah', desc: 'Dari orang tua/wali murid' },
-  { id: 'suratPindahSekolah', icon: 'fa-file-export', title: 'Surat Keterangan Pindah', desc: 'Dari sekolah asal (stempel resmi)' },
-];
-
-const docContainer = document.getElementById('docListContainer');
-DOCS.forEach(doc => {
-  const div = document.createElement('div');
-  div.className = 'doc-item';
-  div.innerHTML = `
-    <div class="doc-icon2"><i class="fas ${doc.icon}"></i></div>
-    <div>
-      <div class="doc-name">${doc.title}</div>
-      <div class="doc-desc">${doc.desc}</div>
-    </div>
-    <div class="doc-input-wrap">
-      <input type="url" id="doc_${doc.id}" placeholder="https://drive.google.com/file/d/..." class="form-input" style="font-size:0.82rem;">
-    </div>`;
-  docContainer.appendChild(div);
-});
-
-// ============================================================
 // STEP MANAGEMENT
 // ============================================================
 let currentStep = 1;
 function setStep(n) {
   currentStep = n;
-  [1, 2, 3, 4].forEach(i => {
+  [1, 2, 3].forEach(i => {
     document.getElementById(`formStep${i}`).style.display = i === n ? 'block' : 'none';
     const el = document.getElementById(`step${i}`);
     el.classList.remove('active', 'done');
@@ -251,15 +220,12 @@ function collectData() {
     agama: v('f_agama'),
     kelasSaatIni: v('f_kelasSaatIni'),
     mutasiKe: v('f_mutasiKe'),
-    kurikulum: v('f_kurikulum'),
     sekolahAsal: v('f_sekolahAsal'),
     npsn: v('f_npsn'),
     alasan: v('f_alasan'),
     email: v('f_email').toLowerCase(),
     telpMurid: v('f_telpMurid'),
     telpOrtu: v('f_telpOrtu'),
-    linkSurat: v('f_linkSurat'),
-    docs: Object.fromEntries(DOCS.map(d => [d.id, v(`doc_${d.id}`) || '-'])),
   };
 }
 function v(id) { return (document.getElementById(id)?.value || '').trim(); }
@@ -275,8 +241,7 @@ function validateStep1() {
     [d.jk, 'Jenis kelamin'],
     [d.agama, 'Agama'],
     [d.kelasSaatIni, 'Kelas saat ini'],
-    [d.mutasiKe, 'Kelas tujuan mutasi'],
-    [d.kurikulum, 'Kurikulum/Jurusan'],
+    [d.mutasiKe, 'Pindah ke kelas'],
     [d.sekolahAsal, 'Sekolah asal'],
     [d.npsn, 'NPSN sekolah asal'],
     [d.alasan, 'Alasan pindah'],
@@ -292,31 +257,12 @@ function validateStep1() {
   return true;
 }
 
-function validateStep2() {
-  const d = collectData();
-  if (!d.linkSurat) { toast('error', 'Link surat pernyataan wajib diisi!'); return false; }
-  for (const doc of DOCS) {
-    if (!d.docs[doc.id] || d.docs[doc.id] === '-') {
-      toast('error', `Link dokumen "${doc.title}" wajib diisi!`);
-      return false;
-    }
-  }
-  return true;
-}
-
 // ============================================================
 // REVIEW RENDER
 // ============================================================
 function renderReview() {
   const d = collectData();
   const jkLabel = d.jk === 'L' ? 'Laki-laki' : d.jk === 'P' ? 'Perempuan' : '-';
-  const docRows = DOCS.map(doc => `
-    <div class="review-item">
-      <div class="review-item-label">${doc.title}</div>
-      <div class="review-item-value">
-        <a href="${d.docs[doc.id]}" target="_blank" class="review-doc-link"><i class="fab fa-google-drive"></i> Lihat Dokumen</a>
-      </div>
-    </div>`).join('');
 
   document.getElementById('reviewContent').innerHTML = `
     <div class="review-section">
@@ -327,27 +273,13 @@ function renderReview() {
         <div class="review-item"><div class="review-item-label">Jenis Kelamin</div><div class="review-item-value">${jkLabel}</div></div>
         <div class="review-item"><div class="review-item-label">Agama</div><div class="review-item-value">${d.agama}</div></div>
         <div class="review-item"><div class="review-item-label">Kelas Saat Ini</div><div class="review-item-value">${d.kelasSaatIni}</div></div>
-        <div class="review-item"><div class="review-item-label">Mutasi ke Kelas</div><div class="review-item-value">${d.mutasiKe}</div></div>
-        <div class="review-item"><div class="review-item-label">Kurikulum / Jurusan</div><div class="review-item-value">${d.kurikulum}</div></div>
+        <div class="review-item"><div class="review-item-label">Pindah ke Kelas (SMAN 68 Jakarta)</div><div class="review-item-value">${d.mutasiKe}</div></div>
         <div class="review-item"><div class="review-item-label">Sekolah Asal</div><div class="review-item-value">${d.sekolahAsal}</div></div>
         <div class="review-item"><div class="review-item-label">NPSN Sekolah Asal</div><div class="review-item-value">${d.npsn}</div></div>
         <div class="review-item full"><div class="review-item-label">Alasan Pindah</div><div class="review-item-value">${d.alasan}</div></div>
         <div class="review-item"><div class="review-item-label">Email</div><div class="review-item-value">${d.email}</div></div>
         <div class="review-item"><div class="review-item-label">Telepon Murid</div><div class="review-item-value">${d.telpMurid}</div></div>
         <div class="review-item full"><div class="review-item-label">Telepon Orang Tua/Wali</div><div class="review-item-value">${d.telpOrtu}</div></div>
-      </div>
-    </div>
-    <div class="divider"></div>
-    <div class="review-section">
-      <h3><i class="fas fa-folder-open"></i> Dokumen</h3>
-      <div class="review-grid">
-        ${docRows}
-        <div class="review-item full">
-          <div class="review-item-label">Surat Pernyataan (Ditandatangani)</div>
-          <div class="review-item-value">
-            <a href="${d.linkSurat}" target="_blank" class="review-doc-link"><i class="fab fa-google-drive"></i> Lihat Surat</a>
-          </div>
-        </div>
       </div>
     </div>`;
 }
@@ -356,15 +288,11 @@ function renderReview() {
 // STEP NAVIGATION
 // ============================================================
 document.getElementById('nextToStep2Btn').addEventListener('click', () => {
-  if (validateStep1()) setStep(2);
+  if (validateStep1()) { renderReview(); setStep(2); }
 });
 document.getElementById('backToStep1Btn').addEventListener('click', () => setStep(1));
-document.getElementById('nextToStep3Btn').addEventListener('click', () => {
-  if (validateStep2()) { renderReview(); setStep(3); }
-});
+document.getElementById('nextToStep3Btn').addEventListener('click', () => setStep(3));
 document.getElementById('backToStep2Btn').addEventListener('click', () => setStep(2));
-document.getElementById('nextToStep4Btn').addEventListener('click', () => setStep(4));
-document.getElementById('backToStep3Btn').addEventListener('click', () => setStep(3));
 
 // Agree rules → enable submit
 document.getElementById('agreeRules').addEventListener('change', function() {
@@ -422,7 +350,6 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
 
     // Reset form
     document.querySelectorAll('.form-input').forEach(el => el.value = '');
-    DOCS.forEach(doc => { const el = document.getElementById(`doc_${doc.id}`); if(el) el.value=''; });
     document.getElementById('agreeRules').checked = false;
     document.getElementById('submitBtn').disabled = true;
     setStep(1);
@@ -470,14 +397,31 @@ document.getElementById('cekStatusBtn').addEventListener('click', async () => {
       return;
     }
     const statusMap = {
-      pending: { cls:'s-pending', icon:'fa-clock', title:'Menunggu Verifikasi', msg:'Berkas masih dalam antrian. Tunggu 1×24 jam.' },
-      proses: { cls:'s-proses', icon:'fa-spinner', title:'Sedang Diproses', msg:'Berkas sedang diverifikasi oleh operator.' },
-      diterima: { cls:'s-diterima', icon:'fa-circle-check', title:'Selamat! Berkas Diterima', msg:'Berkas lolos verifikasi. Tunggu jadwal tes penempatan.' },
-      ditolak: { cls:'s-ditolak', icon:'fa-circle-xmark', title:'Berkas Tidak Lolos', msg:'Berkas tidak lolos verifikasi.' },
+      pending: { cls:'s-pending', icon:'fa-clock', title:'Menunggu Verifikasi', msg:'Data masih dalam antrian. Tunggu 1×24 jam.', portal:'belum' },
+      proses: { cls:'s-proses', icon:'fa-spinner', title:'Sedang Diproses', msg:'Data sedang ditinjau oleh operator.', portal:'tinjau' },
+      diterima: { cls:'s-diterima', icon:'fa-circle-check', title:'Selamat! Berkas Diterima', msg:'Data lolos verifikasi. Silakan lanjutkan ke Portal Registrasi untuk melengkapi berkas dokumen.', portal:'buka' },
+      ditolak: { cls:'s-ditolak', icon:'fa-circle-xmark', title:'Berkas Tidak Lolos', msg:'Data tidak lolos verifikasi.', portal:'invalid' },
     };
     const s = statusMap[data.status] || statusMap.pending;
     const catatanHtml = data.status === 'ditolak' && data.catatanOperator
-      ? `<div class="status-meta"><strong>Catatan Operator</strong>${data.catatanOperator}</div>` : '';
+      ? `<div class="status-meta"><strong>Catatan / Alasan Operator</strong>${data.catatanOperator}</div>` : '';
+
+    // Notifikasi Akses Portal Registrasi sesuai status
+    let portalHtml = '';
+    if (s.portal === 'belum') {
+      portalHtml = `<div class="portal-access pa-belum"><i class="fas fa-lock"></i> Akses Portal Registrasi : <strong>BELUM BISA</strong></div>`;
+    } else if (s.portal === 'tinjau') {
+      portalHtml = `<div class="portal-access pa-tinjau"><i class="fas fa-magnifying-glass"></i> Akses Portal Registrasi : <strong>DALAM TINJAUAN OPERATOR</strong></div>`;
+    } else if (s.portal === 'invalid') {
+      portalHtml = `<div class="portal-access pa-invalid"><i class="fas fa-ban"></i> Akses Portal Registrasi : <strong>TIDAK VALID</strong></div>`;
+    } else if (s.portal === 'buka') {
+      portalHtml = `
+        <div class="portal-access pa-buka"><i class="fas fa-unlock"></i> Akses Portal Registrasi : <strong>DIBUKA</strong></div>
+        <button class="btn btn-primary btn-full btn-lg" style="margin-top:12px;" id="btnGoPortalRegistrasi">
+          <i class="fas fa-arrow-up-right-from-square"></i> Akses Menuju Portal Registrasi
+        </button>`;
+    }
+
     resultDiv.innerHTML = `
       <div class="status-card ${s.cls}">
         <div class="status-icon"><i class="fas ${s.icon}"></i></div>
@@ -487,16 +431,37 @@ document.getElementById('cekStatusBtn').addEventListener('click', async () => {
           <strong>Info Pendaftar</strong>
           Nama: ${data.nama}<br>
           No. Pendaftaran: ${data.noDaftar}<br>
-          Mutasi ke Kelas: ${data.mutasiKe || '-'} | Kurikulum: ${data.kurikulum || '-'}
+          Pindah ke Kelas: ${data.mutasiKe || '-'}
         </div>
         ${catatanHtml}
+        ${portalHtml}
         ${data.status === 'ditolak' ? `<button class="btn btn-secondary" style="margin-top:14px;" onclick="document.querySelector('[data-tab=daftar]').click()"><i class="fas fa-rotate-right"></i> Daftar Ulang</button>` : ''}
       </div>`;
+
+    // Pasang handler tombol akses portal tanpa menampilkan link asli di HTML
+    const goPortalBtn = document.getElementById('btnGoPortalRegistrasi');
+    if (goPortalBtn) goPortalBtn.addEventListener('click', bukaPortalRegistrasi);
+
   } catch (err) {
     console.error(err);
     toast('error', 'Gagal mengambil data. Coba lagi.');
   }
 });
+
+// ============================================================
+// AKSES PORTAL REGISTRASI (link disamarkan, tidak tampil di HTML/source)
+// ============================================================
+// URL disimpan dalam bentuk ter-encode agar tidak langsung terlihat sebagai teks/href biasa.
+const _pr = ['aHR0cHM6Ly93d3cuc21hbjY4amFrYXJ0YS54eXo=', 'cmVnLW11cmlkLW11dGFzaS5zbWFuNjhqa3Q='];
+function bukaPortalRegistrasi() {
+  try {
+    const url = atob(_pr[0]) + '/' + atob(_pr[1]);
+    window.open(url, '_blank', 'noopener');
+  } catch (e) {
+    console.error(e);
+    toast('error', 'Gagal membuka Portal Registrasi.');
+  }
+}
 
 // ============================================================
 // BATALKAN PENDAFTARAN
@@ -544,8 +509,7 @@ document.getElementById('cariDataBatalBtn').addEventListener('click', async () =
         <div class="review-item"><div class="review-item-label">Jenis Kelamin</div><div class="review-item-value">${jkLabel}</div></div>
         <div class="review-item"><div class="review-item-label">Agama</div><div class="review-item-value">${batalData.agama}</div></div>
         <div class="review-item"><div class="review-item-label">Sekolah Asal</div><div class="review-item-value">${batalData.sekolahAsal}</div></div>
-        <div class="review-item"><div class="review-item-label">Mutasi ke Kelas</div><div class="review-item-value">${batalData.mutasiKe || '-'}</div></div>
-        <div class="review-item"><div class="review-item-label">Kurikulum</div><div class="review-item-value">${batalData.kurikulum || '-'}</div></div>
+        <div class="review-item"><div class="review-item-label">Pindah ke Kelas</div><div class="review-item-value">${batalData.mutasiKe || '-'}</div></div>
         <div class="review-item"><div class="review-item-label">Status</div><div class="review-item-value"><span class="badge badge-blue">${batalData.status}</span></div></div>
       </div>`;
 
@@ -672,13 +636,6 @@ document.getElementById('konfBatalYesBtn').addEventListener('click', async () =>
   } finally {
     btn.disabled = false; btn.innerHTML = '<i class="fas fa-xmark"></i> Ya, Batalkan';
   }
-});
-
-// ============================================================
-// DOWNLOAD SURAT
-// ============================================================
-document.getElementById('downloadSuratBtn').addEventListener('click', e => {
-  toast('info', 'Cetak, isi, tanda tangani, scan/foto, upload ke Google Drive, lalu tempel linknya di form!');
 });
 
 console.log('✅ Pendaftaran Murid Mutasi SMAN 68 Jakarta — Loaded');

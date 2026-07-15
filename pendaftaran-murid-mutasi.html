@@ -44,7 +44,7 @@
   <div class="info-banner">
     <i class="fas fa-circle-info"></i>
     <div>
-      <strong>Pendaftaran dibuka:</strong> 24 Agustus 2026, 08.00 WIB &nbsp;·&nbsp;
+      <strong>Pendaftaran dibuka:</strong> 24 September 2026, 08.00 WIB &nbsp;·&nbsp;
       <strong>Kuota:</strong> Maks. 10% dari total siswa per kelas &nbsp;·&nbsp;
       Setiap email dan nomor telepon hanya dapat digunakan untuk <strong>1 (satu) pendaftaran</strong>.
     </div>
@@ -76,15 +76,11 @@
           <div class="step-line"></div>
         </div>
         <div class="step-item" id="step2">
-          <div class="step-circle">2<span class="step-label">Dokumen</span></div>
+          <div class="step-circle">2<span class="step-label">Review</span></div>
           <div class="step-line"></div>
         </div>
         <div class="step-item" id="step3">
-          <div class="step-circle">3<span class="step-label">Review</span></div>
-          <div class="step-line"></div>
-        </div>
-        <div class="step-item" id="step4">
-          <div class="step-circle">4<span class="step-label">Peraturan</span></div>
+          <div class="step-circle">3<span class="step-label">Peraturan</span></div>
         </div>
       </div>
     </div>
@@ -142,31 +138,18 @@
           </div>
         </div>
 
-        <div class="form-row">
+        <div class="form-row-3">
           <div class="form-group">
-            <label class="form-label"><i class="fas fa-arrow-right-arrow-left"></i> Pindah ke Kelas <span class="req">*</span></label>
+            <label class="form-label"><i class="fas fa-arrow-right-arrow-left"></i> Pindah ke Kelas (Kelas saat di SMAN 68 Jakarta) <span class="req">*</span></label>
             <select id="f_mutasiKe" class="form-input">
               <option value="">Pilih Kelas Tujuan</option>
-              <option value="X">Kelas X (Sepuluh)</option>
-              <option value="XI">Kelas XI (Sebelas)</option>
-              <option value="XII">Kelas XII (Dua Belas)</option>
+              <option value="X">X</option>
+              <option value="XI IPA">XI IPA</option>
+              <option value="XI IPS">XI IPS</option>
+              <option value="XII IPA">XII IPA</option>
+              <option value="XII IPS">XII IPS</option>
             </select>
           </div>
-          <div class="form-group">
-            <label class="form-label"><i class="fas fa-book-open"></i> Kurikulum / Jurusan <span class="req">*</span></label>
-            <select id="f_kurikulum" class="form-input">
-              <option value="">Pilih Kurikulum</option>
-              <option value="Merdeka (Umum)">Merdeka (Umum)</option>
-              <option value="IPA">IPA</option>
-              <option value="IPS">IPS</option>
-              <option value="Keagamaan Islam">Keagamaan Islam</option>
-              <option value="Bahasa">Bahasa</option>
-              <option value="Bahasa dan Budaya">Bahasa dan Budaya</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row">
           <div class="form-group">
             <label class="form-label"><i class="fas fa-school"></i> Sekolah Asal <span class="req">*</span></label>
             <input type="text" id="f_sekolahAsal" class="form-input" placeholder="Nama lengkap sekolah asal">
@@ -202,51 +185,13 @@
 
       <div class="btn-group">
         <button class="btn btn-primary btn-lg" id="nextToStep2Btn">
-          Lanjut: Dokumen <i class="fas fa-arrow-right"></i>
+          Lanjut: Review Data <i class="fas fa-arrow-right"></i>
         </button>
       </div>
     </div>
 
-    <!-- STEP 2: Dokumen -->
+    <!-- STEP 2: Review Data -->
     <div id="formStep2" style="display:none;">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon"><i class="fas fa-folder-open"></i></div>
-          <div><h2>Dokumen Persyaratan</h2><p>Upload ke Google Drive lalu tempel link-nya</p></div>
-        </div>
-        <div class="alert alert-info">
-          <i class="fas fa-circle-info"></i>
-          <span>Pastikan sharing Google Drive diatur ke <strong>"Siapa saja yang memiliki link"</strong> dapat melihat.</span>
-        </div>
-        <div id="docListContainer"></div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon"><i class="fas fa-file-signature"></i></div>
-          <div><h2>Surat Pernyataan Siap Pindah</h2><p>Download, cetak, isi, tandatangani, lalu upload balik</p></div>
-        </div>
-        <div class="alert alert-warn">
-          <i class="fas fa-triangle-exclamation"></i>
-          <span>Download surat di bawah, cetak, isi dan tanda tangani oleh orang tua/wali, scan/foto, upload ke Google Drive, lalu tempel linknya.</span>
-        </div>
-        <a href="Surat_Pernyataan_Calon_Murid_Mutasi_SMAN68Jakarta.pdf" class="btn btn-download" target="_blank" id="downloadSuratBtn">
-          <i class="fas fa-file-arrow-down"></i> Download Surat Pernyataan
-        </a>
-        <div class="form-group" style="margin-top:16px;">
-          <label class="form-label"><i class="fab fa-google-drive"></i> Link Surat Pernyataan (Sudah Ditandatangani) <span class="req">*</span></label>
-          <input type="url" id="f_linkSurat" class="form-input" placeholder="https://drive.google.com/file/d/...">
-        </div>
-      </div>
-
-      <div class="btn-group">
-        <button class="btn btn-secondary" id="backToStep1Btn"><i class="fas fa-arrow-left"></i> Kembali</button>
-        <button class="btn btn-primary btn-lg" id="nextToStep3Btn">Lanjut: Review Data <i class="fas fa-arrow-right"></i></button>
-      </div>
-    </div>
-
-    <!-- STEP 3: Review Data -->
-    <div id="formStep3" style="display:none;">
       <div class="card">
         <div class="card-header">
           <div class="card-icon"><i class="fas fa-eye"></i></div>
@@ -258,14 +203,14 @@
         </div>
         <div id="reviewContent"></div>
         <div class="btn-group">
-          <button class="btn btn-secondary" id="backToStep2Btn"><i class="fas fa-edit"></i> Edit Data</button>
-          <button class="btn btn-primary btn-lg" id="nextToStep4Btn">Data Sudah Benar <i class="fas fa-arrow-right"></i></button>
+          <button class="btn btn-secondary" id="backToStep1Btn"><i class="fas fa-edit"></i> Edit Data</button>
+          <button class="btn btn-primary btn-lg" id="nextToStep3Btn">Data Sudah Benar <i class="fas fa-arrow-right"></i></button>
         </div>
       </div>
     </div>
 
-    <!-- STEP 4: Peraturan & Submit -->
-    <div id="formStep4" style="display:none;">
+    <!-- STEP 3: Peraturan & Submit -->
+    <div id="formStep3" style="display:none;">
       <div class="card">
         <div class="card-header">
           <div class="card-icon"><i class="fas fa-gavel"></i></div>
@@ -295,7 +240,7 @@
           <label for="agreeRules">Saya telah membaca, memahami, dan menyetujui seluruh peraturan di atas serta bersedia mematuhinya.</label>
         </div>
         <div class="btn-group">
-          <button class="btn btn-secondary" id="backToStep3Btn"><i class="fas fa-arrow-left"></i> Kembali</button>
+          <button class="btn btn-secondary" id="backToStep2Btn"><i class="fas fa-arrow-left"></i> Kembali</button>
           <button class="btn btn-primary btn-lg" id="submitBtn" disabled>
             <i class="fas fa-paper-plane"></i> Proses Pendaftaran
           </button>
@@ -403,7 +348,7 @@
     <div class="modal-note">
       <i class="fas fa-circle-info"></i>
       Simpan nomor ini untuk mengecek status pendaftaran.<br>
-      Berkas akan diverifikasi oleh operator dalam <strong>1×24 jam</strong>.
+      Data akan diverifikasi oleh operator dalam <strong>1×24 jam</strong>. Jika data disetujui, Anda akan mendapatkan akses ke <strong>Portal Registrasi</strong> untuk melengkapi berkas dokumen.
     </div>
     <button class="btn btn-primary btn-full" id="closeModalSukses"><i class="fas fa-check"></i> Saya Mengerti</button>
   </div>

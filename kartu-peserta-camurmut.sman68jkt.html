@@ -1,0 +1,3651 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Kartu Peserta – Calon Murid Mutasi SMAN 68 Jakarta</title>
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- jsPDF & html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* ============================================================
+           ROOT & VARIABLES
+           ============================================================ */
+        :root {
+            --bg-base: #eef6f3;
+            --bg-surface: #ffffff;
+            --bg-surface2: #f4faf8;
+            --bg-card: #ffffff;
+            --glass: rgba(255, 255, 255, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --bg-sidebar: #0a1628;
+            --bg-sidebar-hover: rgba(255, 255, 255, 0.07);
+            --bg-sidebar-active: rgba(16, 185, 129, 0.18);
+            --text-sidebar: rgba(255, 255, 255, 0.85);
+            --text-sidebar-muted: rgba(255, 255, 255, 0.45);
+            --border: #dce8e4;
+            --border-light: #eef5f2;
+            --text-primary: #0d1f1a;
+            --text-secondary: #4b6b60;
+            --text-muted: #8ba69c;
+            --accent: #10b981;
+            --accent-dark: #059669;
+            --accent-glow: rgba(16, 185, 129, 0.14);
+            --accent-soft: rgba(16, 185, 129, 0.08);
+            --blue: #3b82f6;
+            --blue-soft: rgba(59, 130, 246, 0.1);
+            --amber: #f59e0b;
+            --amber-soft: rgba(245, 158, 11, 0.12);
+            --red: #ef4444;
+            --red-soft: rgba(239, 68, 68, 0.1);
+            --green: #10b981;
+            --green-soft: rgba(16, 185, 129, 0.12);
+            --purple: #8b5cf6;
+            --purple-soft: rgba(139, 92, 246, 0.1);
+            --grey: #94a3b8;
+            --grey-soft: rgba(148, 163, 184, 0.14);
+            --shadow-sm: 0 1px 3px rgba(16, 50, 40, 0.06), 0 1px 2px rgba(16, 50, 40, 0.04);
+            --shadow: 0 6px 20px rgba(16, 50, 40, 0.09);
+            --shadow-lg: 0 24px 56px rgba(10, 30, 24, 0.16);
+            --shadow-xl: 0 32px 72px rgba(10, 30, 24, 0.22);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-lg: 22px;
+            --radius-xl: 28px;
+            --sidebar-w: 264px;
+            --header-h: 68px;
+            --font: 'Sora', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --t: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-base: #060f0d;
+            --bg-surface: #0e1a17;
+            --bg-surface2: #132420;
+            --bg-card: #0e1a17;
+            --glass: rgba(20, 35, 31, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --bg-sidebar: #050c11;
+            --bg-sidebar-hover: rgba(255, 255, 255, 0.05);
+            --bg-sidebar-active: rgba(16, 185, 129, 0.16);
+            --border: #1c3129;
+            --border-light: #152622;
+            --text-primary: #eaf6f1;
+            --text-secondary: #8fb3a7;
+            --text-muted: #4d6d63;
+            --blue-soft: rgba(59, 130, 246, 0.14);
+            --amber-soft: rgba(245, 158, 11, 0.14);
+            --red-soft: rgba(239, 68, 68, 0.14);
+            --purple-soft: rgba(139, 92, 246, 0.14);
+            --accent-glow: rgba(16, 185, 129, 0.14);
+            --grey-soft: rgba(148, 163, 184, 0.1);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 24px 56px rgba(0, 0, 0, 0.55);
+            --shadow-xl: 0 32px 72px rgba(0, 0, 0, 0.6);
+        }
+
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: var(--font);
+            background: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 14px;
+            line-height: 1.6;
+            transition: background var(--t), color var(--t);
+            -webkit-font-smoothing: antialiased;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        ::selection {
+            background: var(--accent);
+            color: #fff;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+        .hidden {
+            display: none !important;
+        }
+        .mono {
+            font-family: var(--font-mono);
+        }
+
+        /* ============================================================
+           TOAST
+           ============================================================ */
+        .toast-wrap {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+        .toast-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            animation: toastIn 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            backdrop-filter: blur(10px);
+        }
+        .toast-item.t-error {
+            border-left-color: var(--red);
+        }
+        .toast-item.t-warn {
+            border-left-color: var(--amber);
+        }
+        .toast-item.t-info {
+            border-left-color: var(--blue);
+        }
+        .toast-item.t-success {
+            border-left-color: var(--accent);
+        }
+        .toast-item i {
+            font-size: 18px;
+            margin-top: 1px;
+        }
+        .toast-item.t-success i {
+            color: var(--accent);
+        }
+        .toast-item.t-error i {
+            color: var(--red);
+        }
+        .toast-item.t-warn i {
+            color: var(--amber);
+        }
+        .toast-item.t-info i {
+            color: var(--blue);
+        }
+        .toast-msg {
+            line-height: 1.5;
+            color: var(--text-primary);
+            flex: 1;
+        }
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* ============================================================
+           GATE / LANDING (Portal Status)
+           ============================================================ */
+        #appGate {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            background: var(--bg-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: opacity 0.4s ease;
+        }
+        #appGate.gate-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .gate-loading {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        .gate-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .gate-card {
+            background: var(--glass);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 44px 40px;
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            box-shadow: var(--shadow-xl);
+        }
+        .gate-card .gate-logo {
+            width: 72px;
+            height: 72px;
+            object-fit: contain;
+            margin: 0 auto 18px;
+            display: block;
+            background: #fff;
+            border-radius: 16px;
+            padding: 10px;
+            box-shadow: var(--shadow-sm);
+        }
+        .gate-icon-ring {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 32px;
+        }
+        .gate-card.closed .gate-icon-ring {
+            background: var(--red-soft);
+            color: var(--red);
+        }
+        .gate-card.countdown .gate-icon-ring {
+            background: var(--amber-soft);
+            color: var(--amber);
+        }
+        .gate-card.open .gate-icon-ring {
+            background: var(--accent-glow);
+            color: var(--accent);
+        }
+        .gate-card h2 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .gate-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .gate-card p strong {
+            color: var(--text-primary);
+        }
+
+        .cd-tiles {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 24px 0 18px;
+        }
+        .cd-tile {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 8px;
+            min-width: 68px;
+            box-shadow: var(--shadow-sm);
+        }
+        .cd-num {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+            transition: opacity 0.15s;
+            line-height: 1.2;
+        }
+        .cd-num.flip {
+            animation: cdFlip 0.35s ease;
+        }
+        @keyframes cdFlip {
+            from {
+                opacity: 0.2;
+                transform: translateY(-6px);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+        .cd-label {
+            display: block;
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 4px;
+        }
+        .cd-sep {
+            display: flex;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+        .gate-note {
+            margin-top: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* ============================================================
+           LOGIN SCENE
+           ============================================================ */
+        #loginScene {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.10), transparent 45%),
+                radial-gradient(circle at 85% 80%, rgba(59, 130, 246, 0.10), transparent 45%),
+                var(--bg-base);
+        }
+        #loginScene.hidden {
+            display: none;
+        }
+        .login-grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 46px 46px;
+            opacity: 0.35;
+            mask-image: radial-gradient(circle at 50% 40%, #000 30%, transparent 75%);
+        }
+        .login-card {
+            position: relative;
+            z-index: 1;
+            background: var(--glass);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 40px 40px 36px;
+            max-width: 460px;
+            width: 100%;
+            box-shadow: var(--shadow-xl);
+            animation: cardIn 0.5s cubic-bezier(0.2, 0.85, 0.3, 1.1);
+        }
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+        .login-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .login-logo-wrap {
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
+            border-radius: 14px;
+            background: #fff;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        .login-logo-wrap img {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+        }
+        .login-school {
+            font-size: 17px;
+            font-weight: 800;
+            line-height: 1.25;
+        }
+        .login-school span {
+            display: block;
+            font-size: 11.5px;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+        .login-divider {
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 22px;
+        }
+        .login-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .login-desc {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-label {
+            display: block;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.045em;
+        }
+        .form-label i {
+            margin-right: 6px;
+            color: var(--accent);
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color var(--t), box-shadow var(--t);
+        }
+        .form-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .captcha-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-surface2);
+            border: 1.5px dashed var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            margin-bottom: 8px;
+        }
+        .captcha-eq {
+            font-family: var(--font-mono);
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            flex: 1;
+            user-select: none;
+        }
+        .captcha-refresh {
+            background: none;
+            border: 1.5px solid var(--border);
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--t);
+        }
+        .captcha-refresh:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: var(--font);
+            font-weight: 700;
+            font-size: 13.5px;
+            cursor: pointer;
+            transition: all var(--t);
+            white-space: nowrap;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.28);
+        }
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(16, 185, 129, 0.36);
+        }
+        .btn-primary:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        .btn-secondary {
+            background: var(--bg-surface2);
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+        }
+        .btn-secondary:hover {
+            border-color: var(--text-muted);
+            color: var(--text-primary);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, var(--red), #dc2626);
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.25);
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: #fff;
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--accent);
+            border: 1.5px solid var(--accent);
+        }
+        .btn-outline:hover {
+            background: var(--accent-glow);
+        }
+        .btn-locked {
+            background: var(--grey-soft);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+        .btn-full {
+            width: 100%;
+        }
+        .btn-lg {
+            padding: 14px 22px;
+            font-size: 14.5px;
+        }
+        .btn-sm {
+            padding: 8px 14px;
+            font-size: 12px;
+            border-radius: 8px;
+        }
+        .btn-ghost {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 10px;
+        }
+        .btn-ghost:hover {
+            color: var(--text-primary);
+        }
+
+        .login-footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .login-footer i {
+            color: var(--accent);
+            margin-right: 5px;
+        }
+
+        /* ============================================================
+           DASHBOARD LAYOUT
+           ============================================================ */
+        #dashboardScene {
+            display: none;
+            min-height: 100vh;
+        }
+        #dashboardScene.active {
+            display: flex;
+        }
+
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--bg-sidebar);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 400;
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        .sidebar::-webkit-scrollbar {
+            display: none;
+        }
+        .sidebar-brand {
+            padding: 22px 20px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        .sidebar-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .sidebar-logo img {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+        }
+        .sidebar-school {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.3;
+        }
+        .sidebar-sub {
+            display: block;
+            font-size: 10.5px;
+            color: var(--text-sidebar-muted);
+            font-weight: 500;
+            margin-top: 1px;
+        }
+        .sidebar-nav {
+            flex: 1;
+            padding: 14px 12px;
+        }
+        .nav-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-sidebar-muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 12px 10px 8px;
+        }
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 13px;
+            border-radius: 11px;
+            color: var(--text-sidebar);
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--t);
+            margin-bottom: 3px;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+        .nav-item:hover {
+            background: var(--bg-sidebar-hover);
+            color: #fff;
+        }
+        .nav-item.active {
+            background: var(--bg-sidebar-active);
+            color: var(--accent);
+            font-weight: 700;
+        }
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 0 4px 4px 0;
+        }
+        .nav-item i {
+            width: 18px;
+            text-align: center;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+        .nav-item .nav-txt {
+            flex: 1;
+        }
+        .sidebar-bottom {
+            padding: 14px 12px 22px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        .btn-logout {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 13px;
+            border-radius: 11px;
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border: none;
+            font-family: var(--font);
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--t);
+        }
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.22);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 399;
+        }
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        .main-area {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            min-width: 0;
+        }
+        .top-header {
+            height: var(--header-h);
+            background: var(--glass);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 26px;
+            position: sticky;
+            top: 0;
+            z-index: 150;
+            gap: 14px;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+        .btn-hamburger {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 19px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            display: none;
+        }
+        .header-id {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-width: 0;
+        }
+        .header-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        .header-logo img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+        .header-name {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.25;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 220px;
+        }
+        .header-no {
+            font-size: 11px;
+            color: var(--accent);
+            font-weight: 600;
+            font-family: var(--font-mono);
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-clock {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--accent-glow);
+            padding: 7px 12px;
+            border-radius: 9px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+        .header-date {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .icon-btn {
+            background: none;
+            border: 1.5px solid var(--border);
+            color: var(--text-secondary);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14.5px;
+            transition: all var(--t);
+            position: relative;
+            flex-shrink: 0;
+        }
+        .icon-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .main-content {
+            flex: 1;
+            padding: 26px;
+            overflow-x: hidden;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .content-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .sec-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .sec-head h2 {
+            font-size: 21px;
+            font-weight: 800;
+        }
+        .sec-head p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+        .sec-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* ============================================================
+           CARDS
+           ============================================================ */
+        .card-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .card-box-head {
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .card-box-head .cbh-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--accent-glow);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .card-box-head h3 {
+            font-size: 15px;
+            font-weight: 700;
+        }
+        .card-box-head p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+        .card-box-body {
+            padding: 22px;
+        }
+
+        /* ============================================================
+           BANNERS
+           ============================================================ */
+        .banner {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+        }
+        .banner i {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .banner-info {
+            background: var(--accent-glow);
+            color: var(--accent-dark);
+            border-color: rgba(16, 185, 129, 0.25);
+        }
+        [data-theme="dark"] .banner-info {
+            color: #34d399;
+        }
+        .banner-warn {
+            background: var(--amber-soft);
+            color: #92610a;
+            border-color: rgba(245, 158, 11, 0.25);
+        }
+        [data-theme="dark"] .banner-warn {
+            color: #fbbf24;
+        }
+        .banner-success {
+            background: var(--accent-glow);
+            color: #04794f;
+            border-color: rgba(16, 185, 129, 0.25);
+        }
+        [data-theme="dark"] .banner-success {
+            color: #34d399;
+        }
+        .banner-danger {
+            background: var(--red-soft);
+            color: #b91c1c;
+            border-color: rgba(239, 68, 68, 0.25);
+        }
+        [data-theme="dark"] .banner-danger {
+            color: #fca5a5;
+        }
+        .banner strong {
+            font-weight: 700;
+        }
+
+        /* ============================================================
+           DATA DIRI GRID
+           ============================================================ */
+        .dd-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+        }
+        .dd-item {
+            background: var(--bg-surface2);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 13px 15px;
+        }
+        .dd-item.full {
+            grid-column: 1 / -1;
+        }
+        .dd-label {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .dd-value {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            word-break: break-word;
+        }
+        .dd-value.mono {
+            font-family: var(--font-mono);
+            font-size: 13px;
+        }
+        .dd-section-title {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 22px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dd-section-title:first-child {
+            margin-top: 0;
+        }
+        .dd-section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ============================================================
+           FOTO SECTION
+           ============================================================ */
+        .foto-wrap {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding: 18px;
+            background: var(--bg-surface2);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+        }
+        .foto-preview {
+            width: 130px;
+            height: 170px;
+            border-radius: 10px;
+            border: 2px dashed var(--border);
+            background: var(--bg-surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .foto-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .foto-preview i {
+            font-size: 32px;
+            color: var(--text-muted);
+        }
+        .foto-preview .foto-badge {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .foto-rules {
+            flex: 1;
+            min-width: 220px;
+        }
+        .foto-rules-title {
+            font-size: 12.5px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .foto-rules ul {
+            padding-left: 18px;
+            margin-bottom: 12px;
+        }
+        .foto-rules li {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .foto-rules .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding: 4px 0;
+        }
+        .foto-rules .checklist-item i {
+            width: 18px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .foto-rules .checklist-item.valid i {
+            color: var(--accent);
+        }
+        .foto-rules .checklist-item.invalid i {
+            color: var(--red);
+        }
+        .foto-upload-btn {
+            margin-top: 8px;
+        }
+
+        /* ============================================================
+           BADGES (status pills used across dashboard & kartu)
+           ============================================================ */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+        .badge-green {
+            background: var(--accent-glow);
+            color: var(--accent-dark);
+        }
+        .badge-red {
+            background: var(--red-soft);
+            color: var(--red);
+        }
+        .badge-amber {
+            background: var(--amber-soft);
+            color: var(--amber);
+        }
+        .badge-blue {
+            background: var(--blue-soft);
+            color: var(--blue);
+        }
+        .badge-grey {
+            background: var(--border-light);
+            color: var(--text-secondary);
+        }
+
+        /* ============================================================
+           KARTU PESERTA PREVIEW
+           ============================================================ */
+        .kartu-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .kartu-preview-wrap {
+            background: var(--bg-surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: center;
+            overflow: auto;
+            position: relative;
+            min-height: 500px;
+        }
+        .kartu-preview-wrap .zoom-controls {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            display: flex;
+            gap: 6px;
+            background: var(--bg-surface);
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .kartu-preview-wrap .zoom-controls button {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all var(--t);
+            cursor: pointer;
+        }
+        .kartu-preview-wrap .zoom-controls button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .kartu-preview-wrap .zoom-controls button.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        /* KARTU TEMPLATE */
+        .kartu-template {
+            width: 794px;
+            min-height: 1123px;
+            background: #ffffff;
+            border-radius: 4px;
+            box-shadow: var(--shadow-lg);
+            padding: 48px 44px;
+            position: relative;
+            font-family: 'Inter', 'Sora', sans-serif;
+            color: #1a1a2e;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+        .kartu-template .kartu-border {
+            position: absolute;
+            inset: 12px;
+            border: 2px solid #1a5c3a;
+            border-radius: 8px;
+            pointer-events: none;
+        }
+        .kartu-template .kartu-bg-watermark {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .kartu-template .kartu-bg-watermark img {
+            width: 460px;
+            height: 460px;
+            object-fit: contain;
+        }
+        .kartu-template .kartu-content {
+            position: relative;
+            z-index: 1;
+        }
+        .kartu-template .kartu-contact {
+            display: flex;
+            flex-wrap: wrap;
+            row-gap: 4px;
+            column-gap: 18px;
+            font-size: 9.5px;
+            color: #4a6b5a;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px dashed #dce8e4;
+        }
+        .kartu-template .kartu-contact span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .kartu-template .kartu-contact i {
+            color: #1a5c3a;
+            font-size: 10px;
+            width: 12px;
+            text-align: center;
+        }
+        .kartu-template .kartu-pernyataan-box {
+            margin-top: 20px;
+            background: #eefaf3;
+            border: 1px solid #bfe8d1;
+            border-left: 4px solid #1a5c3a;
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+        .kartu-template .kartu-pernyataan-box .pernyataan-title {
+            font-size: 10px;
+            font-weight: 800;
+            color: #0d2b1a;
+            letter-spacing: 0.08em;
+            margin-bottom: 5px;
+        }
+        .kartu-template .kartu-pernyataan-box .pernyataan-text {
+            font-size: 9.5px;
+            color: #3d5c4a;
+            line-height: 1.65;
+        }
+        .kartu-template .ttd-cap-img {
+            display: block;
+            width: 108px;
+            height: auto;
+            margin: 12px auto 14px;
+            mix-blend-mode: multiply;
+        }
+        .kartu-template .ttd-nip {
+            font-size: 8.5px;
+            color: #4a6b5a;
+            font-family: var(--font-mono);
+            margin-top: 1px;
+        }
+        .kartu-template .kartu-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 3px solid #1a5c3a;
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+        }
+        .kartu-template .kartu-header .logo-sman {
+            width: 72px;
+            height: 72px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #e8f0ea;
+        }
+        .kartu-template .kartu-header .logo-sman img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .kartu-template .kartu-header .header-text {
+            flex: 1;
+        }
+        .kartu-template .kartu-header .header-text h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0d2b1a;
+            letter-spacing: 0.04em;
+            line-height: 1.2;
+        }
+        .kartu-template .kartu-header .header-text h1 span {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: #4a6b5a;
+            letter-spacing: 0.06em;
+        }
+        .kartu-template .kartu-header .header-text .subtitle {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a5c3a;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+        .kartu-template .kartu-header .header-text .ta {
+            font-size: 11px;
+            color: #4a6b5a;
+            font-weight: 600;
+            margin-top: 1px;
+        }
+        .kartu-template .kartu-body {
+            display: flex;
+            gap: 30px;
+        }
+        .kartu-template .kartu-body .kartu-left {
+            flex: 2;
+        }
+        .kartu-template .kartu-body .kartu-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .kartu-template .kartu-body .kartu-right .foto-box {
+            width: 160px;
+            height: 200px;
+            border: 2px solid #1a5c3a;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #f5f9f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .kartu-template .kartu-body .kartu-right .foto-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .kartu-template .kartu-body .kartu-right .foto-box i {
+            font-size: 48px;
+            color: #b0c8bc;
+        }
+        .kartu-template .kartu-body .kartu-right .qr-box {
+            width: 120px;
+            height: 120px;
+            border: 1.5px solid #dce8e4;
+            border-radius: 6px;
+            padding: 6px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .kartu-template .kartu-body .kartu-right .qr-box #qrCodeContainer {
+            width: 100%;
+            height: 100%;
+        }
+        .kartu-template .kartu-body .kartu-right .qr-box #qrCodeContainer img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .kartu-template .kartu-body .kartu-right .label-qr {
+            font-size: 9px;
+            font-weight: 600;
+            color: #4a6b5a;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            text-align: center;
+        }
+        .kartu-template .info-row {
+            display: flex;
+            padding: 6px 0;
+            border-bottom: 1px solid #f0f5f2;
+        }
+        .kartu-template .info-row:last-child {
+            border-bottom: none;
+        }
+        .kartu-template .info-row .label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #4a6b5a;
+            width: 140px;
+            flex-shrink: 0;
+            letter-spacing: 0.03em;
+        }
+        .kartu-template .info-row .value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0d2b1a;
+            flex: 1;
+            word-break: break-word;
+        }
+        .kartu-template .info-row .value.mono {
+            font-family: var(--font-mono);
+            font-size: 12px;
+        }
+
+        .kartu-template .kartu-footer {
+            margin-top: 24px;
+            border-top: 2px solid #1a5c3a;
+            padding-top: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 100px;
+        }
+        .kartu-template .kartu-footer .footer-left {
+            flex: 0 0 auto;
+            text-align: center;
+        }
+        .kartu-template .kartu-footer .footer-left .pernyataan {
+            font-size: 10px;
+            color: #4a6b5a;
+            line-height: 1.6;
+            max-width: 480px;
+        }
+        .kartu-template .kartu-footer .footer-right {
+            text-align: center;
+            flex: 0 0 auto;
+            min-width: 160px;
+            position: relative;
+        }
+        .kartu-template .kartu-footer .ttd-label {
+            font-size: 9.5px;
+            color: #4a6b5a;
+            font-weight: 500;
+        }
+        .kartu-template .kartu-footer .footer-right .ttd-line {
+            width: 140px;
+            height: 1.5px;
+            background: #1a5c3a;
+            margin: 6px auto 4px;
+        }
+        .kartu-template .kartu-footer .ttd-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: #0d2b1a;
+        }
+        .kartu-template .kartu-footer .footer-right .ttd-title {
+            font-size: 9px;
+            color: #4a6b5a;
+            font-weight: 500;
+        }
+
+        .kartu-template .kartu-watermark {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            font-size: 8px;
+            color: #b0c8bc;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+        }
+
+        /* Kartu Responsive */
+        .kartu-template.scale-100 {
+            transform: scale(1);
+        }
+        .kartu-template.scale-75 {
+            transform: scale(0.75);
+        }
+        .kartu-template.scale-50 {
+            transform: scale(0.5);
+        }
+        .kartu-template.scale-125 {
+            transform: scale(1.25);
+        }
+        .kartu-template.scale-150 {
+            transform: scale(1.5);
+        }
+
+        .kartu-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 16px;
+        }
+        .kartu-actions .btn {
+            min-width: 120px;
+        }
+
+        /* ============================================================
+           SKELETON LOADING
+           ============================================================ */
+        .skeleton {
+            background: linear-gradient(90deg, var(--border-light) 25%, var(--border) 37%, var(--border-light) 63%);
+            background-size: 400% 100%;
+            animation: skeletonWave 1.4s ease infinite;
+            border-radius: 8px;
+        }
+        @keyframes skeletonWave {
+            0% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0 50%;
+            }
+        }
+        .skel-line {
+            height: 14px;
+            margin-bottom: 8px;
+        }
+        .spinner-inline {
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255, 255, 255, 0.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: inline-block;
+        }
+
+        /* ============================================================
+           OFFLINE BAR
+           ============================================================ */
+        .offline-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--red);
+            color: #fff;
+            text-align: center;
+            padding: 9px;
+            font-size: 12.5px;
+            font-weight: 600;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        .offline-bar.show {
+            transform: translateY(0);
+        }
+
+        /* ============================================================
+           MODAL
+           ============================================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(6, 20, 16, 0.55);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            padding: 20px;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 34px 32px;
+            max-width: 440px;
+            width: 100%;
+            text-align: center;
+            box-shadow: var(--shadow-xl);
+            transform: scale(0.92) translateY(10px);
+            transition: transform 0.25s cubic-bezier(0.2, 0.85, 0.3, 1.2);
+        }
+        .modal-overlay.open .modal-box {
+            transform: none;
+        }
+        .modal-box.wide {
+            max-width: 640px;
+            text-align: left;
+        }
+        .modal-icon {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 18px;
+        }
+        .modal-icon.success {
+            background: var(--accent-glow);
+            color: var(--accent);
+        }
+        .modal-icon.warn {
+            background: var(--amber-soft);
+            color: var(--amber);
+        }
+        .modal-icon.error {
+            background: var(--red-soft);
+            color: var(--red);
+        }
+        .modal-icon.info {
+            background: var(--blue-soft);
+            color: var(--blue);
+        }
+        .modal-box h2 {
+            font-size: 19px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .modal-box p {
+            color: var(--text-secondary);
+            font-size: 13.5px;
+            line-height: 1.65;
+        }
+        .modal-box .modal-detail {
+            text-align: left;
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            padding: 8px 0;
+        }
+        .modal-box .modal-detail strong {
+            color: var(--text-primary);
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 22px;
+            flex-wrap: wrap;
+        }
+        .modal-close-x {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 6px;
+            transition: color var(--t);
+        }
+        .modal-close-x:hover {
+            color: var(--red);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .sidebar-overlay.show {
+                display: block;
+            }
+            .main-area {
+                margin-left: 0;
+            }
+            .btn-hamburger {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+        @media (max-width: 720px) {
+            .header-name {
+                max-width: 130px;
+            }
+            .header-date {
+                display: none;
+            }
+            .top-header {
+                padding: 0 14px;
+            }
+            .main-content {
+                padding: 16px;
+            }
+            .login-card {
+                padding: 30px 24px;
+            }
+            .gate-card {
+                padding: 36px 26px;
+            }
+            .cd-tile {
+                min-width: 52px;
+                padding: 9px 4px;
+            }
+            .cd-num {
+                font-size: 20px;
+            }
+            .dd-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-box {
+                padding: 26px 20px;
+            }
+            .kartu-template {
+                padding: 24px 18px;
+                min-height: 600px;
+            }
+            .kartu-template .kartu-body {
+                flex-direction: column;
+            }
+            .kartu-template .kartu-body .kartu-right {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .kartu-template .kartu-body .kartu-right .foto-box {
+                width: 100px;
+                height: 130px;
+            }
+            .kartu-template .kartu-body .kartu-right .qr-box {
+                width: 90px;
+                height: 90px;
+            }
+            .kartu-template .kartu-footer {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+            .kartu-template .info-row .label {
+                width: 100px;
+                font-size: 10px;
+            }
+            .kartu-template .info-row .value {
+                font-size: 11.5px;
+            }
+            .kartu-preview-wrap {
+                padding: 12px;
+                min-height: 300px;
+            }
+            .foto-wrap {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        @media (max-width: 480px) {
+            .header-clock {
+                display: none;
+            }
+            .kartu-template .kartu-header .header-text h1 {
+                font-size: 16px;
+            }
+            .kartu-template .kartu-header .logo-sman {
+                width: 50px;
+                height: 50px;
+            }
+            .kartu-template .info-row .label {
+                width: 80px;
+            }
+            .kartu-actions .btn {
+                min-width: 100%;
+            }
+        }
+
+        /* ============================================================
+           PRINT STYLES
+           ============================================================ */
+        @media print {
+            .sidebar,
+            .top-header,
+            .kartu-actions,
+            .zoom-controls,
+            .sec-head .sec-actions,
+            .btn {
+                display: none !important;
+            }
+            .main-area {
+                margin-left: 0 !important;
+            }
+            .main-content {
+                padding: 0 !important;
+            }
+            .kartu-preview-wrap {
+                padding: 0 !important;
+                border: none !important;
+                background: none !important;
+                box-shadow: none !important;
+                overflow: visible !important;
+            }
+            .kartu-template {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                transform: none !important;
+                width: 100% !important;
+                min-height: auto !important;
+                padding: 24px !important;
+            }
+            .kartu-template .kartu-border {
+                border-color: #1a5c3a !important;
+            }
+            .content-section {
+                display: block !important;
+            }
+            #secKartuPeserta {
+                display: block !important;
+            }
+            body {
+                background: #fff !important;
+            }
+            .offline-bar {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOAST WRAPPER -->
+    <div class="toast-wrap" id="toastWrap"></div>
+
+    <!-- OFFLINE BAR -->
+    <div class="offline-bar" id="offlineBar">
+        <i class="fa-solid fa-wifi"></i> Koneksi terputus. Mencoba menyambungkan kembali...
+    </div>
+
+    <!-- ================================================================
+    GATE / LANDING PORTAL
+    ================================================================ -->
+    <div id="appGate">
+        <div class="gate-loading" id="gateLoading">
+            <div class="gate-spinner"></div>
+            <p>Memeriksa status portal kartu peserta...</p>
+        </div>
+        <!-- CLOSED STATE -->
+        <div class="gate-card closed" id="gateClosed" style="display:none;">
+            <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" class="gate-logo" alt="SMAN 68">
+            <div class="gate-icon-ring"><i class="fa-solid fa-door-closed"></i></div>
+            <h2>Portal Kartu Peserta Ditutup</h2>
+            <p id="gateClosedMsg">Portal Kartu Peserta Calon Murid Mutasi saat ini sudah ditutup. Silakan hubungi pihak sekolah apabila Anda memerlukan bantuan lebih lanjut.</p>
+        </div>
+        <!-- COUNTDOWN STATE -->
+        <div class="gate-card countdown" id="gateCountdown" style="display:none;">
+            <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" class="gate-logo" alt="SMAN 68">
+            <div class="gate-icon-ring"><i class="fa-solid fa-clock"></i></div>
+            <h2>Portal Belum Dibuka</h2>
+            <p id="gateOpenText">Portal akan dibuka pada: <strong>–</strong></p>
+            <div class="cd-tiles">
+                <div class="cd-tile"><span class="cd-num" id="cdD">00</span><span class="cd-label">Hari</span></div>
+                <div class="cd-sep">:</div>
+                <div class="cd-tile"><span class="cd-num" id="cdH">00</span><span class="cd-label">Jam</span></div>
+                <div class="cd-sep">:</div>
+                <div class="cd-tile"><span class="cd-num" id="cdM">00</span><span class="cd-label">Menit</span></div>
+                <div class="cd-sep">:</div>
+                <div class="cd-tile"><span class="cd-num" id="cdS">00</span><span class="cd-label">Detik</span></div>
+            </div>
+            <p class="gate-note"><i class="fa-solid fa-circle-info" style="color:var(--blue)"></i> Halaman login akan terbuka otomatis. Tidak perlu memuat ulang halaman.</p>
+        </div>
+        <!-- OPEN STATE (auto redirect to login) -->
+        <div class="gate-card open" id="gateOpen" style="display:none;">
+            <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" class="gate-logo" alt="SMAN 68">
+            <div class="gate-icon-ring"><i class="fa-solid fa-door-open"></i></div>
+            <h2>Portal Kartu Peserta</h2>
+            <p>Silakan login untuk mengakses dan mengunduh Kartu Peserta Calon Murid Mutasi.</p>
+            <div style="margin-top:18px">
+                <button class="btn btn-primary btn-lg" id="gateGoToLoginBtn">
+                    <i class="fa-solid fa-right-to-bracket"></i> Lanjutkan ke Login
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================
+    LOGIN SCENE
+    ================================================================ -->
+    <div id="loginScene" class="hidden">
+        <div class="login-grid-bg"></div>
+        <div class="login-card">
+            <div class="login-head">
+                <div class="login-logo-wrap">
+                    <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68">
+                </div>
+                <div class="login-school">
+                    SMA Negeri 68 Jakarta
+                    <span>Kartu Peserta Calon Murid Mutasi</span>
+                </div>
+            </div>
+            <div class="login-divider"></div>
+            <h1 class="login-title">Login Portal Kartu Peserta</h1>
+            <p class="login-desc">Masuk menggunakan Nomor Pendaftaran dan Tanggal Lahir untuk mengakses kartu peserta.</p>
+
+            <div class="form-group">
+                <label class="form-label"><i class="fa-solid fa-hashtag"></i> Nomor Pendaftaran</label>
+                <input type="text" id="loginNoDaftar" class="form-input mono" placeholder="198168XXXXXXXX" maxlength="14" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fa-solid fa-calendar-days"></i> Tanggal Lahir</label>
+                <input type="date" id="loginTglLahir" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fa-solid fa-calculator"></i> Verifikasi Captcha</label>
+                <div class="captcha-box">
+                    <div class="captcha-eq mono" id="captchaEq">– – –</div>
+                    <button type="button" class="captcha-refresh" id="captchaRefreshBtn" title="Acak ulang">
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+                </div>
+                <input type="text" id="loginCaptchaAns" class="form-input" placeholder="Jawaban captcha" inputmode="numeric" autocomplete="off">
+            </div>
+
+            <button class="btn btn-primary btn-full btn-lg" id="loginBtn" style="margin-top:6px;">
+                <i class="fa-solid fa-right-to-bracket"></i> Masuk ke Portal
+            </button>
+
+            <div class="login-footer">
+                <i class="fa-solid fa-shield-halved"></i> Portal Kartu Peserta Calon Murid Mutasi SMAN 68 Jakarta
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================
+    DASHBOARD SCENE
+    ================================================================ -->
+    <div id="dashboardScene">
+        <!-- SIDEBAR -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68">
+                </div>
+                <div>
+                    <span class="sidebar-school">SMAN 68 Jakarta</span>
+                    <span class="sidebar-sub">Kartu Peserta</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-label">Menu Utama</div>
+                <button class="nav-item active" data-sec="dataDiri">
+                    <i class="fa-solid fa-id-card-clip"></i>
+                    <span class="nav-txt">Data Diri</span>
+                </button>
+                <button class="nav-item" data-sec="foto">
+                    <i class="fa-solid fa-camera"></i>
+                    <span class="nav-txt">Pas Foto</span>
+                </button>
+                <button class="nav-item" data-sec="kartuPeserta">
+                    <i class="fa-solid fa-id-card"></i>
+                    <span class="nav-txt">Kartu Peserta</span>
+                </button>
+            </nav>
+            <div class="sidebar-bottom">
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN AREA -->
+        <div class="main-area">
+            <!-- TOP HEADER -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="btn-hamburger" id="hamburgerBtn">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="header-id">
+                        <div class="header-logo">
+                            <img src="https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png" alt="SMAN 68">
+                        </div>
+                        <div>
+                            <div class="header-name" id="headerNama">–</div>
+                            <div class="header-no mono" id="headerNoDaftar">–</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-clock" id="headerClock">00:00:00</div>
+                    <div class="header-date" id="headerDate">–</div>
+                    <button class="icon-btn" id="themeBtn" title="Ganti tema">
+                        <i class="fa-solid fa-moon" id="themeIcon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- MAIN CONTENT -->
+            <main class="main-content">
+
+                <!-- ================= SECTION 1: DATA DIRI ================= -->
+                <section class="content-section active" id="sec-dataDiri">
+                    <div class="sec-head">
+                        <div>
+                            <h2><i class="fa-solid fa-id-card-clip" style="color:var(--accent);margin-right:8px"></i>Data Diri</h2>
+                            <p>Data registrasi calon murid mutasi – hanya dapat dilihat, tidak dapat diedit.</p>
+                        </div>
+                    </div>
+
+                    <div class="banner banner-info">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <div>
+                            Jika Anda merasa terdapat kesalahan pada data di atas, silakan segera menghubungi
+                            <strong>Helpdesk SMAN 68 Jakarta</strong> melalui halaman Kontak di:
+                            <a href="https://www.sman68jakarta.xyz/sman68" target="_blank" style="color:var(--accent);font-weight:600;text-decoration:underline">
+                                https://www.sman68jakarta.xyz/sman68
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card-box">
+                        <div class="card-box-body" id="dataDiriBody">
+                            <div class="skel-line skeleton" style="width:40%"></div>
+                            <div class="skel-line skeleton" style="width:70%"></div>
+                            <div class="skel-line skeleton" style="width:55%"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= SECTION 2: PAS FOTO ================= -->
+                <section class="content-section" id="sec-foto">
+                    <div class="sec-head">
+                        <div>
+                            <h2><i class="fa-solid fa-camera" style="color:var(--accent);margin-right:8px"></i>Pas Foto</h2>
+                            <p>Foto 4x3 latar belakang merah sesuai ketentuan mutasi SMAN 68 Jakarta.</p>
+                        </div>
+                    </div>
+
+                    <div class="card-box">
+                        <div class="card-box-body" id="fotoBody">
+                            <div class="skel-line skeleton" style="width:40%"></div>
+                            <div class="skel-line skeleton" style="width:60%"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= SECTION 3: KARTU PESERTA ================= -->
+                <section class="content-section" id="sec-kartuPeserta">
+                    <div class="sec-head">
+                        <div>
+                            <h2><i class="fa-solid fa-id-card" style="color:var(--accent);margin-right:8px"></i>Kartu Peserta</h2>
+                            <p>Preview dan unduh Kartu Peserta Calon Murid Mutasi SMAN 68 Jakarta.</p>
+                        </div>
+                        <div class="sec-actions">
+                            <span class="badge badge-green" id="kartuStatusBadge"><i class="fa-solid fa-circle-check"></i> Aktif</span>
+                        </div>
+                    </div>
+
+                    <div class="card-box">
+                        <div class="card-box-body" id="kartuBody">
+                            <div class="kartu-container">
+                                <div class="kartu-preview-wrap" id="kartuPreviewWrap">
+                                    <div id="kartuTemplateContainer">
+                                        <!-- Kartu akan di-render di sini -->
+                                    </div>
+                                    <div class="zoom-controls">
+                                        <button data-zoom="50">50%</button>
+                                        <button data-zoom="75">75%</button>
+                                        <button data-zoom="100" class="active">100%</button>
+                                        <button data-zoom="125">125%</button>
+                                        <button data-zoom="150">150%</button>
+                                        <button data-zoom="fit">Fit</button>
+                                    </div>
+                                </div>
+
+                                <div class="kartu-actions">
+                                    <button class="btn btn-primary" id="downloadPdfBtn">
+                                        <i class="fa-solid fa-file-pdf"></i> Download PDF
+                                    </button>
+                                    <button class="btn btn-success" id="downloadA4Btn">
+                                        <i class="fa-solid fa-print"></i> Download A4
+                                    </button>
+                                    <button class="btn btn-secondary" id="downloadA5Btn">
+                                        <i class="fa-solid fa-file-pdf"></i> Download A5
+                                    </button>
+                                    <button class="btn btn-secondary" id="printBtn">
+                                        <i class="fa-solid fa-print"></i> Cetak
+                                    </button>
+                                    <button class="btn btn-secondary" id="refreshKartuBtn">
+                                        <i class="fa-solid fa-rotate"></i> Refresh
+                                    </button>
+                                </div>
+
+                                <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text-muted)">
+                                    <i class="fa-solid fa-qrcode" style="margin-right:6px;color:var(--accent)"></i>
+                                    QR Code validasi otomatis – scan untuk verifikasi keaslian kartu
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ================================================================
+    MODAL: SUKSES DOWNLOAD
+    ================================================================ -->
+    <div class="modal-overlay" id="modalSuksesDownload">
+        <div class="modal-box">
+            <div class="modal-icon success"><i class="fa-solid fa-circle-check"></i></div>
+            <h2>Kartu Peserta Berhasil Diunduh</h2>
+            <div class="modal-detail">
+                <p><strong>Mohon diperhatikan:</strong></p>
+                <ul style="list-style:none;padding:8px 0;text-align:left;font-size:13px;color:var(--text-secondary);line-height:1.8">
+                    <li>✔ Wajib dicetak <strong>berwarna</strong></li>
+                    <li>✔ Tidak boleh buram</li>
+                    <li>✔ Tidak boleh dipotong</li>
+                    <li>✔ Tidak boleh dilaminasi sebelum tes, kecuali ada instruksi resmi</li>
+                    <li>✔ Wajib dibawa saat <strong>Tes Mutasi SMAN 68 Jakarta</strong></li>
+                    <li>✔ Simpan kartu dengan baik</li>
+                </ul>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="modalSuksesDownloadOk">Mengerti</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================
+    MODAL: VALIDASI KARTU (QR Code)
+    ================================================================ -->
+    <div class="modal-overlay" id="modalValidasiKartu">
+        <div class="modal-box wide">
+            <button class="modal-close-x" id="closeValidasiModal"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-icon success"><i class="fa-solid fa-qrcode"></i></div>
+            <h2>Validasi Kartu Peserta</h2>
+            <div id="validasiContent" style="text-align:left;padding:8px 0">
+                <div class="skel-line skeleton" style="width:50%"></div>
+                <div class="skel-line skeleton" style="width:70%"></div>
+                <div class="skel-line skeleton" style="width:40%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================
+    MODAL: ALERT GENERIK
+    ================================================================ -->
+    <div class="modal-overlay" id="modalAlert">
+        <div class="modal-box">
+            <div class="modal-icon" id="modalAlertIcon"><i class="fa-solid fa-circle-info"></i></div>
+            <h2 id="modalAlertTitle">Informasi</h2>
+            <p id="modalAlertMsg">Pesan.</p>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="modalAlertOkBtn">Mengerti</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ================================================================
+           FIREBASE CONFIG
+           ================================================================ */
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAcKcg3alPOTH3FFGelYmsW7jcMMe2PLI",
+            authDomain: "upnvjdatsystem.firebaseapp.com",
+            projectId: "upnvjdatsystem",
+            storageBucket: "upnvjdatsystem.firebasestorage.app",
+            messagingSenderId: "57095309946",
+            appId: "1:57095309946:web:b0e9f3f86380d549ffc9c3",
+            databaseURL: "https://upnvjdatsystem-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        /* ================================================================
+           UTILITY FUNCTIONS
+           ================================================================ */
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return '';
+            return String(str).replace(/[&<>"']/g, ch => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[ch]));
+        }
+
+        function safeURL(url) {
+            if (!url) return '';
+            try {
+                const u = new URL(url);
+                if (u.protocol === 'http:' || u.protocol === 'https:') return u.href;
+            } catch (e) { /* invalid */ }
+            return '';
+        }
+
+        function formatTanggal(val) {
+            if (!val) return '-';
+            let d;
+            if (val?.toDate) d = val.toDate();
+            else d = new Date(val);
+            if (isNaN(d.getTime())) return '-';
+            return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+        }
+
+        function formatTanggalWaktu(val) {
+            if (!val) return '-';
+            let d;
+            if (val?.toDate) d = val.toDate();
+            else d = new Date(val);
+            if (isNaN(d.getTime())) return '-';
+            return d.toLocaleString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }) + ' WIB';
+        }
+
+        function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+        function v(id) { return (document.getElementById(id)?.value || '').trim(); }
+
+        /* ================================================================
+           TOAST SYSTEM
+           ================================================================ */
+        function toast(type, msg, duration = 5000) {
+            const wrap = document.getElementById('toastWrap');
+            const icons = {
+                success: 'fa-circle-check',
+                error: 'fa-circle-xmark',
+                warn: 'fa-triangle-exclamation',
+                info: 'fa-circle-info'
+            };
+            const el = document.createElement('div');
+            el.className = `toast-item t-${type}`;
+            el.innerHTML =
+                `<i class="fa-solid ${icons[type] || icons.info}"></i><span class="toast-msg">${escapeHTML(msg)}</span>`;
+            wrap.appendChild(el);
+            setTimeout(() => {
+                el.style.transition = 'opacity 0.35s, transform 0.35s';
+                el.style.opacity = '0';
+                el.style.transform = 'translateX(110%)';
+                setTimeout(() => el.remove(), 350);
+            }, duration);
+        }
+
+        /* ================================================================
+           THEME
+           ================================================================ */
+        let isDark = localStorage.getItem('theme') === 'dark';
+
+        function applyTheme() {
+            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            const icon = document.getElementById('themeIcon');
+            if (icon) icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+        applyTheme();
+        document.getElementById('themeBtn')?.addEventListener('click', () => {
+            isDark = !isDark;
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            applyTheme();
+        });
+
+        /* ================================================================
+           CLOCK
+           ================================================================ */
+        function updateClock() {
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
+            const clockEl = document.getElementById('headerClock');
+            if (clockEl) clockEl.textContent = `${hh}:${mm}:${ss}`;
+            const dateEl = document.getElementById('headerDate');
+            if (dateEl) dateEl.textContent = now.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        /* ================================================================
+           OFFLINE DETECTION
+           ================================================================ */
+        function updateOnlineStatus() {
+            const bar = document.getElementById('offlineBar');
+            if (navigator.onLine) {
+                bar.classList.remove('show');
+            } else {
+                bar.classList.add('show');
+            }
+        }
+        window.addEventListener('online', () => { updateOnlineStatus();
+            toast('success', 'Koneksi internet tersambung kembali.'); });
+        window.addEventListener('offline', () => { updateOnlineStatus();
+            toast('warn', 'Koneksi internet terputus. Data mungkin tidak realtime sementara.'); });
+        updateOnlineStatus();
+
+        /* ================================================================
+           CAPTCHA
+           ================================================================ */
+        let captchaAnswer = null;
+
+        function genCaptcha() {
+            const ops = ['+', '-', '×', '÷'];
+            const op = ops[rand(0, 3)];
+            let a, b, answer;
+            if (op === '+') { a = rand(1, 20);
+                b = rand(1, 20);
+                answer = a + b; } else if (op === '-') { a = rand(10, 30);
+                b = rand(1, a);
+                answer = a - b; } else if (op === '×') { a = rand(2, 12);
+                b = rand(2, 12);
+                answer = a * b; } else { b = rand(1, 10);
+                answer = rand(1, 10);
+                a = b * answer; }
+            captchaAnswer = answer;
+            const eqEl = document.getElementById('captchaEq');
+            if (eqEl) eqEl.textContent = `${a} ${op} ${b} = ?`;
+        }
+        document.getElementById('captchaRefreshBtn')?.addEventListener('click', () => {
+            genCaptcha();
+            document.getElementById('loginCaptchaAns').value = '';
+        });
+
+        /* ================================================================
+           GATE / PORTAL STATUS (realtime from Firestore)
+           ================================================================ */
+        let gateCountdownInterval = null;
+        let gateHasOpenedOnce = false;
+        let currentGateState = 'loading';
+
+        function showGate(state, payload) {
+            // Jika dashboard sudah aktif (sesi berhasil dipulihkan / user sudah login),
+            // jangan pernah menampilkan ulang gerbang/login secara paksa.
+            if (currentDocId && (state === 'login' || state === 'open')) {
+                return;
+            }
+            currentGateState = state;
+            const gate = document.getElementById('appGate');
+            const loading = document.getElementById('gateLoading');
+            const closedEl = document.getElementById('gateClosed');
+            const countdownEl = document.getElementById('gateCountdown');
+            const openEl = document.getElementById('gateOpen');
+
+            loading.style.display = 'none';
+            closedEl.style.display = 'none';
+            countdownEl.style.display = 'none';
+            openEl.style.display = 'none';
+
+            if (gateCountdownInterval) { clearInterval(gateCountdownInterval);
+                gateCountdownInterval = null; }
+
+            if (state === 'login') {
+                // Transition to login scene
+                gate.classList.add('gate-hidden');
+                setTimeout(() => {
+                    document.getElementById('loginScene').classList.remove('hidden');
+                    gate.style.display = 'none';
+                    genCaptcha();
+                }, 300);
+                return;
+            }
+
+            gate.classList.remove('gate-hidden');
+            gate.style.display = 'flex';
+            document.getElementById('loginScene').classList.add('hidden');
+
+            if (state === 'closed') {
+                closedEl.style.display = 'block';
+                document.getElementById('gateClosedMsg').textContent = payload?.message ||
+                    'Portal Kartu Peserta Calon Murid Mutasi saat ini sudah ditutup. Silakan hubungi pihak sekolah apabila Anda memerlukan bantuan lebih lanjut.';
+            } else if (state === 'countdown' && payload?.target) {
+                countdownEl.style.display = 'block';
+                const target = new Date(payload.target);
+                document.getElementById('gateOpenText').innerHTML = 'Portal akan dibuka pada: <strong>' +
+                    target.toLocaleString('id-ID', {
+                        weekday: 'long',
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }) + ' WIB</strong>';
+
+                function tick() {
+                    const diff = target - new Date();
+                    if (diff <= 0) {
+                        clearInterval(gateCountdownInterval);
+                        gateCountdownInterval = null;
+                        // Check status again
+                        checkPortalStatus();
+                        return;
+                    }
+                    setCd('cdD', Math.floor(diff / 86400000));
+                    setCd('cdH', Math.floor((diff % 86400000) / 3600000));
+                    setCd('cdM', Math.floor((diff % 3600000) / 60000));
+                    setCd('cdS', Math.floor((diff % 60000) / 1000));
+                }
+                tick();
+                gateCountdownInterval = setInterval(tick, 1000);
+            } else if (state === 'open') {
+                openEl.style.display = 'block';
+            } else {
+                // fallback
+                closedEl.style.display = 'block';
+            }
+        }
+
+        function setCd(id, val) {
+            const el = document.getElementById(id);
+            const str = String(Math.max(0, val)).padStart(2, '0');
+            if (el.textContent !== str) {
+                el.classList.remove('flip');
+                void el.offsetWidth;
+                el.classList.add('flip');
+                el.textContent = str;
+            }
+        }
+
+        let portalStatusUnsub = null;
+
+        function checkPortalStatus() {
+            if (portalStatusUnsub) portalStatusUnsub();
+            portalStatusUnsub = db.collection('settings').doc('kartuPesertaPortal').onSnapshot(snap => {
+                if (!snap.exists) {
+                    showGate('closed', { message: 'Portal kartu peserta belum dikonfigurasi oleh operator.' });
+                    return;
+                }
+                const data = snap.data();
+                const now = new Date();
+
+                // 1. Check if portal is manually disabled
+                if (data.manualDisabled === true) {
+                    showGate('closed', { message: data.pesanTutup || 'Portal Kartu Peserta sedang ditutup oleh operator.' });
+                    return;
+                }
+
+                // 2. Check countdown (if active and target not passed)
+                if (data.countdownActive === true && data.countdownTarget) {
+                    const target = new Date(data.countdownTarget);
+                    if (now < target) {
+                        showGate('countdown', { target: data.countdownTarget });
+                        return;
+                    }
+                }
+
+                // 3. Check scheduled close
+                if (data.closedAt && now >= new Date(data.closedAt)) {
+                    showGate('closed', { message: data.pesanTutup || 'Portal Kartu Peserta telah ditutup sesuai jadwal.' });
+                    return;
+                }
+
+                // 4. Check if open
+                if (data.isOpen === true) {
+                    showGate('open');
+                    return;
+                }
+
+                // 5. Check countdown passed (auto-open)
+                if (data.countdownActive === true && data.countdownTarget && now >= new Date(data.countdownTarget)) {
+                    showGate('open');
+                    return;
+                }
+
+                // Default: closed
+                showGate('closed', { message: data.pesanTutup || 'Portal Kartu Peserta sedang ditutup.' });
+            }, err => {
+                console.error('Portal status listener error:', err);
+                toast('error', 'Gagal memuat status portal. Periksa koneksi internet Anda.');
+                showGate('closed', { message: 'Gagal memuat status portal. Coba refresh halaman.' });
+            });
+        }
+
+        // Gate "Go to Login" button
+        document.getElementById('gateGoToLoginBtn')?.addEventListener('click', () => {
+            showGate('login');
+        });
+
+        // Auto-transition from open to login after 1.5s
+        let gateOpenTimer = null;
+
+        function overrideGateOpen() {
+            if (currentGateState === 'open') {
+                clearTimeout(gateOpenTimer);
+                gateOpenTimer = setTimeout(() => {
+                    showGate('login');
+                }, 1200);
+            }
+        }
+
+        // Patch: when open state is shown, auto transition
+        const origShowGate = showGate;
+        showGate = function(state, payload) {
+            origShowGate(state, payload);
+            if (state === 'open') {
+                clearTimeout(gateOpenTimer);
+                gateOpenTimer = setTimeout(() => {
+                    showGate('login');
+                }, 1200);
+            }
+        };
+
+        // Start portal check
+        checkPortalStatus();
+
+        /* ================================================================
+           LOGIN SYSTEM
+           ================================================================ */
+        const SESSION_KEY = 'kartuPesertaSession';
+
+        function saveSession(docId, noDaftar) {
+            try {
+                sessionStorage.setItem(SESSION_KEY, JSON.stringify({ docId, noDaftar, timestamp: Date.now() }));
+            } catch (e) { console.error(e); }
+        }
+
+        function readSession() {
+            try {
+                const raw = sessionStorage.getItem(SESSION_KEY);
+                if (!raw) return null;
+                const data = JSON.parse(raw);
+                // Session expires after 2 hours
+                if (Date.now() - data.timestamp > 7200000) {
+                    sessionStorage.removeItem(SESSION_KEY);
+                    return null;
+                }
+                return data;
+            } catch (e) { return null; }
+        }
+
+        function clearSession() {
+            try { sessionStorage.removeItem(SESSION_KEY); } catch (e) { /* ignore */ }
+        }
+
+        let loginBusy = false;
+
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            if (loginBusy) return;
+            const noDaftar = v('loginNoDaftar');
+            const tglLahir = v('loginTglLahir');
+            const captchaAns = v('loginCaptchaAns');
+            const btn = document.getElementById('loginBtn');
+
+            if (!noDaftar || !tglLahir || !captchaAns) {
+                toast('warn', 'Mohon lengkapi Nomor Pendaftaran, Tanggal Lahir, dan jawaban Captcha.');
+                return;
+            }
+            if (noDaftar.length !== 14 || !noDaftar.startsWith('198168')) {
+                toast('error', 'Nomor pendaftaran harus terdiri dari 14 digit dan diawali dengan 198168.');
+                return;
+            }
+            if (parseInt(captchaAns, 10) !== captchaAnswer) {
+                toast('error', 'Captcha salah. Silakan coba kembali.');
+                genCaptcha();
+                document.getElementById('loginCaptchaAns').value = '';
+                return;
+            }
+
+            loginBusy = true;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-inline"></span> Memeriksa data...';
+
+            try {
+                const snap = await db.collection('pendaftaranMutasi')
+                    .where('noDaftar', '==', noDaftar)
+                    .limit(1)
+                    .get();
+
+                if (snap.empty) {
+                    toast('error', 'Nomor Pendaftaran tidak ditemukan.');
+                    return;
+                }
+
+                const docSnap = snap.docs[0];
+                const data = docSnap.data();
+
+                // Check if data is valid
+                if (data.dibatalkan) {
+                    toast('error', 'Pendaftaran ini telah dibatalkan.');
+                    return;
+                }
+
+                // Status must be 'diterima'
+                if ((data.status || '').toLowerCase() !== 'diterima') {
+                    toast('error', 'Mohon maaf. Berkas Anda belum memenuhi persyaratan mutasi. Silakan lihat hasil verifikasi.');
+                    return;
+                }
+
+                // Check finalisasi
+                if (!data.finalisasi?.selesai) {
+                    toast('warn', 'Data Anda belum difinalisasi. Silakan lakukan Finalisasi Data terlebih dahulu.');
+                    return;
+                }
+
+                // Check document verification: all required docs must be valid
+                const verif = data.verifikasiDokumen || {};
+                const docKeys = ['ktpKia', 'kartuKeluarga', 'kartuPelajar', 'suratPernyataan', 'suratBaik',
+                    'suratSehat', 'aktaLahir', 'suratPindahSekolah'
+                ];
+                let mutasiKe = data.mutasiKe || 'X';
+                if (mutasiKe === 'XI') docKeys.push('raportSem1', 'raportSem2');
+                else if (mutasiKe === 'XII') docKeys.push('raportSem1', 'raportSem2', 'raportSem3', 'raportSem4');
+                else docKeys.push('raportTerakhir');
+
+                const allValid = docKeys.every(key => verif[key]?.status === 'valid');
+                if (!allValid) {
+                    toast('warn', 'Berkas Anda masih menunggu proses verifikasi Operator. Silakan menunggu hingga proses selesai.');
+                    return;
+                }
+
+                // Check tanggal lahir
+                if (String(data.tglLahir) !== tglLahir) {
+                    toast('error', 'Tanggal Lahir tidak sesuai dengan data pendaftaran.');
+                    return;
+                }
+
+                // Login success
+                saveSession(docSnap.id, data.noDaftar);
+
+                // Log login
+                db.collection('kartuPesertaLogins').add({
+                    noDaftar: data.noDaftar,
+                    nama: data.nama || '-',
+                    waktu: firebase.firestore.FieldValue.serverTimestamp(),
+                    ip: 'client',
+                    browser: navigator.userAgent || '-',
+                    device: /mobile/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop'
+                }).catch(() => {});
+
+                toast('success', 'Login berhasil! Selamat datang.');
+                document.getElementById('loginNoDaftar').value = '';
+                document.getElementById('loginTglLahir').value = '';
+                document.getElementById('loginCaptchaAns').value = '';
+                startDashboard(docSnap.id, data);
+
+            } catch (err) {
+                console.error(err);
+                toast('error', 'Gagal memeriksa data. Periksa koneksi internet Anda.');
+            } finally {
+                loginBusy = false;
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk ke Portal';
+            }
+        });
+
+        document.getElementById('loginNoDaftar')?.addEventListener('keydown', e => {
+            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        });
+        document.getElementById('loginCaptchaAns')?.addEventListener('keydown', e => {
+            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        });
+
+        /* ================================================================
+           DASHBOARD SYSTEM
+           ================================================================ */
+        let currentDocId = null;
+        let currentData = null;
+        let dashboardUnsub = null;
+        let qrCodeInstance = null;
+        let currentZoom = '100';
+        let kartuRendered = false;
+
+        function startDashboard(docId, data) {
+            currentDocId = docId;
+            currentData = data;
+
+            // Batalkan timer auto-transition gate (open -> login) dan countdown yang mungkin
+            // masih berjalan, lalu pastikan overlay gate benar-benar tertutup, supaya tidak
+            // ada layar gerbang/login yang muncul lagi menimpa dashboard setelah refresh.
+            clearTimeout(gateOpenTimer);
+            if (gateCountdownInterval) { clearInterval(gateCountdownInterval); gateCountdownInterval = null; }
+            const gateEl = document.getElementById('appGate');
+            gateEl.classList.add('gate-hidden');
+            gateEl.style.display = 'none';
+
+            document.getElementById('loginScene').classList.add('hidden');
+            document.getElementById('dashboardScene').classList.add('active');
+            document.getElementById('headerNama').textContent = data.nama || '-';
+            document.getElementById('headerNoDaftar').textContent = data.noDaftar || '-';
+
+            // Show active section
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('sec-dataDiri').classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelector('.nav-item[data-sec="dataDiri"]')?.classList.add('active');
+
+            initDashboardListener();
+            renderDataDiri(data);
+            renderFoto(data);
+            renderKartu(data);
+        }
+
+        function initDashboardListener() {
+            if (dashboardUnsub) dashboardUnsub();
+            dashboardUnsub = db.collection('pendaftaranMutasi').doc(currentDocId).onSnapshot(snap => {
+                if (!snap.exists) {
+                    toast('error', 'Data Anda tidak ditemukan. Anda akan dikeluarkan.');
+                    doLogout();
+                    return;
+                }
+                const data = snap.data();
+                if (data.dibatalkan) {
+                    toast('error', 'Pendaftaran Anda telah dibatalkan.');
+                    doLogout();
+                    return;
+                }
+                currentData = data;
+                document.getElementById('headerNama').textContent = data.nama || '-';
+                document.getElementById('headerNoDaftar').textContent = data.noDaftar || '-';
+                renderDataDiri(data);
+                renderFoto(data);
+                renderKartu(data);
+            }, err => {
+                console.error(err);
+                toast('error', 'Gagal memuat data terbaru. Memeriksa koneksi...');
+            });
+        }
+
+        function doLogout() {
+            teardownDashboard();
+            clearSession();
+            document.getElementById('dashboardScene').classList.remove('active');
+            document.getElementById('loginScene').classList.remove('hidden');
+            document.getElementById('appGate').style.display = 'flex';
+            document.getElementById('appGate').classList.remove('gate-hidden');
+            toast('info', 'Anda telah keluar dari portal.');
+            checkPortalStatus();
+        }
+
+        function teardownDashboard() {
+            if (dashboardUnsub) { dashboardUnsub();
+                dashboardUnsub = null; }
+            currentDocId = null;
+            currentData = null;
+            qrCodeInstance = null;
+        }
+
+        /* ================================================================
+           SECTION 1: DATA DIRI (Read Only)
+           ================================================================ */
+        function renderDataDiri(d) {
+            const field = (label, value, opts = {}) => {
+                const val = value !== undefined && value !== null ? value : '';
+                const display = val !== '' ? escapeHTML(opts.displayAs || String(val)) : '-';
+                return `<div class="dd-item${opts.full ? ' full' : ''}">
+              <div class="dd-label">${escapeHTML(label)}</div>
+              <div class="dd-value${opts.mono ? ' mono' : ''}">${display}</div>
+            </div>`;
+            };
+
+            const ayah = d.ayah || {};
+            const ibu = d.ibu || {};
+
+            let html = `
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+              <span class="badge badge-green"><i class="fa-solid fa-circle-check"></i> Diterima</span>
+              <span class="badge badge-grey mono">${escapeHTML(d.noDaftar || '-')}</span>
+              <span class="badge badge-amber"><i class="fa-solid fa-clock"></i> Finalisasi: ${d.finalisasi?.selesai ? '✅ Selesai' : '❌ Belum'}</span>
+            </div>
+            <div class="dd-section-title"><i class="fa-solid fa-user"></i> Data Pribadi</div>
+            <div class="dd-grid">
+              ${field('Nomor Pendaftaran', d.noDaftar, { mono: true })}
+              ${field('Nama Lengkap', d.nama)}
+              ${field('NIK', d.nik, { mono: true })}
+              ${field('NISN', d.nisn, { mono: true })}
+              ${field('NIS', d.nis, { mono: true })}
+              ${field('Tempat Lahir', d.tempatLahir)}
+              ${field('Tanggal Lahir', formatTanggal(d.tglLahir))}
+              ${field('Jenis Kelamin', d.jk === 'L' ? 'Laki-laki' : d.jk === 'P' ? 'Perempuan' : '-')}
+              ${field('Agama', d.agama)}
+              ${field('Alamat', d.alamat, { full: true })}
+              ${field('Email', d.email)}
+              ${field('No. HP Siswa', d.telpMurid, { mono: true })}
+              ${field('No. HP Orang Tua', d.telpOrtu, { mono: true })}
+            </div>
+            <div class="dd-section-title"><i class="fa-solid fa-school"></i> Data Sekolah & Mutasi</div>
+            <div class="dd-grid">
+              ${field('Sekolah Asal', d.sekolahAsal)}
+              ${field('NPSN Sekolah Asal', d.npsn, { mono: true })}
+              ${field('Kelas Saat Ini', d.kelasSaatIni)}
+              ${field('Mutasi ke Kelas', d.mutasiKe)}
+              ${field('Kurikulum / Jurusan', d.kurikulum)}
+            </div>
+            <div class="dd-section-title"><i class="fa-solid fa-people-roof"></i> Data Orang Tua / Wali</div>
+            <div class="dd-grid">
+              ${field('Nama Ayah', ayah.nama)}
+              ${field('Agama Ayah', ayah.agama)}
+              ${field('Pekerjaan Ayah', ayah.pekerjaan)}
+              ${field('Penghasilan Ayah', ayah.penghasilan)}
+              ${field('No. HP Ayah', ayah.telp, { mono: true })}
+              ${field('Nama Ibu', ibu.nama)}
+              ${field('Agama Ibu', ibu.agama)}
+              ${field('Pekerjaan Ibu', ibu.pekerjaan)}
+              ${field('Penghasilan Ibu', ibu.penghasilan)}
+              ${field('No. HP Ibu', ibu.telp, { mono: true })}
+            </div>
+            <div class="dd-section-title"><i class="fa-solid fa-comment-dots"></i> Alasan Mutasi</div>
+            <div class="dd-grid">
+              ${field('Alasan Pindah', d.alasan || d.alasanPindah, { full: true })}
+            </div>
+            ${d.catatanOperator ? `<div style="margin-top:16px;padding:14px;background:var(--amber-soft);border-radius:var(--radius-sm);border:1px solid rgba(245,158,11,0.25)">
+              <div class="dd-label" style="color:var(--amber)"><i class="fa-solid fa-comment-dots"></i> Catatan Operator</div>
+              <div style="font-size:13px;color:var(--text-secondary)">${escapeHTML(d.catatanOperator)}</div>
+            </div>` : ''}
+          `;
+            document.getElementById('dataDiriBody').innerHTML = html;
+        }
+
+        /* ================================================================
+           SECTION 2: PAS FOTO
+           ================================================================ */
+        function renderFoto(d) {
+            const fotoUrl = d.fotoProfil || '';
+            const fotoUpdated = d.fotoProfilUpdatedAt ? formatTanggalWaktu(d.fotoProfilUpdatedAt) : 'Belum diunggah';
+
+            // Rules from reg-murid-mutasi
+            const rules = [
+                { text: 'Wajib menggunakan seragam sekolah asal (putih abu-abu SMA)', valid: true },
+                { text: 'Latar belakang berwarna merah wajib', valid: true },
+                { text: 'Ukuran foto 4x3, tampak jelas dan formal', valid: true },
+                { text: 'Format JPG/PNG', valid: true },
+                { text: 'Foto tidak buram dan wajah terlihat jelas', valid: true },
+                { text: 'Menggunakan pakaian formal/rapi', valid: true },
+            ];
+
+            let html = `
+            <div class="foto-wrap">
+              <div class="foto-preview">
+                ${fotoUrl ? `<img src="${fotoUrl}" alt="Foto Profil"><span class="foto-badge">4x3</span>` : `<i class="fa-solid fa-camera-retro"></i>`}
+              </div>
+              <div class="foto-rules">
+                <div class="foto-rules-title"><i class="fa-solid fa-image" style="color:var(--accent)"></i> Foto 4x3 Latar Belakang Merah</div>
+                <div style="margin-bottom:10px;font-size:12px;color:var(--text-secondary)">
+                  <i class="fa-solid fa-clock-rotate-left"></i> Terakhir diunggah: ${fotoUpdated}
+                </div>
+                <ul>
+                  ${rules.map(r => `<li><i class="fa-solid fa-circle-check" style="color:var(--accent);margin-right:6px"></i> ${escapeHTML(r.text)}</li>`).join('')}
+                </ul>
+                <div class="foto-upload-btn">
+                  <button class="btn btn-secondary btn-sm" id="btnUploadFotoBaru">
+                    <i class="fa-solid fa-upload"></i> Upload Foto Baru
+                  </button>
+                  <input type="file" id="fotoInput" accept="image/*" class="hidden">
+                </div>
+                <div style="font-size:11px;color:var(--text-muted);margin-top:8px">
+                  <i class="fa-solid fa-info-circle"></i> Foto akan otomatis dikompres dan disimpan ke database.
+                </div>
+              </div>
+            </div>
+          `;
+            document.getElementById('fotoBody').innerHTML = html;
+
+            document.getElementById('btnUploadFotoBaru')?.addEventListener('click', () => {
+                document.getElementById('fotoInput').click();
+            });
+
+            document.getElementById('fotoInput')?.addEventListener('change', e => {
+                const file = e.target.files?.[0];
+                if (file) handleFotoUpload(file);
+                e.target.value = '';
+            });
+        }
+
+        /* ================================================================
+           FOTO UPLOAD HANDLER
+           ================================================================ */
+        function handleFotoUpload(file) {
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                toast('error', 'File harus berupa gambar (JPG/PNG)!');
+                return;
+            }
+            if (file.size > 8 * 1024 * 1024) {
+                toast('error', 'Ukuran file maksimal 8MB sebelum kompresi.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = e => {
+                const img = new Image();
+                img.onload = () => {
+                    const targetW = 300,
+                        targetH = 400;
+                    const canvas = document.createElement('canvas');
+                    canvas.width = targetW;
+                    canvas.height = targetH;
+                    const ctx = canvas.getContext('2d');
+                    const scale = Math.max(targetW / img.width, targetH / img.height);
+                    const sw = targetW / scale,
+                        sh = targetH / scale;
+                    const sx = (img.width - sw) / 2,
+                        sy = (img.height - sh) / 2;
+                    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, targetW, targetH);
+
+                    let quality = 0.85;
+                    let dataUrl = canvas.toDataURL('image/jpeg', quality);
+                    while (dataUrl.length > 380000 && quality > 0.35) {
+                        quality -= 0.1;
+                        dataUrl = canvas.toDataURL('image/jpeg', quality);
+                    }
+                    if (dataUrl.length > 450000) {
+                        toast('error', 'Foto masih terlalu besar setelah dikompres. Gunakan foto lain.');
+                        return;
+                    }
+                    saveFotoProfil(dataUrl);
+                };
+                img.onerror = () => toast('error', 'Gagal memuat gambar. Coba file lain.');
+                img.src = e.target.result;
+            };
+            reader.onerror = () => toast('error', 'Gagal membaca file.');
+            reader.readAsDataURL(file);
+        }
+
+        async function saveFotoProfil(dataUrl) {
+            if (!currentDocId) return;
+            toast('info', 'Mengunggah foto...');
+            try {
+                await db.collection('pendaftaranMutasi').doc(currentDocId).update({
+                    fotoProfil: dataUrl,
+                    fotoProfilUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                toast('success', 'Foto profil berhasil disimpan.');
+            } catch (err) {
+                console.error(err);
+                toast('error', 'Gagal menyimpan foto. Coba gunakan foto dengan ukuran lebih kecil.');
+            }
+        }
+
+        /* ================================================================
+           SECTION 3: KARTU PESERTA
+           ================================================================ */
+        function renderKartu(d) {
+            const container = document.getElementById('kartuTemplateContainer');
+            const html = buildKartuHTML(d);
+            container.innerHTML = html;
+
+            // Generate QR Code
+            const qrContainer = document.getElementById('qrCodeContainer');
+            if (qrContainer) {
+                qrContainer.innerHTML = '';
+                try {
+                    const qrData = `https://www.sman68jakarta.xyz/verifikasi?id=${encodeURIComponent(d.noDaftar || '')}`;
+                    qrCodeInstance = new QRCode(qrContainer, {
+                        text: qrData,
+                        width: 120,
+                        height: 120,
+                        colorDark: '#0d2b1a',
+                        colorLight: '#ffffff',
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                } catch (e) {
+                    console.warn('QR Code generation failed:', e);
+                    qrContainer.innerHTML = '<div style="font-size:10px;color:#999">QR</div>';
+                }
+            }
+
+            // Update status badge
+            const badge = document.getElementById('kartuStatusBadge');
+            const isActive = d.finalisasi?.selesai && (d.status || '').toLowerCase() === 'diterima';
+            if (isActive) {
+                badge.innerHTML = '<i class="fa-solid fa-circle-check"></i> Aktif';
+                badge.className = 'badge badge-green';
+            } else {
+                badge.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Tidak Aktif';
+                badge.className = 'badge badge-red';
+            }
+
+            kartuRendered = true;
+            applyZoom(currentZoom);
+            setupKartuActions(d);
+        }
+
+        function buildKartuHTML(d) {
+            const ayah = d.ayah || {};
+            const ibu = d.ibu || {};
+            const fotoUrl = d.fotoProfil || '';
+            const LOGO_URL = 'https://upload.wikimedia.org/wikipedia/id/1/19/Logo_SMAN_68_Jakarta.png';
+
+            const jkLabel = d.jk === 'L' ? 'Laki-laki' : d.jk === 'P' ? 'Perempuan' : '-';
+            const isVerified = d.finalisasi?.selesai && (d.status || '').toLowerCase() === 'diterima';
+            const statusBadge = isVerified ?
+                '<span class="badge badge-green" style="font-size:9.5px;padding:2px 9px"><i class="fa-solid fa-shield-halved"></i> Terverifikasi</span>' :
+                '<span class="badge badge-red" style="font-size:9.5px;padding:2px 9px"><i class="fa-solid fa-circle-xmark"></i> Belum Aktif</span>';
+
+            return `
+            <div class="kartu-template scale-100" id="kartuTemplate">
+              <div class="kartu-border"></div>
+              <div class="kartu-bg-watermark"><img src="${LOGO_URL}" alt=""></div>
+
+              <div class="kartu-content">
+                <!-- HEADER -->
+                <div class="kartu-header">
+                  <div class="logo-sman">
+                    <img src="${LOGO_URL}" alt="SMAN 68 Jakarta">
+                  </div>
+                  <div class="header-text">
+                    <h1>SMAN 68 JAKARTA
+                      <span>Sekolah Unggul, Berkarakter, dan Berprestasi</span>
+                    </h1>
+                    <div class="subtitle">KARTU PESERTA CALON MURID MUTASI</div>
+                    <div class="ta">TAHUN AJARAN 2026/2027</div>
+                  </div>
+                </div>
+
+                <!-- CONTACT INFO -->
+                <div class="kartu-contact">
+                  <span><i class="fa-solid fa-location-dot"></i> Jl. Salemba Raya No.18, Jakarta Pusat, DKI Jakarta 10430</span>
+                  <span><i class="fa-solid fa-phone"></i> (021) 3142929</span>
+                  <span><i class="fa-solid fa-envelope"></i> emailsman68@gmail.com</span>
+                  <span><i class="fa-solid fa-globe"></i> www.sman68jakarta.xyz</span>
+                </div>
+
+                <!-- BODY -->
+                <div class="kartu-body">
+                  <div class="kartu-left">
+                    <div class="info-row">
+                      <span class="label">NOMOR PENDAFTARAN</span>
+                      <span class="value mono">${escapeHTML(d.noDaftar || '-')}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">NAMA LENGKAP</span>
+                      <span class="value">${escapeHTML(d.nama || '-')}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">TEMPAT, TANGGAL LAHIR</span>
+                      <span class="value">${escapeHTML(d.tempatLahir || '-')}, ${formatTanggal(d.tglLahir)}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">JENIS KELAMIN</span>
+                      <span class="value">${jkLabel}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">NISN</span>
+                      <span class="value mono">${escapeHTML(d.nisn || '-')}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">NIS</span>
+                      <span class="value mono">${escapeHTML(d.nis || '-')}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">ASAL SEKOLAH SEBELUMNYA</span>
+                      <span class="value">${escapeHTML(d.sekolahAsal || '-')}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">KELAS SAAT INI</span>
+                      <span class="value">${escapeHTML(d.kelasSaatIni || '-')}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">MUTASI KE KELAS / PROGRAM</span>
+                      <span class="value">${escapeHTML(d.mutasiKe || '-')} · ${escapeHTML(d.kurikulum || '-')}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">EMAIL</span>
+                      <span class="value" style="font-size:11.5px">${escapeHTML(d.email || '-')}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">NOMOR HP</span>
+                      <span class="value mono">${escapeHTML(d.telpMurid || '-')}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">TANGGAL PENDAFTARAN</span>
+                      <span class="value">${formatTanggal(d.createdAt)}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">STATUS VERIFIKASI</span>
+                      <span class="value">${statusBadge}</span>
+                    </div>
+                  </div>
+
+                  <div class="kartu-right">
+                    <div class="foto-box">
+                      ${fotoUrl ? `<img src="${fotoUrl}" alt="Pas Foto">` : `<i class="fa-solid fa-user"></i>`}
+                    </div>
+                    <div class="qr-box">
+                      <div id="qrCodeContainer"></div>
+                    </div>
+                    <div class="label-qr">SCAN UNTUK VALIDASI</div>
+                  </div>
+                </div>
+
+                <!-- PERNYATAAN RESMI -->
+                <div class="kartu-pernyataan-box">
+                  <div class="pernyataan-title">PERNYATAAN RESMI</div>
+                  <div class="pernyataan-text">
+                    Dengan ini SMAN 68 Jakarta menyatakan bahwa nama yang tercantum pada kartu peserta ini telah
+                    terdaftar sebagai Calon Murid Mutasi Tahun Ajaran 2026/2027. Kartu peserta ini merupakan bukti
+                    resmi untuk mengikuti seluruh tahapan seleksi administrasi, verifikasi berkas, wawancara, maupun
+                    proses lanjutan sesuai ketentuan yang berlaku. Apabila ditemukan data yang tidak benar atau
+                    dipalsukan, maka keikutsertaan peserta dapat dibatalkan sewaktu-waktu sesuai peraturan SMAN 68 Jakarta.
+                  </div>
+                </div>
+
+                <!-- TANDA TANGAN -->
+                <div class="kartu-footer">
+                  <div class="footer-left" style="text-align:center">
+                    <div class="ttd-label">Tanda Tangan Calon Siswa</div>
+                    <div style="height:60px"></div>
+                    <div style="height:2px;background:#1a5c3a;width:140px;margin:0 auto 4px"></div>
+                    <div class="ttd-name">${escapeHTML(d.nama || '-')}</div>
+                  </div>
+                  <div class="footer-right">
+                    <div class="ttd-label">Disahkan oleh,</div>
+                    <img class="ttd-cap-img" src="https://raw.githubusercontent.com/nadhiframadhan780-dev/smanegeri68jakarta/main/TTD%20Kepala%20SMAN%2068%20Jakarta.png" alt="Tanda Tangan dan Cap Kepala SMAN 68 Jakarta">
+                    <div style="height:2px;background:#1a5c3a;width:130px;margin:0 auto 4px"></div>
+                    <div class="ttd-name">Tjahyani, M.Pd</div>
+                    <div class="ttd-nip">NIP. 197011241993012001</div>
+                    <div class="ttd-title">Kepala SMAN 68 Jakarta</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="kartu-watermark">Dicetak: ${new Date().toLocaleString('id-ID')}</div>
+            </div>
+          `;
+        }
+
+        /* ================================================================
+           KARTU ACTIONS: Zoom, Download, Print
+           ================================================================ */
+        function setupKartuActions(d) {
+            // Zoom controls
+            document.querySelectorAll('.zoom-controls button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const zoom = btn.dataset.zoom;
+                    if (zoom === 'fit') {
+                        applyFitZoom();
+                        document.querySelectorAll('.zoom-controls button').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        return;
+                    }
+                    applyZoom(zoom);
+                    document.querySelectorAll('.zoom-controls button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+
+            // Download PDF
+            document.getElementById('downloadPdfBtn')?.addEventListener('click', () => downloadKartu('pdf', d));
+            document.getElementById('downloadA4Btn')?.addEventListener('click', () => downloadKartu('a4', d));
+            document.getElementById('downloadA5Btn')?.addEventListener('click', () => downloadKartu('a5', d));
+            document.getElementById('printBtn')?.addEventListener('click', () => downloadKartu('print', d));
+            document.getElementById('refreshKartuBtn')?.addEventListener('click', () => {
+                if (currentData) renderKartu(currentData);
+                toast('info', 'Kartu diperbarui.');
+            });
+
+            // QR Code click -> validation modal
+            document.querySelector('#qrCodeContainer')?.addEventListener('click', () => {
+                openValidasiModal(d);
+            });
+        }
+
+        function applyZoom(zoom) {
+            currentZoom = zoom;
+            const template = document.getElementById('kartuTemplate');
+            if (!template) return;
+            const pct = parseInt(zoom, 10);
+            if (pct === 100) {
+                template.style.transform = 'scale(1)';
+                template.style.transformOrigin = 'top left';
+            } else {
+                template.style.transform = `scale(${pct/100})`;
+                template.style.transformOrigin = 'top left';
+            }
+        }
+
+        function applyFitZoom() {
+            const wrap = document.getElementById('kartuPreviewWrap');
+            const template = document.getElementById('kartuTemplate');
+            if (!template || !wrap) return;
+            const wrapW = wrap.clientWidth - 40;
+            const templateW = 794;
+            const scale = Math.min(1, (wrapW / templateW));
+            template.style.transform = `scale(${scale})`;
+            template.style.transformOrigin = 'top left';
+        }
+
+        /* ================================================================
+           DOWNLOAD KARTU
+           ================================================================ */
+        async function downloadKartu(mode, d) {
+            const template = document.getElementById('kartuTemplate');
+            if (!template) { toast('error', 'Kartu belum siap.'); return; }
+
+            // Ensure QR code is rendered
+            if (!document.getElementById('qrCodeContainer')?.querySelector('img')) {
+                toast('warn', 'Memuat ulang QR Code...');
+                renderKartu(d);
+                await new Promise(r => setTimeout(r, 500));
+            }
+
+            try {
+                const canvas = await html2canvas(template, {
+                    scale: 2.5,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    width: 794,
+                    height: 1123,
+                    windowWidth: 1280,
+                    windowHeight: 1400,
+                });
+
+                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+                if (mode === 'print') {
+                    const win = window.open('', '_blank');
+                    if (!win) { toast('error', 'Popup diblokir browser. Izinkan popup untuk mencetak.'); return; }
+                    win.document.write(
+                        `<html><head><title>Kartu Peserta - ${d.nama}</title><style>body{margin:0;padding:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f0f0f0}img{max-width:100%;height:auto;box-shadow:0 4px 20px rgba(0,0,0,0.1)}</style></head><body><img src="${imgData}" alt="Kartu Peserta"></body></html>`
+                        );
+                    win.document.close();
+                    setTimeout(() => { win.focus();
+                        win.print(); }, 500);
+                    logDownload('print', d);
+                    showDownloadSuccessModal();
+                    return;
+                }
+
+                // PDF modes
+                let pdfFormat = 'a4';
+                let pdfOrientation = 'portrait';
+                let pdfW = 210,
+                    pdfH = 297;
+
+                if (mode === 'a4') {
+                    pdfFormat = 'a4';
+                    pdfOrientation = 'portrait';
+                } else if (mode === 'a5') {
+                    pdfFormat = 'a5';
+                    pdfOrientation = 'portrait';
+                } else {
+                    // Default PDF: custom size matching kartu ratio
+                    pdfFormat = 'a4';
+                    pdfOrientation = 'portrait';
+                }
+
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                    orientation: pdfOrientation,
+                    unit: 'mm',
+                    format: pdfFormat,
+                });
+
+                const pdfW_mm = pdf.internal.pageSize.getWidth();
+                const pdfH_mm = pdf.internal.pageSize.getHeight();
+                const imgAspect = 794 / 1123;
+                let imgW_mm = pdfW_mm - 20;
+                let imgH_mm = imgW_mm / imgAspect;
+                if (imgH_mm > pdfH_mm - 20) {
+                    imgH_mm = pdfH_mm - 20;
+                    imgW_mm = imgH_mm * imgAspect;
+                }
+                const xOff = (pdfW_mm - imgW_mm) / 2;
+                const yOff = (pdfH_mm - imgH_mm) / 2;
+
+                pdf.addImage(imgData, 'JPEG', xOff, yOff, imgW_mm, imgH_mm);
+                pdf.save(`Kartu_Peserta_${d.noDaftar || 'unknown'}.pdf`);
+
+                logDownload(mode, d);
+                showDownloadSuccessModal();
+
+            } catch (err) {
+                console.error('Download error:', err);
+                toast('error', 'Gagal menghasilkan kartu. Coba refresh halaman.');
+            }
+        }
+
+        function showDownloadSuccessModal() {
+            openModal('modalSuksesDownload');
+        }
+
+        document.getElementById('modalSuksesDownloadOk')?.addEventListener('click', () => {
+            closeModal('modalSuksesDownload');
+        });
+
+        /* ================================================================
+           LOG DOWNLOAD
+           ================================================================ */
+        async function logDownload(mode, d) {
+            try {
+                await db.collection('kartuPesertaDownloads').add({
+                    noDaftar: d.noDaftar || '-',
+                    nama: d.nama || '-',
+                    jenisDownload: mode,
+                    waktu: firebase.firestore.FieldValue.serverTimestamp(),
+                    ip: 'client',
+                    browser: navigator.userAgent || '-',
+                    device: /mobile/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop'
+                });
+                // Also update student's download count
+                const ref = db.collection('pendaftaranMutasi').doc(currentDocId);
+                await ref.update({
+                    'kartuPeserta.downloadCount': firebase.firestore.FieldValue.increment(1),
+                    'kartuPeserta.lastDownload': firebase.firestore.FieldValue.serverTimestamp(),
+                    'kartuPeserta.lastDownloadType': mode
+                });
+            } catch (err) { console.warn('Download log error:', err); }
+        }
+
+        /* ================================================================
+           VALIDASI MODAL (QR Code)
+           ================================================================ */
+        function openValidasiModal(d) {
+            const content = document.getElementById('validasiContent');
+            const isActive = d.finalisasi?.selesai && (d.status || '').toLowerCase() === 'diterima';
+            content.innerHTML = `
+            <div style="display:flex;flex-direction:column;gap:12px;padding:8px 0">
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-light)">
+                <span style="font-weight:600;color:var(--text-muted)">Status Kartu</span>
+                <span style="font-weight:700;color:${isActive ? 'var(--accent)' : 'var(--red)'}">${isActive ? '✅ AKTIF' : '❌ TIDAK AKTIF'}</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-light)">
+                <span style="font-weight:600;color:var(--text-muted)">Nomor Pendaftaran</span>
+                <span class="mono" style="font-weight:700">${escapeHTML(d.noDaftar || '-')}</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-light)">
+                <span style="font-weight:600;color:var(--text-muted)">Nama Lengkap</span>
+                <span style="font-weight:700">${escapeHTML(d.nama || '-')}</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-light)">
+                <span style="font-weight:600;color:var(--text-muted)">Tanggal Cetak</span>
+                <span style="font-weight:700">${new Date().toLocaleString('id-ID')}</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-light)">
+                <span style="font-weight:600;color:var(--text-muted)">Keaslian</span>
+                <span style="font-weight:700;color:var(--accent)"><i class="fa-solid fa-shield-halved"></i> Terverifikasi</span>
+              </div>
+              <div style="margin-top:8px;padding:12px;background:var(--accent-glow);border-radius:var(--radius-sm);text-align:center;font-size:13px;color:var(--accent-dark)">
+                <i class="fa-solid fa-circle-check"></i> Dokumen ini adalah kartu resmi yang dikeluarkan oleh SMAN 68 Jakarta.
+              </div>
+            </div>
+          `;
+            openModal('modalValidasiKartu');
+        }
+
+        document.getElementById('closeValidasiModal')?.addEventListener('click', () => {
+            closeModal('modalValidasiKartu');
+        });
+
+        /* ================================================================
+           MODAL HELPERS
+           ================================================================ */
+        function openModal(id) {
+            const el = document.getElementById(id);
+            if (el) { el.classList.add('open');
+                document.body.style.overflow = 'hidden'; }
+        }
+
+        function closeModal(id) {
+            const el = document.getElementById(id);
+            if (el) { el.classList.remove('open');
+                document.body.style.overflow = ''; }
+        }
+
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(ov => {
+            ov.addEventListener('click', e => {
+                if (e.target === ov) closeModal(ov.id);
+            });
+        });
+
+        /* ================================================================
+           NAVIGATION
+           ================================================================ */
+        document.querySelectorAll('.nav-item[data-sec]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item[data-sec]').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('sec-' + btn.dataset.sec).classList.add('active');
+                closeSidebarMobile();
+            });
+        });
+
+        document.getElementById('hamburgerBtn')?.addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        });
+
+        document.getElementById('sidebarOverlay')?.addEventListener('click', closeSidebarMobile);
+
+        function closeSidebarMobile() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+        }
+
+        document.getElementById('logoutBtn')?.addEventListener('click', () => {
+            const iconEl = document.getElementById('modalAlertIcon');
+            iconEl.className = 'modal-icon warn';
+            iconEl.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
+            document.getElementById('modalAlertTitle').textContent = 'Keluar dari Portal';
+            document.getElementById('modalAlertMsg').textContent = 'Apakah Anda yakin ingin keluar? Anda perlu login kembali untuk melanjutkan.';
+            const okBtn = document.getElementById('modalAlertOkBtn');
+            const newBtn = okBtn.cloneNode(true);
+            okBtn.parentNode.replaceChild(newBtn, okBtn);
+            newBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> Ya, Keluar';
+            newBtn.addEventListener('click', () => { closeModal('modalAlert');
+                doLogout(); });
+            openModal('modalAlert');
+        });
+
+        /* ================================================================
+           SESSION RESTORE
+           ================================================================ */
+        async function tryRestoreSession() {
+            const sess = readSession();
+            if (!sess?.docId) return;
+            try {
+                const doc = await db.collection('pendaftaranMutasi').doc(sess.docId).get();
+                if (!doc.exists) return;
+                const data = doc.data();
+                if (data.dibatalkan || (data.status || '').toLowerCase() !== 'diterima' || !data.finalisasi?.selesai) {
+                    clearSession();
+                    return;
+                }
+                // Check all docs valid
+                const verif = data.verifikasiDokumen || {};
+                const docKeys = ['ktpKia', 'kartuKeluarga', 'kartuPelajar', 'suratPernyataan', 'suratBaik',
+                    'suratSehat', 'aktaLahir', 'suratPindahSekolah'
+                ];
+                let mutasiKe = data.mutasiKe || 'X';
+                if (mutasiKe === 'XI') docKeys.push('raportSem1', 'raportSem2');
+                else if (mutasiKe === 'XII') docKeys.push('raportSem1', 'raportSem2', 'raportSem3', 'raportSem4');
+                else docKeys.push('raportTerakhir');
+                const allValid = docKeys.every(key => verif[key]?.status === 'valid');
+                if (!allValid) { clearSession(); return; }
+                // Portal must be open
+                const portalSnap = await db.collection('settings').doc('kartuPesertaPortal').get();
+                if (portalSnap.exists) {
+                    const pData = portalSnap.data();
+                    const now = new Date();
+                    if (pData.manualDisabled === true) return;
+                    if (pData.closedAt && now >= new Date(pData.closedAt)) return;
+                    if (!pData.isOpen) {
+                        if (pData.countdownActive && pData.countdownTarget) {
+                            if (now < new Date(pData.countdownTarget)) return;
+                        } else return;
+                    }
+                } else return;
+
+                startDashboard(sess.docId, data);
+            } catch (e) { console.warn('Session restore error:', e); }
+        }
+
+        // Try restore after gate is ready
+        let restoreAttempted = false;
+
+        function tryRestoreAfterGate() {
+            if (restoreAttempted) return;
+            restoreAttempted = true;
+            setTimeout(() => {
+                if (currentGateState === 'login' || currentGateState === 'open') {
+                    tryRestoreSession();
+                }
+            }, 800);
+        }
+
+        // Observe gate state changes
+        const origShowGate2 = showGate;
+        showGate = function(state, payload) {
+            origShowGate2(state, payload);
+            if (state === 'login' || state === 'open') {
+                tryRestoreAfterGate();
+            }
+        };
+
+        // Also check when login scene becomes visible
+        const loginObserver = new MutationObserver(() => {
+            if (!document.getElementById('loginScene').classList.contains('hidden')) {
+                tryRestoreAfterGate();
+            }
+        });
+        loginObserver.observe(document.getElementById('loginScene'), { attributes: true, attributeFilter: ['class'] });
+
+        console.log('✅ Kartu Peserta Calon Murid Mutasi SMAN 68 Jakarta — Loaded');
+    </script>
+</body>
+</html>
