@@ -76,7 +76,7 @@ const linkUrls = {
     topJurusan:          './jurusan-kuliah-terbaik-2026.html',
     kelulusan:           './pusat-layanan.sman68jkt.html',
     hukum:               './hukum.html',
-    sertifikatAkreditasi:'./pdf files/Sertifikat Akreditasi SMAN 68 Jakarta.pdf'
+    sertifikatAkreditasi:'https://www.sman68jakarta.xyz/pdf%20files/Sertifikat%20Akreditasi%20SMAN%2068%20Jakarta.pdf'
 };
 
 // ============================================
